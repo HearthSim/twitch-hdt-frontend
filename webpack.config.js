@@ -18,12 +18,12 @@ module.exports = {
 				test: /\.tsx?$/,
 				exclude: /node_modules/,
 				use: [
-					/*{
+					{
 						loader: "babel-loader",
 						options: {
 							presets: ["react", ["env", { modules: false }]],
 						},
-					},*/
+					},
 					{
 						loader: "react-hot-loader/webpack",
 					},
