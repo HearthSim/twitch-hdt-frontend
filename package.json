@@ -5,7 +5,9 @@
 	"license": "UNLICENSED",
 	"scripts": {
 		"build": "cross-env NODE_ENV=production webpack",
-		"dev": "webpack-dev-server --hot"
+		"dev": "webpack-dev-server --hot",
+		"format": "prettier --write {src/**/*.ts{,x},*.js}",
+		"lint": "prettier --list-different {src/**/*.ts{,x},*.js}"
 	},
 	"dependencies": {
 		"@types/react": "^16.0.5",
