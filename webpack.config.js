@@ -22,6 +22,7 @@ module.exports = {
 						loader: "babel-loader",
 						options: {
 							presets: ["react", ["env", { modules: false }]],
+							plugins: ["babel-plugin-styled-components"],
 						},
 					},
 					{
