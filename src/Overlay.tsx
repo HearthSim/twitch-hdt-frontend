@@ -2,8 +2,11 @@ import * as React from "react";
 import styled from "styled-components";
 import Minion from "./Minion";
 import { withProps } from "./utils/styled";
+import { BoardStateData } from "./twitch-hdt";
 
-interface OverlayProps extends React.ClassAttributes<Overlay> {}
+interface OverlayProps extends React.ClassAttributes<Overlay> {
+	boardState?: BoardStateData | null;
+}
 
 interface TopProps {
 	top?: string;
@@ -36,21 +39,31 @@ const Board = withProps<TopProps>()(styled.div)`
 class Overlay extends React.Component<OverlayProps, {}> {
 	portal: HTMLDivElement | null;
 
+	public renderBoard(dbfIds: number[]): any {
+		return dbfIds.map((dbfId: number, i: number) => (
+			<Minion dbfId={dbfId} key={i} />
+		));
+	}
+
 	render() {
+		const playerBoard = this.props.boardState
+			? this.props.boardState.player_board.map((dbfId: number) => (
+					<Minion dbfId={dbfId} />
+				))
+			: null;
+
 		return [
 			<Portal key="portal" innerRef={(ref: any) => (this.portal = ref)} />,
 			<FullSize key="fullsize">
 				<Board top={"29.75vh"}>
-					<Minion />
+					{this.renderBoard(
+						this.props.boardState ? this.props.boardState.opponent_board : [],
+					)}
 				</Board>
 				<Board top={"2.5vh"} color={"red"}>
-					<Minion />
-					<Minion />
-					<Minion />
-					<Minion />
-					<Minion />
-					<Minion />
-					<Minion />
+					{this.renderBoard(
+						this.props.boardState ? this.props.boardState.player_board : [],
+					)}
 				</Board>
 			</FullSize>,
 		] as any;
