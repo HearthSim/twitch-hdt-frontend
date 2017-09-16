@@ -12,7 +12,7 @@
 		"url": "https://github.com/HearthSim/twitch-hdt-frontend.git"
 	},
 	"scripts": {
-		"build": "cross-env NODE_ENV=production webpack -p",
+		"build": "webpack -p",
 		"dev": "webpack-dev-server --hot",
 		"format": "prettier --write {src/**/*.ts{,x},*.js}",
 		"lint": "prettier --list-different {src/**/*.ts{,x},*.js}"
@@ -27,7 +27,6 @@
 		"babel-plugin-styled-components": "^1.2.0",
 		"babel-preset-env": "^1.6.0",
 		"babel-preset-react": "^6.24.1",
-		"cross-env": "^5.0.5",
 		"hearthstonejson": "^0.6.6",
 		"html-webpack-plugin": "^2.30.1",
 		"react": "^16.0.0-rc.2",
