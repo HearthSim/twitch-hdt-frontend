@@ -1,5 +1,6 @@
 import * as React from "react";
 import Overlay from "./Overlay";
+import { CardsProvider } from "./utils/cards";
 
 interface RootProps extends React.ClassAttributes<Root> {}
 
@@ -23,6 +24,10 @@ export default class Root extends React.Component<RootProps, RootState> {
 		if (this.state.hasError) {
 			return <p>hasError</p>;
 		}
-		return <Overlay />;
+		return (
+			<CardsProvider>
+				<Overlay />
+			</CardsProvider>
+		);
 	}
 }
