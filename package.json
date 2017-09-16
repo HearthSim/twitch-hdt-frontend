@@ -14,8 +14,8 @@
 	"scripts": {
 		"build": "webpack -p",
 		"dev": "webpack-dev-server -d --hot",
-		"format": "prettier --write {src/**/*.ts{,x},*.js}",
-		"lint": "prettier --list-different {src/**/*.ts{,x},*.js}"
+		"format": "prettier --write \"{src/**/*.ts{,x},*.js}\"",
+		"lint": "prettier --list-different \"{src/**/*.ts{,x},*.js}\""
 	},
 	"dependencies": {
 		"@types/react": "^16.0.5",
