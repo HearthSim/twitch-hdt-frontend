@@ -13,7 +13,7 @@
 	},
 	"scripts": {
 		"build": "webpack -p",
-		"dev": "webpack-dev-server --hot",
+		"dev": "webpack-dev-server -d --hot",
 		"format": "prettier --write {src/**/*.ts{,x},*.js}",
 		"lint": "prettier --list-different {src/**/*.ts{,x},*.js}"
 	},

@@ -19,6 +19,9 @@ module.exports = {
 				exclude: /node_modules/,
 				use: [
 					{
+						loader: "react-hot-loader/webpack",
+					},
+					{
 						loader: "babel-loader",
 						options: {
 							presets: [
@@ -40,9 +43,6 @@ module.exports = {
 							],
 							plugins: ["babel-plugin-styled-components"],
 						},
-					},
-					{
-						loader: "react-hot-loader/webpack",
 					},
 					{
 						loader: "ts-loader",
