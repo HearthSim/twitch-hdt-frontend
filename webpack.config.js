@@ -41,7 +41,10 @@ module.exports = {
 									},
 								],
 							],
-							plugins: ["babel-plugin-styled-components"],
+							plugins: [
+								"babel-plugin-styled-components",
+								"babel-plugin-transform-object-rest-spread",
+							],
 						},
 					},
 					{
