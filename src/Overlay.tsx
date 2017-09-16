@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import Minion from "./Minion";
-import { withProps } from "./utils";
+import { withProps } from "./utils/styled";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {}
 
