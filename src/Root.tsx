@@ -1,14 +1,28 @@
 import * as React from "react";
-import HelloWorld from "./HelloWorld";
+import Overlay from "./Overlay";
 
 interface RootProps extends React.ClassAttributes<Root> {}
 
-export default class Root extends React.Component<RootProps, {}> {
+interface RootState {
+	hasError?: boolean;
+}
+
+export default class Root extends React.Component<RootProps, RootState> {
+	constructor(props: RootProps) {
+		super(props);
+		this.state = {
+			hasError: false,
+		};
+	}
+
+	componentDidCatch(error: Error, info: React.ErrorInfo) {
+		this.setState({ hasError: true });
+	}
+
 	render() {
-		return (
-			<div>
-				<HelloWorld />
-			</div>
-		);
+		if (this.state.hasError) {
+			return <p>hasError</p>;
+		}
+		return <Overlay />;
 	}
 }
