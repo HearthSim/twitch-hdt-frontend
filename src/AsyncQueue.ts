@@ -9,7 +9,7 @@ export default class AsyncQueue<T extends {}> {
 		this.queue = [];
 		this.listeners = [];
 		this.delay = Infinity;
-		setInterval(this._work, frequency || 300);
+		setInterval(() => this._work(), frequency || 300);
 	}
 
 	set delay(seconds: number) {
