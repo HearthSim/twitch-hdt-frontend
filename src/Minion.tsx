@@ -26,11 +26,11 @@ interface MinionProps extends React.ClassAttributes<Minion> {
 
 interface InternalMinionProps extends CardsProps, MinionProps {}
 
-interface EntityState {
+interface MinionState {
 	isHovering?: boolean;
 }
 
-class Minion extends React.Component<InternalMinionProps, EntityState> {
+class Minion extends React.Component<InternalMinionProps, MinionState> {
 	constructor(props: InternalMinionProps, context: any) {
 		super(props, context);
 		this.state = {
