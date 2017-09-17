@@ -4,6 +4,14 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
 	entry: {
+		vendor: [
+			"react",
+			"react-dom",
+			"prop-types",
+			"styled-components",
+			"hearthstonejson",
+			"react-hot-loader",
+		],
 		viewer: [
 			"react-hot-loader/patch",
 			path.resolve(__dirname, "src", "viewer"),
@@ -66,8 +74,12 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			filename: "viewer.html",
-			chunks: ["viewer"],
+			chunks: ["viewer", "vendor"],
 			template: path.resolve(__dirname, "template.html"),
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			minChunks: Infinity,
 		}),
 		new webpack.NamedModulesPlugin(),
 	],
