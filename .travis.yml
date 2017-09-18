@@ -4,10 +4,10 @@ node_js:
   - "8"
 jobs:
   include:
+    - stage: build
+      script: yarn build
     - stage: lint
       script: yarn lint
-    - stage: test
-      script: yarn build
 install:
   - npm install -g yarn
   - yarn --pure-lockfile
