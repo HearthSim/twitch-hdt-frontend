@@ -5,12 +5,12 @@ import { ValidationMap } from "prop-types";
 /**
  * Use this method to create a simple HOC to directly extract some props from the context.
  */
-export const makeHOC = <TInjectProps extends {}>(
+export const makeHOC = <PInject extends {}>(
 	contextTypes: ValidationMap<any>,
-) => <TExternalProps extends {}>(
-	WrappedComponent: React.ComponentClass<TExternalProps & TInjectProps>,
-) =>
-	class GenericHOC extends React.Component<TExternalProps, {}> {
+) => <P, S>(
+	Component: React.ComponentClass<P & PInject>,
+): React.ComponentClass<P> =>
+	class GenericHOC extends React.Component<P & PInject, S> {
 		static displayName = `${Object.keys(contextTypes)
 			.map(capitalize)
 			.join("")}HOC`;
@@ -24,6 +24,6 @@ export const makeHOC = <TInjectProps extends {}>(
 			Object.keys(contextTypes).map(k => this.context[k]);
 			const { children, ...props } = this.props as any;
 			const newProps = Object.assign({}, contextVars, props);
-			return React.createElement(WrappedComponent, newProps, children);
+			return React.createElement(Component, newProps, children);
 		}
 	};

@@ -24,14 +24,12 @@ interface MinionProps extends React.ClassAttributes<Minion> {
 	dbfId: number;
 }
 
-interface InternalMinionProps extends CardsProps, MinionProps {}
-
 interface MinionState {
 	isHovering?: boolean;
 }
 
-class Minion extends React.Component<InternalMinionProps, MinionState> {
-	constructor(props: InternalMinionProps, context: any) {
+class Minion extends React.Component<MinionProps & CardsProps, MinionState> {
+	constructor(props: MinionProps & CardsProps, context: any) {
 		super(props, context);
 		this.state = {
 			isHovering: false,
@@ -52,4 +50,4 @@ class Minion extends React.Component<InternalMinionProps, MinionState> {
 	}
 }
 
-export default withCards<MinionProps>(Minion);
+export default withCards(Minion);
