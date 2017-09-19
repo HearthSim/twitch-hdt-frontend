@@ -58,17 +58,6 @@ export default class Root extends React.Component<RootProps, RootState> {
 				this.queue.write(m.data, new Date().getTime());
 			},
 		);
-
-		// set an initial board state for debugging
-		this.setState({
-			boardState: {
-				opponent_board: [179, 179],
-				player_board: [2084, 658, 658, 658, 658, 658, 658],
-				player_hero: 893,
-				player_deck: {},
-				player_hand: [1657, 777, 891, 290, 1721],
-			},
-		});
 	}
 
 	componentWillUnmount(): void {
