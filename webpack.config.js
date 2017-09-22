@@ -7,12 +7,12 @@ const isProduction = process.env.NODE_ENV === "production";
 const plugins = [];
 
 const vendorLibraries = [
+	"hearthstonejson",
+	"prop-types",
 	"react",
 	"react-dom",
-	"prop-types",
-	"styled-components",
-	"hearthstonejson",
 	"react-hot-loader",
+	"styled-components",
 ];
 
 if (isProduction) {
