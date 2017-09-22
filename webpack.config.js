@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const package = require(path.resolve(__dirname, "package"));
 
 const isProduction = process.env.NODE_ENV === "production";
 const plugins = [];
@@ -15,7 +16,6 @@ const vendorLibraries = [
 ];
 
 if (isProduction) {
-	const package = require(path.resolve(__dirname, "package"));
 	const { LicenseWebpackPlugin } = require("license-webpack-plugin");
 	const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 	const CleanWebpackPlugin = require("clean-webpack-plugin");
@@ -57,13 +57,19 @@ if (isProduction) {
 			"process.env": {
 				NODE_ENV: JSON.stringify("production"),
 			},
+			APPLICATION_VERSION: JSON.stringify(package.version),
 		}),
 		new ZipPlugin({
 			filename: "app.zip",
 		}),
 	);
 } else {
-	plugins.push(new webpack.NamedModulesPlugin());
+	plugins.push(
+		new webpack.DefinePlugin({
+			APPLICATION_VERSION: JSON.stringify(package.version),
+		}),
+		new webpack.NamedModulesPlugin(),
+	);
 }
 
 module.exports = {
