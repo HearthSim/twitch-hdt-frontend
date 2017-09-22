@@ -28,6 +28,7 @@
 		"babel-loader": "^7.1.2",
 		"babel-plugin-styled-components": "^1.2.0",
 		"babel-plugin-transform-object-rest-spread": "^6.26.0",
+		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.6.0",
 		"babel-preset-react": "^6.24.1",
 		"clean-webpack-plugin": "^0.1.16",

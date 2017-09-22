@@ -71,6 +71,7 @@ module.exports = {
 		vendor: vendorLibraries,
 		viewer: [
 			!isProduction ? "react-hot-loader/patch" : null,
+			"babel-polyfill",
 			path.resolve(__dirname, "src", "viewer"),
 		].filter(x => x),
 	},
