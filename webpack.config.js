@@ -139,6 +139,5 @@ module.exports = {
 			name: "vendor",
 			minChunks: Infinity,
 		}),
-		new webpack.NamedModulesPlugin(),
 	].concat(plugins),
 };
