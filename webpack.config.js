@@ -42,7 +42,7 @@ if (isProduction) {
 				package.homepage,
 				"HearthSim, LLC. All Rights Reserved.",
 			].join("\n"),
-			include: "viewer",
+			include: ["viewer", "config"],
 		}),
 		new webpack.BannerPlugin({
 			banner: [
