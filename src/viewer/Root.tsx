@@ -1,19 +1,23 @@
 import * as React from "react";
 import Overlay from "./Overlay";
-import { BoardStateMessage, BoardStateData } from "../twitch-hdt";
+import {
+	BoardStateData,
+	BoardStateMessage,
+	GameEndMessage,
+	Message,
+} from "../twitch-hdt";
 import { CardsProvider } from "../utils/cards";
 import AsyncQueue from "./AsyncQueue";
 
 interface RootProps extends React.ClassAttributes<Root> {}
 
 interface RootState {
-	boardState?: BoardStateData | null;
-	hasError?: boolean;
+	boardState: BoardStateData | null;
+	hasError: boolean;
 }
 
 export default class Root extends React.Component<RootProps, RootState> {
-	queue: AsyncQueue<BoardStateData>;
-	boardStateUpdater: (c: BoardStateData) => void;
+	queue: AsyncQueue<Message>;
 
 	constructor(props: RootProps) {
 		super(props);
@@ -22,7 +26,6 @@ export default class Root extends React.Component<RootProps, RootState> {
 			hasError: false,
 		};
 		this.queue = new AsyncQueue();
-		this.boardStateUpdater = state => this.setState({ boardState: state });
 		window.Twitch.ext.onContext((context, changed) => {
 			if (changed.indexOf("hlsLatencyBroadcaster") === -1) {
 				return;
@@ -38,31 +41,59 @@ export default class Root extends React.Component<RootProps, RootState> {
 
 	componentDidMount(): void {
 		// setup the asynchronous queue
-		this.queue.listen(this.boardStateUpdater);
+		this.queue.listen(this.handleMessage);
 
-		// start listening to PubSub events and write to queue
+		// start listening to PubSub events
 		window.Twitch.ext.listen(
 			"broadcast",
 			(target: string, contentType: string, message: string) => {
+				// verify content type
 				if (contentType !== "application/json") {
 					console.debug(`Unexpected contentType "${contentType}"`);
 					return;
 				}
 
-				const m: BoardStateMessage = JSON.parse(message);
-				if (m.type !== "board_state") {
-					console.debug(`Unexpected message.type "${m.type}"`);
-					return;
-				}
-
-				this.queue.write(m.data, new Date().getTime());
+				// push into queue
+				const m: Message = JSON.parse(message);
+				this.queue.write(m, new Date().getTime());
 			},
 		);
 	}
 
 	componentWillUnmount(): void {
-		this.queue.unlisten(this.boardStateUpdater);
+		this.queue.unlisten(this.handleMessage);
 	}
+
+	handleMessage = (message: Message) => {
+		const isOfType = <T extends Message>(
+			message: Message,
+			type: string,
+		): message is T => {
+			return message.type === type;
+		};
+
+		if (isOfType<BoardStateMessage>(message, "board_state")) {
+			this.setState({ boardState: message.data });
+		} else if (isOfType<GameEndMessage>(message, "end_game")) {
+			this.setState((prevState: RootState) => {
+				if (!prevState.boardState) {
+					return {};
+				}
+				return {
+					boardState: {
+						// only keep the deck
+						opponent_board: [],
+						player_board: [],
+						player_hero: null,
+						player_deck: prevState.boardState.player_deck,
+						player_hand: [],
+					} as BoardStateData,
+				};
+			});
+		} else {
+			console.debug(`Unexpected message.type "${message.type}"`);
+		}
+	};
 
 	render() {
 		if (this.state.hasError) {
