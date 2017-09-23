@@ -6,6 +6,7 @@ const package = require(path.resolve(__dirname, "package"));
 const isProduction = process.env.NODE_ENV === "production";
 const plugins = [];
 
+const bundlePath = "js/";
 const vendorLibraries = [
 	"hearthstonejson",
 	"prop-types",
@@ -42,7 +43,7 @@ if (isProduction) {
 				package.homepage,
 				"HearthSim, LLC. All Rights Reserved.",
 			].join("\n"),
-			include: ["viewer", "config"],
+			include: ["viewer", "config"].map(b => bundlePath + b),
 		}),
 		new webpack.BannerPlugin({
 			banner: [
@@ -50,7 +51,7 @@ if (isProduction) {
 				vendorLibraries.map(v => `- ${v}`).join("\n"),
 				"See the LICENSES file for third-party licenses.",
 			].join("\n"),
-			include: "vendor",
+			include: bundlePath + "vendor",
 		}),
 		new CleanWebpackPlugin(["dist"]),
 		new webpack.DefinePlugin({
@@ -137,7 +138,7 @@ module.exports = {
 		overlay: true,
 	},
 	output: {
-		filename: "[name].js",
+		filename: `${bundlePath}[name].js`,
 		path: path.resolve(__dirname, "dist"),
 	},
 	plugins: [
