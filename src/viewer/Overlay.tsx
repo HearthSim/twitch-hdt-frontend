@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Minion from "./Minion";
 import { withProps } from "../utils/styled";
 import { BoardStateData } from "../twitch-hdt";
+import * as PropTypes from "prop-types";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
 	boardState?: BoardStateData | null;
@@ -22,6 +23,13 @@ const Portal = styled.div`
 	width: 100vw;
 	height: 100vh;
 	position: absolute;
+	z-index: 999;
+	pointer-events: none;
+	overflow: hidden;
+
+	& * {
+		pointer-events: auto;
+	}
 `;
 
 const Board = withProps<TopProps>()(styled.div)`
@@ -43,6 +51,14 @@ class Overlay extends React.Component<OverlayProps, {}> {
 		return dbfIds.map((dbfId: number, i: number) => (
 			<Minion dbfId={dbfId} key={i} />
 		));
+	}
+
+	static childContextTypes = {
+		portal: PropTypes.object,
+	};
+
+	getChildContext() {
+		return { portal: this.portal };
 	}
 
 	render() {

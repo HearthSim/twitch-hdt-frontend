@@ -1,6 +1,9 @@
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import styled from "styled-components";
 import { CardsProps, withCards } from "../utils/cards";
+import Card from "./Card";
+import { PortalProps, withPortal } from "../utils/portal";
 
 const MinionDiv = styled.div`
 	width: 11vh;
@@ -26,28 +29,68 @@ interface MinionProps extends React.ClassAttributes<Minion> {
 
 interface MinionState {
 	isHovering?: boolean;
+	x?: number | null;
+	y?: number | null;
 }
 
-class Minion extends React.Component<MinionProps & CardsProps, MinionState> {
-	constructor(props: MinionProps & CardsProps, context: any) {
+class Minion extends React.Component<
+	MinionProps & CardsProps & PortalProps,
+	MinionState
+> {
+	ref: HTMLDivElement | null;
+
+	constructor(props: MinionProps & CardsProps & PortalProps, context: any) {
 		super(props, context);
 		this.state = {
 			isHovering: false,
+			x: null,
+			y: null,
 		};
 	}
 
 	render() {
 		const card = this.props.cards.getByDbfId(this.props.dbfId);
 
+		let tooltip = null;
+		if (this.state.isHovering && this.props.portal && card && card.id) {
+			tooltip = (ReactDOM as any).createPortal(
+				<Card
+					dbfId={this.props.dbfId}
+					x={this.state.x || 0}
+					y={this.state.y || 0}
+				/>,
+				this.props.portal,
+			);
+		}
+
 		return (
 			<MinionDiv
-				onMouseEnter={() => this.setState({ isHovering: true })}
-				onMouseLeave={() => this.setState({ isHovering: false })}
+				onMouseEnter={e => {
+					let { clientX, clientY } = e;
+					const rect = this.ref && this.ref.getBoundingClientRect();
+					if (rect) {
+						clientX += rect.width - (clientX - rect.left);
+						clientY = rect.bottom;
+					}
+
+					this.setState({
+						isHovering: true,
+						x: clientX,
+						y: clientY,
+					});
+				}}
+				onMouseLeave={() =>
+					this.setState({
+						isHovering: false,
+						x: null,
+						y: null,
+					})}
+				innerRef={(ref: HTMLDivElement | null) => (this.ref = ref)}
 			>
-				{this.state.isHovering && card && card.id ? card.id : null}
+				{tooltip}
 			</MinionDiv>
 		);
 	}
 }
 
-export default withCards(Minion);
+export default withPortal(withCards(Minion));

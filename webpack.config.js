@@ -130,6 +130,19 @@ module.exports = {
 					},
 				],
 			},
+			{
+				test: /\.png$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: "file-loader",
+						options: {
+							name: "[name].[ext]",
+							outputPath: "img/",
+						},
+					},
+				],
+			},
 		],
 	},
 	devServer: {
