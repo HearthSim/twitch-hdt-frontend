@@ -80,6 +80,11 @@ module.exports = {
 			"babel-polyfill",
 			path.resolve(__dirname, "src", "viewer"),
 		].filter(x => x),
+		config: [
+			!isProduction ? "react-hot-loader/patch" : null,
+			"babel-polyfill",
+			path.resolve(__dirname, "src", "config"),
+		].filter(x => x),
 	},
 	resolve: {
 		extensions: [".ts", ".tsx", ".js"],
@@ -139,6 +144,11 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			filename: "viewer.html",
 			chunks: ["viewer", "vendor"],
+			template: path.resolve(__dirname, "template.html"),
+		}),
+		new HtmlWebpackPlugin({
+			filename: "config.html",
+			chunks: ["config", "vendor"],
 			template: path.resolve(__dirname, "template.html"),
 		}),
 		new webpack.optimize.CommonsChunkPlugin({
