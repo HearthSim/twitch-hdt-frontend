@@ -45,6 +45,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 				"https://z59gjcr38l.execute-api.us-east-1.amazonaws.com/dev/setup/",
 				{
 					method: "POST",
+					mode: "cors",
 					headers: new Headers({
 						Authorization: `Bearer ${this.state.authToken}`,
 						"X-Twitch-User-Id": this.state.clientId,
