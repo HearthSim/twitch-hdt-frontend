@@ -1,7 +1,7 @@
 import * as React from "react";
 import Overlay from "./Overlay";
-import { BoardStateMessage, BoardStateData } from "./twitch-hdt";
-import { CardsProvider } from "./utils/cards";
+import { BoardStateMessage, BoardStateData } from "../twitch-hdt";
+import { CardsProvider } from "../utils/cards";
 import AsyncQueue from "./AsyncQueue";
 
 interface RootProps extends React.ClassAttributes<Root> {}

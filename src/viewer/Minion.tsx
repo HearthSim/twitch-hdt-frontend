@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import { CardsProps, withCards } from "./utils/cards";
+import { CardsProps, withCards } from "../utils/cards";
 
 const MinionDiv = styled.div`
 	width: 11vh;

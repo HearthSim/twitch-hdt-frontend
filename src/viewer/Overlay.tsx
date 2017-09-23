@@ -1,8 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
 import Minion from "./Minion";
-import { withProps } from "./utils/styled";
-import { BoardStateData } from "./twitch-hdt";
+import { withProps } from "../utils/styled";
+import { BoardStateData } from "../twitch-hdt";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
 	boardState?: BoardStateData | null;
