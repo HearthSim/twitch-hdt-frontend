@@ -40,12 +40,13 @@ export default class Root extends React.Component<RootProps, RootState> {
 	refreshProgress = async () => {
 		try {
 			this.setState({ working: true });
-			const result = await fetch(
+			const response = await fetch(
 				"https://z59gjcr38l.execute-api.us-east-1.amazonaws.com/dev/setup/",
 				{
 					method: "POST",
 					mode: "cors",
 					headers: new Headers({
+						Accept: "application/json",
 						Authorization: `Bearer ${this.state.authToken}`,
 						"X-Twitch-User-Id": this.state.channelId,
 						"X-Twitch-Client-Id": this.state.clientId,
@@ -53,13 +54,35 @@ export default class Root extends React.Component<RootProps, RootState> {
 					}),
 				},
 			);
-			if (result.status !== 200) {
-				throw new Error(`Unexpected status code ${result.status}`);
+			let progress = null;
+			switch (response.status) {
+				case 200:
+					progress = InstallerProgress.READY;
+					break;
+				case 403:
+					const contentType = response.headers.get("content-type");
+					if (!contentType || !contentType.includes("application/json")) {
+						throw new Error(`Invalid response content type "${contentType}"`);
+					}
+					const responsePayload = await response.json();
+					const errorCode = responsePayload.code;
+					switch (errorCode) {
+						case "account_not_linked":
+							progress = InstallerProgress.CONNECT_ACCOUNT;
+							break;
+						case "upstream_client_not_found":
+							progress = InstallerProgress.INSTALL_TRACKER;
+							break;
+						default:
+							throw new Error(`Invalid error code "${errorCode}"`);
+					}
+					break;
+				default:
+					throw new Error(`Unexpected status code ${response.status}`);
 			}
-			const json = await result.json();
 			this.setState({
 				working: false,
-				installerProgress: InstallerProgress.CONNECT_ACCOUNT,
+				installerProgress: progress,
 			});
 		} catch (e) {
 			console.error(e);
