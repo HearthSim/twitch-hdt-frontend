@@ -47,7 +47,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 					mode: "cors",
 					headers: new Headers({
 						Authorization: `Bearer ${this.state.authToken}`,
-						"X-Twitch-User-Id": this.state.clientId,
+						"X-Twitch-User-Id": this.state.channelId,
 						"X-Twitch-Client-Id": this.state.clientId,
 						"X-Twitch-Extension-Version": APPLICATION_VERSION,
 					}),
