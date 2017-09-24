@@ -35,7 +35,6 @@ export default class Root extends React.Component<RootProps, RootState> {
 				this.refreshProgress,
 			);
 		});
-		//this.refreshProgress(); // todo remove dev fixture
 	}
 
 	refreshProgress = async () => {
