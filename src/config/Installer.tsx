@@ -70,6 +70,17 @@ export default class Installer extends React.Component<
 	InstallerProps,
 	InstallerState
 > {
+	getErrorMessage(): any {
+		switch (this.props.progress) {
+			case InstallerProgress.ERROR:
+				return <ErrorMessage>Something went wrong.</ErrorMessage>;
+			case InstallerProgress.INSTALL_TRACKER:
+				return <ErrorMessage>Install a deck tracker</ErrorMessage>;
+			case InstallerProgress.CONNECT_ACCOUNT:
+				return <ErrorMessage>Connect your account</ErrorMessage>;
+		}
+	}
+
 	render() {
 		if (this.props.progress === InstallerProgress.UNKNOWN) {
 			if (this.props.working) {
@@ -77,6 +88,10 @@ export default class Installer extends React.Component<
 			} else {
 				return <div>Unable to connect :-(</div>;
 			}
+		}
+
+		if (this.props.progress === InstallerProgress.READY) {
+			return <div>All good!</div>;
 		}
 
 		const refreshButton = (
@@ -122,9 +137,7 @@ export default class Installer extends React.Component<
 								{this.props.working ? "Verifying…" : "Complete Setup"}
 							</BigFriendlyButton>
 						</p>
-						{this.props.progress === InstallerProgress.ERROR ? (
-							<ErrorMessage>Something went wrong.</ErrorMessage>
-						) : null}
+						{this.getErrorMessage()}
 					</Step>
 				</StepList>
 			</InstallerDiv>
