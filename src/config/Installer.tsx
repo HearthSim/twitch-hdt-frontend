@@ -70,7 +70,10 @@ export default class Installer extends React.Component<
 	InstallerProps,
 	InstallerState
 > {
-	getErrorMessage(): any {
+	getErrorMessage() {
+		if (this.props.working) {
+			return;
+		}
 		switch (this.props.progress) {
 			case InstallerProgress.ERROR:
 				return <ErrorMessage>Something went wrong.</ErrorMessage>;
