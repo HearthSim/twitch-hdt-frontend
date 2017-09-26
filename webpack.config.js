@@ -8,6 +8,7 @@ const plugins = [];
 
 const bundlePath = "js/";
 const vendorLibraries = [
+	"babel-polyfill",
 	"hearthstonejson",
 	"prop-types",
 	"react",
@@ -78,12 +79,10 @@ module.exports = {
 		vendor: vendorLibraries,
 		viewer: [
 			!isProduction ? "react-hot-loader/patch" : null,
-			"babel-polyfill",
 			path.resolve(__dirname, "src", "viewer"),
 		].filter(x => x),
 		config: [
 			!isProduction ? "react-hot-loader/patch" : null,
-			"babel-polyfill",
 			path.resolve(__dirname, "src", "config"),
 		].filter(x => x),
 	},
