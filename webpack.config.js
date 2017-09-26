@@ -30,6 +30,7 @@ if (isProduction) {
 			abortOnUnacceptableLicense: true,
 			perChunkOutput: false,
 			outputFilename: "LICENSES",
+			includedChunks: ["vendor"],
 		}),
 		new UglifyJSPlugin({
 			uglifyOptions: {
