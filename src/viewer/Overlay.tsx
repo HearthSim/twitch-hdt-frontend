@@ -4,6 +4,9 @@ import { withProps } from "../utils/styled";
 import { BoardStateData } from "../twitch-hdt";
 import * as PropTypes from "prop-types";
 import Entity from "./Entity";
+import DeckList from "./DeckList";
+import { DecklistPosition } from "../config/configuration";
+import { TwitchExtProps, witchTwitchExt } from "../utils/twitch";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
 	boardState?: BoardStateData | null;
@@ -127,7 +130,21 @@ const Weapon = withProps<PositionProps>()(OverlayElement.extend)`
 	clip-path: circle(50% at 50% 50%);
 `;
 
-class Overlay extends React.Component<OverlayProps, {}> {
+const DeckListBounds = withProps<PositionProps>()(styled.div)`
+	position: absolute;
+	top: ${props => props.top || "100px"};
+	width: 100vw;
+	height: calc(100vh - ${props => props.top || "100px"} - 80px);
+	//overflow: hidden;
+	pointer-events: none;
+	z-index: 100;
+
+	> * {
+		pointer-events: all;
+	}
+`;
+
+class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 	portal: HTMLDivElement | null;
 
 	public renderBoard(dbfIds: number[]): any {
@@ -199,6 +216,22 @@ class Overlay extends React.Component<OverlayProps, {}> {
 
 		return [
 			<Portal key="portal" innerRef={(ref: any) => (this.portal = ref)} />,
+			<DeckListBounds
+				key="decklist"
+				top={
+					this.props.twitchExtContext &&
+					(this.props.twitchExtContext.isFullScreen ||
+						this.props.twitchExtContext.isTheatreMode)
+						? "100px"
+						: "50px"
+				}
+			>
+				<DeckList
+					cardList={player.deck && player.deck.cards ? player.deck.cards : []}
+					rarities={false}
+					position={DecklistPosition.TOP_RIGHT}
+				/>
+			</DeckListBounds>,
 			<Board key="opponentBoard" top={"29.75vh"}>
 				{this.renderBoard(Array.isArray(opponent.board) ? opponent.board : [])}
 			</Board>,
@@ -249,4 +282,4 @@ class Overlay extends React.Component<OverlayProps, {}> {
 	}
 }
 
-export default Overlay;
+export default witchTwitchExt(Overlay);
