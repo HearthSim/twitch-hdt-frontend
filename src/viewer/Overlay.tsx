@@ -63,6 +63,16 @@ const HeroPower = withProps<PositionProps>()(OverlayElement.extend)`
 	clip-path: circle(50% at 50% 50%);
 `;
 
+const Weapon = withProps<PositionProps>()(OverlayElement.extend)`
+	top: ${(props: any) => props.top || "unset"};
+	left: ${(props: any) => props.left || "unset"};
+	bottom: ${(props: any) => props.bottom || "unset"};
+
+	height: 13vh;
+	width: 13vh;
+	clip-path: circle(50% at 50% 50%);
+`;
+
 class Overlay extends React.Component<OverlayProps, {}> {
 	portal: HTMLDivElement | null;
 
@@ -106,6 +116,12 @@ class Overlay extends React.Component<OverlayProps, {}> {
 			<HeroPower key="playerHeroPower" bottom={"16.9vh"} right={"65.6vh"}>
 				<Entity dbfId={player.hero_power || null} />
 			</HeroPower>,
+			<Weapon key="opponentWeapon" top={"15.5vh"} left={"65.8vh"}>
+				<Entity dbfId={opponent.weapon || null} flipped />
+			</Weapon>,
+			<Weapon key="playerWeapon" bottom={"16.8vh"} left={"64.25vh"}>
+				<Entity dbfId={player.weapon || null} flipped />
+			</Weapon>,
 		] as any;
 	}
 }
