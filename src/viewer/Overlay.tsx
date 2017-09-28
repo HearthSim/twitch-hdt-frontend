@@ -62,10 +62,17 @@ class Overlay extends React.Component<OverlayProps, {}> {
 	}
 
 	render() {
-		const playerBoard = this.props.boardState
-			? this.props.boardState.player_board.map((dbfId: number) => (
-					<Minion dbfId={dbfId} />
-				))
+		const player =
+			this.props.boardState && this.props.boardState.player
+				? this.props.boardState.player
+				: {};
+		const opponent =
+			this.props.boardState && this.props.boardState.opponent
+				? this.props.boardState.opponent
+				: {};
+
+		const playerBoard = player.board
+			? player.board.map((dbfId: number) => <Minion dbfId={dbfId} />)
 			: null;
 
 		return [
@@ -73,13 +80,11 @@ class Overlay extends React.Component<OverlayProps, {}> {
 			<FullSize key="fullsize">
 				<Board top={"29.75vh"}>
 					{this.renderBoard(
-						this.props.boardState ? this.props.boardState.opponent_board : [],
+						Array.isArray(opponent.board) ? opponent.board : [],
 					)}
 				</Board>
 				<Board top={"2.5vh"} color={"red"}>
-					{this.renderBoard(
-						this.props.boardState ? this.props.boardState.player_board : [],
-					)}
+					{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
 				</Board>
 			</FullSize>,
 		] as any;

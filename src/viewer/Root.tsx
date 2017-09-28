@@ -80,14 +80,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 					return {};
 				}
 				return {
-					boardState: {
-						// only keep the deck
-						opponent_board: [],
-						player_board: [],
-						player_hero: null,
-						player_deck: prevState.boardState.player_deck,
-						player_hand: [],
-					} as BoardStateData,
+					boardState: {} as BoardStateData,
 				};
 			});
 		} else {
