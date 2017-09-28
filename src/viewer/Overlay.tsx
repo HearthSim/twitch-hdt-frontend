@@ -9,15 +9,12 @@ interface OverlayProps extends React.ClassAttributes<Overlay> {
 	boardState?: BoardStateData | null;
 }
 
-interface TopProps {
+interface PositionProps {
 	top?: string;
+	right?: string;
+	bottom?: string;
+	left?: string;
 }
-
-const FullSize = styled.div`
-	width: 100vw;
-	height: 100vh;
-	overflow: hidden;
-`;
 
 const Portal = styled.div`
 	width: 100vw;
@@ -32,14 +29,20 @@ const Portal = styled.div`
 	}
 `;
 
-const Board = withProps<TopProps>()(styled.div)`
+const OverlayElement = styled.div`
+	position: absolute;
+	-webkit-backface-visibility: hidden; // aliasing
+`;
+
+const Board = withProps<PositionProps>()(OverlayElement.extend)`
 	width: 100vw;
 	height: 15vh;
 	opacity: 0.5;
-	margin-top: ${(props: any) => props.top || "0px"};
+	top: ${(props: any) => props.top || "unset"};
+	bottom: ${(props: any) => props.bottom || "unset"};
 	text-align: center;
 	display: flex;
-	-webkit-backface-visibility: hidden; // aliasing
+
 	justify-content: center;
 	transform: rotate(-0.35deg);
 `;
@@ -71,22 +74,14 @@ class Overlay extends React.Component<OverlayProps, {}> {
 				? this.props.boardState.opponent
 				: {};
 
-		const playerBoard = player.board
-			? player.board.map((dbfId: number) => <Minion dbfId={dbfId} />)
-			: null;
-
 		return [
 			<Portal key="portal" innerRef={(ref: any) => (this.portal = ref)} />,
-			<FullSize key="fullsize">
-				<Board top={"29.75vh"}>
-					{this.renderBoard(
-						Array.isArray(opponent.board) ? opponent.board : [],
-					)}
-				</Board>
-				<Board top={"2.5vh"} color={"red"}>
-					{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
-				</Board>
-			</FullSize>,
+			<Board key="opponentBoard" top={"29.75vh"}>
+				{this.renderBoard(Array.isArray(opponent.board) ? opponent.board : [])}
+			</Board>,
+			<Board key="playerBoard" bottom={"37.6vh"}>
+				{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
+			</Board>,
 		] as any;
 	}
 }
