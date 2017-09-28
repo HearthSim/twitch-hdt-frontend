@@ -53,6 +53,16 @@ const Minion = styled.div`
 	clip-path: ellipse(50% 50% at 50% 50%);
 `;
 
+const HeroPower = withProps<PositionProps>()(OverlayElement.extend)`
+	top: ${(props: any) => props.top || "unset"};
+	right: ${(props: any) => props.right || "unset"};
+	bottom: ${(props: any) => props.bottom || "unset"};
+
+	height: 13.5vh;
+	width: 13.5vh;
+	clip-path: circle(50% at 50% 50%);
+`;
+
 class Overlay extends React.Component<OverlayProps, {}> {
 	portal: HTMLDivElement | null;
 
@@ -90,6 +100,12 @@ class Overlay extends React.Component<OverlayProps, {}> {
 			<Board key="playerBoard" bottom={"37.6vh"}>
 				{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
 			</Board>,
+			<HeroPower key="opponentHeroPower" top={"15vh"} right={"66.4vh"}>
+				<Entity dbfId={opponent.hero_power || null} />
+			</HeroPower>,
+			<HeroPower key="playerHeroPower" bottom={"16.9vh"} right={"65.6vh"}>
+				<Entity dbfId={player.hero_power || null} />
+			</HeroPower>,
 		] as any;
 	}
 }
