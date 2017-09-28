@@ -1,9 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
-import Minion from "./Minion";
 import { withProps } from "../utils/styled";
 import { BoardStateData } from "../twitch-hdt";
 import * as PropTypes from "prop-types";
+import Entity from "./Entity";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
 	boardState?: BoardStateData | null;
@@ -37,7 +37,6 @@ const OverlayElement = styled.div`
 const Board = withProps<PositionProps>()(OverlayElement.extend)`
 	width: 100vw;
 	height: 15vh;
-	opacity: 0.5;
 	top: ${(props: any) => props.top || "unset"};
 	bottom: ${(props: any) => props.bottom || "unset"};
 	text-align: center;
@@ -47,12 +46,21 @@ const Board = withProps<PositionProps>()(OverlayElement.extend)`
 	transform: rotate(-0.35deg);
 `;
 
+const Minion = styled.div`
+	width: 11vh;
+	height: 15vh;
+	margin: 0 0.51vw;
+	clip-path: ellipse(50% 50% at 50% 50%);
+`;
+
 class Overlay extends React.Component<OverlayProps, {}> {
 	portal: HTMLDivElement | null;
 
 	public renderBoard(dbfIds: number[]): any {
 		return dbfIds.map((dbfId: number, i: number) => (
-			<Minion dbfId={dbfId} key={i} />
+			<Minion key={i}>
+				<Entity dbfId={dbfId} />
+			</Minion>
 		));
 	}
 
