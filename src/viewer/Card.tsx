@@ -7,6 +7,7 @@ interface CardProps extends React.ClassAttributes<Card> {
 	dbfId: number;
 	x?: number;
 	y?: number;
+	flipped?: boolean;
 }
 
 class Card extends React.Component<CardProps & CardsProps, {}> {
@@ -22,7 +23,8 @@ class Card extends React.Component<CardProps & CardsProps, {}> {
 					position: "absolute",
 					height: "40vh",
 					top: this.props.y ? `calc(${this.props.y}px - 7.5vh - 20vh)` : 0,
-					left: this.props.x || 0,
+					left: !this.props.flipped && this.props.x ? this.props.x : "unset",
+					right: this.props.flipped && this.props.x ? this.props.x : "unset",
 					pointerEvents: "none",
 				}}
 				resolution={512}

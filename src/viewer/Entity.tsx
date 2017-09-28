@@ -18,6 +18,7 @@ const EntityDiv = styled.div`
 
 interface EntityProps extends React.ClassAttributes<Entity> {
 	dbfId: number | null;
+	flipped?: boolean;
 }
 
 interface EntityState {
@@ -54,6 +55,7 @@ class Entity extends React.Component<
 					dbfId={this.props.dbfId}
 					x={this.state.x || 0}
 					y={this.state.y || 0}
+					flipped={this.props.flipped}
 				/>,
 				this.props.portal,
 			);
@@ -62,17 +64,22 @@ class Entity extends React.Component<
 		return (
 			<EntityDiv
 				onMouseEnter={e => {
-					let { clientX, clientY } = e;
+					let { clientX: x, clientY: y } = e;
 					const rect = this.ref && this.ref.getBoundingClientRect();
 					if (rect) {
-						clientX += rect.width - (clientX - rect.left);
-						clientY = rect.bottom;
+						if (this.props.flipped) {
+							const negativeX = document.body.clientWidth - x;
+							x = negativeX + (x - rect.left);
+						} else {
+							x += rect.width - (x - rect.left);
+						}
+						y = rect.bottom;
 					}
 
 					this.setState({
 						isHovering: true,
-						x: clientX,
-						y: clientY,
+						x: x,
+						y: y,
 					});
 				}}
 				onMouseLeave={() =>
