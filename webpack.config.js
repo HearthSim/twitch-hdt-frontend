@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ResourceHintWebpackPlugin = require("resource-hints-webpack-plugin");
 const package = require(path.resolve(__dirname, "package"));
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -159,12 +160,24 @@ module.exports = {
 			filename: "viewer.html",
 			chunks: ["viewer", "vendor"],
 			template: path.resolve(__dirname, "template.html"),
+			// Hard code the following list of assets for now. See https://github.com/jantimon/resource-hints-webpack-plugin/issues/8
+			prefetch: [
+				"img/minion.png",
+				"img/spell.png",
+				"img/weapon.png",
+				"img/hero.png",
+				"img/hero_power.png",
+			],
+			preload: false,
 		}),
 		new HtmlWebpackPlugin({
 			filename: "config.html",
 			chunks: ["config", "vendor"],
 			template: path.resolve(__dirname, "template.html"),
+			prefetch: false,
+			preload: false,
 		}),
+		new ResourceHintWebpackPlugin(),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: "vendor",
 			minChunks: Infinity,

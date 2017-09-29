@@ -42,6 +42,7 @@
 		"react-dom": "^16.0.0",
 		"react-hot-loader": "^3.0.0-beta.7",
 		"react-hs-components": "https://libs.hearthsim.net/react-hs-components-v0.0.1.tgz",
+		"resource-hints-webpack-plugin": "^0.0.1",
 		"styled-components": "^2.1.2",
 		"ts-loader": "^2.3.7",
 		"typescript": "^2.5.2",
