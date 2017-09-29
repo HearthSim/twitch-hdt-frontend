@@ -65,8 +65,8 @@ export default class Root extends React.Component<RootProps, RootState> {
 						throw new Error(`Invalid response content type "${contentType}"`);
 					}
 					const responsePayload = await response.json();
-					const errorCode = responsePayload.code;
-					switch (errorCode) {
+					const { error } = responsePayload;
+					switch (error) {
 						case "account_not_linked":
 							progress = InstallerProgress.CONNECT_ACCOUNT;
 							break;
@@ -74,7 +74,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 							progress = InstallerProgress.INSTALL_TRACKER;
 							break;
 						default:
-							throw new Error(`Invalid error code "${errorCode}"`);
+							throw new Error(`Invalid error "${error}"`);
 					}
 					break;
 				default:
