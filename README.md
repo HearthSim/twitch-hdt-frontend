@@ -18,6 +18,11 @@ This repository contains the official Twitch extension for Hearthstone Deck Trac
 - Last 2 Firefox versions
 - Safari 9
 
+## Related projects
+
+- [Hearthstone Deck Tracker](https://github.com/hearthsim/Hearthstone-Deck-Tracker): Tracks Hearthstone games and emits messages
+- [Extension Backend Service (EBS)](https://github.com/HearthSim/twitch-hdt-ebs): Verifies setup and relays game messages to the Twitch PubSub service
+
 ## License
 
 Copyright © HearthSim - All Rights Reserved
