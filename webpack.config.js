@@ -45,7 +45,7 @@ if (isProduction) {
 				package.homepage,
 				"HearthSim, LLC. All Rights Reserved.",
 			].join("\n"),
-			include: ["viewer", "config"].map(b => bundlePath + b),
+			include: ["viewer", "config"].map(b => path.join(bundlePath, b)),
 		}),
 		new webpack.BannerPlugin({
 			banner: [
@@ -53,7 +53,7 @@ if (isProduction) {
 				vendorLibraries.map(v => `- ${v}`).join("\n"),
 				"See the LICENSES file for third-party licenses.",
 			].join("\n"),
-			include: bundlePath + "vendor",
+			include: path.join(bundlePath, "vendor"),
 		}),
 		new CleanWebpackPlugin(["dist"]),
 		new webpack.DefinePlugin({
@@ -151,7 +151,7 @@ module.exports = {
 		overlay: true,
 	},
 	output: {
-		filename: `${bundlePath}[name].js`,
+		filename: path.join(bundlePath, "[name].js"),
 		path: path.resolve(__dirname, "dist"),
 	},
 	plugins: [
