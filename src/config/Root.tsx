@@ -40,20 +40,17 @@ export default class Root extends React.Component<RootProps, RootState> {
 	refreshProgress = async () => {
 		try {
 			this.setState({ working: true });
-			const response = await fetch(
-				"https://z59gjcr38l.execute-api.us-east-1.amazonaws.com/dev/setup/",
-				{
-					method: "POST",
-					mode: "cors",
-					headers: new Headers({
-						Accept: "application/json",
-						Authorization: `Bearer ${this.state.authToken}`,
-						"X-Twitch-User-Id": this.state.channelId,
-						"X-Twitch-Client-Id": this.state.clientId,
-						"X-Twitch-Extension-Version": APPLICATION_VERSION,
-					}),
-				},
-			);
+			const response = await fetch("https://twitch-ebs.hearthsim.net/setup/", {
+				method: "POST",
+				mode: "cors",
+				headers: new Headers({
+					Accept: "application/json",
+					Authorization: `Bearer ${this.state.authToken}`,
+					"X-Twitch-User-Id": this.state.channelId,
+					"X-Twitch-Client-Id": this.state.clientId,
+					"X-Twitch-Extension-Version": APPLICATION_VERSION,
+				}),
+			});
 			let progress = null;
 			switch (response.status) {
 				case 200:
