@@ -1788,11 +1788,12 @@ fbjs@^0.8.16, fbjs@^0.8.5, fbjs@^0.8.9:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
 
-"file-loader@http://libs.hearthsim.net/file-loader-1.0.1-fix-exports-raw-value.0.tgz":
-  version "1.0.1-fix-exports-raw-value.0"
-  resolved "http://libs.hearthsim.net/file-loader-1.0.1-fix-exports-raw-value.0.tgz#22e0c8bf80348bdb36407b82d698a6245a46b182"
+file-loader@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-1.1.4.tgz#5ca9384adfafe008077c3439a435b2781a889ef5"
   dependencies:
     loader-utils "^1.0.2"
+    schema-utils "^0.3.0"
 
 filename-regex@^2.0.0:
   version "2.0.1"
