@@ -136,6 +136,36 @@ module.exports = {
 				],
 			},
 			{
+				test: /.js$/,
+				include: /react-hs-components/,
+				use: [
+					{
+						loader: "react-hot-loader/webpack",
+					},
+					{
+						loader: "babel-loader",
+						options: {
+							presets: [
+								[
+									"env",
+									{
+										targets: {
+											browsers: [
+												"ie >= 11",
+												"last 2 chrome versions",
+												"last 2 firefox versions",
+												"safari >= 9",
+											],
+										},
+										modules: false,
+									},
+								],
+							],
+						},
+					},
+				],
+			},
+			{
 				test: /\.png$/,
 				exclude: /node_modules/,
 				use: [
