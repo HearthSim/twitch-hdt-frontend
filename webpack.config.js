@@ -66,6 +66,7 @@ if (isProduction) {
 			},
 			APPLICATION_VERSION: JSON.stringify(package.version),
 		}),
+		new webpack.optimize.ModuleConcatenationPlugin(),
 		new ZipPlugin({
 			filename: "app.zip",
 		}),
