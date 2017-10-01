@@ -35,6 +35,9 @@ if (isProduction) {
 		}),
 		new UglifyJSPlugin({
 			uglifyOptions: {
+				compress: {
+					drop_console: true,
+				},
 				output: {
 					comments: false,
 				},
