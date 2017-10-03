@@ -25,6 +25,7 @@ interface EntityState {
 	isHovering?: boolean;
 	x?: number | null;
 	y?: number | null;
+	width?: number | null;
 }
 
 class Entity extends React.Component<
@@ -39,6 +40,7 @@ class Entity extends React.Component<
 			isHovering: false,
 			x: null,
 			y: null,
+			width: null,
 		};
 	}
 
@@ -55,6 +57,7 @@ class Entity extends React.Component<
 					dbfId={this.props.dbfId}
 					x={this.state.x || 0}
 					y={this.state.y || 0}
+					width={this.state.width || 0}
 					flipped={this.props.flipped}
 				/>,
 				this.props.portal,
@@ -66,20 +69,18 @@ class Entity extends React.Component<
 				onMouseEnter={e => {
 					let { clientX: x, clientY: y } = e;
 					const rect = this.ref && this.ref.getBoundingClientRect();
+					let width = null;
 					if (rect) {
-						if (this.props.flipped) {
-							const negativeX = document.body.clientWidth - x;
-							x = negativeX + (x - rect.left);
-						} else {
-							x += rect.width - (x - rect.left);
-						}
-						y = rect.bottom;
+						x = rect.right - rect.width / 2;
+						y = rect.bottom - rect.height / 2;
+						width = rect.width;
 					}
 
 					this.setState({
 						isHovering: true,
-						x: x,
-						y: y,
+						x,
+						y,
+						width,
 					});
 				}}
 				onMouseLeave={() =>
