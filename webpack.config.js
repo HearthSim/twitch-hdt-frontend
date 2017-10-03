@@ -38,6 +38,7 @@ if (isProduction) {
 				compress: {
 					drop_console: true,
 				},
+				mangle: false,
 				output: {
 					comments: false,
 				},
