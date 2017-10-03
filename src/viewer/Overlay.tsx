@@ -152,10 +152,10 @@ class Overlay extends React.Component<OverlayProps, {}> {
 				<Entity dbfId={player.hero_power || null} />
 			</HeroPower>,
 			<Weapon key="opponentWeapon" top={"15.5vh"} left={"65.8vh"}>
-				<Entity dbfId={opponent.weapon || null} flipped />
+				<Entity dbfId={opponent.weapon || null} />
 			</Weapon>,
 			<Weapon key="playerWeapon" bottom={"16.8vh"} left={"64.25vh"}>
-				<Entity dbfId={player.weapon || null} flipped />
+				<Entity dbfId={player.weapon || null} />
 			</Weapon>,
 		] as any;
 	}
