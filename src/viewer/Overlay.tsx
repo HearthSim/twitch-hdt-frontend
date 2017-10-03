@@ -34,12 +34,21 @@ const OverlayElement = styled.div`
 	-webkit-backface-visibility: hidden; // aliasing
 `;
 
-const Board = withProps<PositionProps>()(OverlayElement.extend)`
+const Center = withProps<PositionProps>()(OverlayElement.extend)`
+	top: ${(props: any) => props.top || "unset"};
+	bottom: ${(props: any) => props.bottom || "unset"};
+	height: ${(props: any) => props.height || "unset"};
+	width: 100vw;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+`;
+
+const Board = withProps<PositionProps>()(Center.extend)`
 	width: 100vw;
 	height: 15vh;
 	top: ${(props: any) => props.top || "unset"};
 	bottom: ${(props: any) => props.bottom || "unset"};
-	text-align: center;
 	display: flex;
 
 	justify-content: center;
