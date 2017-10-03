@@ -62,6 +62,22 @@ const Minion = styled.div`
 	clip-path: ellipse(50% 50% at 50% 50%);
 `;
 
+const Hero = styled.div`
+	height: 17.8vh;
+	width: 15.5vh;
+	clip-path: polygon(
+		0% 100%,
+		0 40%,
+		20% 10%,
+		30% 3%,
+		50% 0%,
+		70% 3%,
+		80% 10%,
+		100% 40%,
+		100% 100%
+	);
+`;
+
 const HeroPower = withProps<PositionProps>()(OverlayElement.extend)`
 	top: ${(props: any) => props.top || "unset"};
 	right: ${(props: any) => props.right || "unset"};
@@ -119,6 +135,16 @@ class Overlay extends React.Component<OverlayProps, {}> {
 			<Board key="playerBoard" bottom={"37.6vh"}>
 				{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
 			</Board>,
+			<Center key="opponentHero" top={"8vh"}>
+				<Hero>
+					<Entity dbfId={opponent.hero || null} />
+				</Hero>
+			</Center>,
+			<Center key="playerHero" bottom={"15.2vh"}>
+				<Hero>
+					<Entity dbfId={player.hero || null} />
+				</Hero>
+			</Center>,
 			<HeroPower key="opponentHeroPower" top={"15vh"} right={"66.4vh"}>
 				<Entity dbfId={opponent.hero_power || null} />
 			</HeroPower>,
