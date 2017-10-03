@@ -92,6 +92,7 @@ class Entity extends React.Component<
 				innerRef={(ref: HTMLDivElement | null) => (this.ref = ref)}
 			>
 				{tooltip}
+				{this.props.children}
 			</EntityDiv>
 		);
 	}
