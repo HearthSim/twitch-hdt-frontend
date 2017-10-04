@@ -38,6 +38,7 @@ const Center = withProps<PositionProps>()(OverlayElement.extend)`
 	top: ${(props: any) => props.top || "unset"};
 	bottom: ${(props: any) => props.bottom || "unset"};
 	height: ${(props: any) => props.height || "unset"};
+	margin-left: ${(props: any) => props.left || "unset"};
 	width: 100vw;
 	text-align: center;
 	display: flex;
@@ -77,6 +78,19 @@ const Hero = styled.div`
 		100% 100%
 	);
 	z-index: 50;
+`;
+
+const Secret = withProps<PositionProps>()(OverlayElement.extend)`
+	top: ${(props: any) => props.top || "unset"};
+	margin-left: ${(props: any) => props.left || "unset"};
+
+	height: 4.4vh;
+	width: 4.4vh;
+	left: 50%;
+	transform: translate(-50%, 0);
+	clip-path: circle(50% at 50% 50%);
+
+	z-index: 51;
 `;
 
 const Quest = withProps<PositionProps>()(OverlayElement.extend)`
@@ -124,6 +138,47 @@ class Overlay extends React.Component<OverlayProps, {}> {
 		));
 	}
 
+	public renderSecrets(dbfIds: number[], hasQuest?: boolean): any {
+		const secretPositions = [
+			{
+				top: "0vh",
+				left: "0.2vh",
+			},
+			{
+				top: "3vh",
+				left: "-4.8vh",
+			},
+			{
+				top: "3vh",
+				left: "4.8vh",
+			},
+			{
+				top: "8.5vh",
+				left: "-7.9vh",
+			},
+			{
+				top: "8.5vh",
+				left: "7.9vh",
+			},
+		];
+		return dbfIds
+			.map((dbfId: number, zonePosition: number) => {
+				if (hasQuest) {
+					zonePosition++;
+				}
+				const position = secretPositions[zonePosition];
+				if (typeof position === "undefined") {
+					return null;
+				}
+				return (
+					<Secret {...position}>
+						<Entity dbfId={dbfId} />
+					</Secret>
+				);
+			})
+			.filter(s => s !== null);
+	}
+
 	static childContextTypes = {
 		portal: PropTypes.object,
 	};
@@ -156,6 +211,18 @@ class Overlay extends React.Component<OverlayProps, {}> {
 			<Quest key="playerQuest" bottom={"30.4vh"}>
 				<Entity dbfId={player.quest ? player.quest.dbfId : null} />
 			</Quest>,
+			<Center key="opponentSecrets" top={"8vh"} left={"0.1vh"}>
+				{this.renderSecrets(
+					Array.isArray(opponent.secrets) ? opponent.secrets : [],
+					!!opponent.quest,
+				)}
+			</Center>,
+			<Center key="playerScrets" bottom={"35vh"}>
+				{this.renderSecrets(
+					Array.isArray(player.secrets) ? player.secrets : [],
+					!!player.quest,
+				)}
+			</Center>,
 			<Center key="opponentHero" top={"8vh"}>
 				<Hero>
 					<Entity dbfId={opponent.hero || null} />
