@@ -76,6 +76,20 @@ const Hero = styled.div`
 		100% 40%,
 		100% 100%
 	);
+	z-index: 50;
+`;
+
+const Quest = withProps<PositionProps>()(OverlayElement.extend)`
+	top: ${(props: any) => props.top || "unset"};
+	bottom: ${(props: any) => props.bottom || "unset"};
+
+	height: 4vh;
+	width: 4vh;
+	left: 50%;
+    transform: translate(-50%, 0);
+	clip-path: circle(50% at 50% 50%);
+
+	z-index: 51;
 `;
 
 const HeroPower = withProps<PositionProps>()(OverlayElement.extend)`
@@ -135,6 +149,12 @@ class Overlay extends React.Component<OverlayProps, {}> {
 			<Board key="playerBoard" bottom={"37.6vh"}>
 				{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
 			</Board>,
+			<Quest key="opponentQuest" top={"7.3vh"}>
+				<Entity dbfId={opponent.quest ? opponent.quest.dbfId : null} />
+			</Quest>,
+			<Quest key="playerQuest" bottom={"31vh"}>
+				<Entity dbfId={player.quest ? player.quest.dbfId : null} />
+			</Quest>,
 			<Center key="opponentHero" top={"8vh"}>
 				<Hero>
 					<Entity dbfId={opponent.hero || null} />
