@@ -171,7 +171,7 @@ class Overlay extends React.Component<OverlayProps, {}> {
 					return null;
 				}
 				return (
-					<Secret {...position}>
+					<Secret key={zonePosition} {...position}>
 						<Entity dbfId={dbfId} />
 					</Secret>
 				);
