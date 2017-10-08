@@ -1,5 +1,5 @@
 import * as React from "react";
-import Installer, { InstallerProgress } from "./Installer";
+import Installer, { ConnectionProgress } from "./Installer";
 
 interface RootProps extends React.ClassAttributes<Root> {}
 
@@ -7,7 +7,7 @@ interface RootState {
 	authToken: string | null;
 	channelId: string | null;
 	clientId: string | null;
-	installerProgress: InstallerProgress;
+	installerProgress: ConnectionProgress;
 	working: boolean;
 }
 
@@ -18,7 +18,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 			authToken: null,
 			channelId: null,
 			clientId: null,
-			installerProgress: InstallerProgress.UNKNOWN,
+			installerProgress: ConnectionProgress.UNKNOWN,
 			working: true,
 		};
 	}
@@ -54,7 +54,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 			let progress = null;
 			switch (response.status) {
 				case 200:
-					progress = InstallerProgress.READY;
+					progress = ConnectionProgress.READY;
 					break;
 				case 403:
 					const contentType = response.headers.get("content-type");
@@ -65,10 +65,10 @@ export default class Root extends React.Component<RootProps, RootState> {
 					const { error } = responsePayload;
 					switch (error) {
 						case "account_not_linked":
-							progress = InstallerProgress.CONNECT_ACCOUNT;
+							progress = ConnectionProgress.CONNECT_ACCOUNT;
 							break;
 						case "upstream_client_not_found":
-							progress = InstallerProgress.INSTALL_TRACKER;
+							progress = ConnectionProgress.INSTALL_TRACKER;
 							break;
 						default:
 							throw new Error(`Invalid error "${error}"`);
@@ -85,7 +85,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 			console.error(e);
 			this.setState({
 				working: false,
-				installerProgress: InstallerProgress.ERROR,
+				installerProgress: ConnectionProgress.ERROR,
 			});
 		}
 	};
