@@ -57,15 +57,9 @@ const DownloadLink = BigFriendlyButton.withComponent("a").extend`
 	text-decoration: none;
 `;
 
-const SuccessMessage = styled.p`
-	margin-top: 5px;
-	color: green;
-`;
+const SuccessMessage = styled.span`color: green;`;
 
-const ErrorMessage = styled.p`
-	margin-top: 5px;
-	color: #dd0002;
-`;
+const ErrorMessage = styled.span`color: #dd0002;`;
 
 const TrackerInstructions = styled.code`
 	display: block;
@@ -131,14 +125,12 @@ export default class ConnectionSetup extends React.Component<
 				<CenterParagraph>{this.getMessage()}</CenterParagraph>
 				<CenterParagraph>
 					{this.props.progress !== ConnectionProgress.READY ? (
-						<p>
-							<BigFriendlyButton
-								disabled={this.props.working}
-								onClick={this.props.refreshProgress}
-							>
-								{this.props.working ? "Verifying…" : "Refresh"}
-							</BigFriendlyButton>
-						</p>
+						<BigFriendlyButton
+							disabled={this.props.working}
+							onClick={this.props.refreshProgress}
+						>
+							{this.props.working ? "Verifying…" : "Refresh"}
+						</BigFriendlyButton>
 					) : null}
 				</CenterParagraph>
 			</Fieldset>
