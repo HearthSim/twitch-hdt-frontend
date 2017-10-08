@@ -101,7 +101,7 @@ export default class ConnectionSetup extends React.Component<
 		return (
 			<Fieldset>
 				<Heading>Deck Tracking</Heading>
-				<p>Download and connect your deck tracker.</p>
+				<p>Download and connect Hearthstone Deck Tracker.</p>
 				<CenterParagraph>
 					<DownloadLink
 						href={"https://hsdecktracker.net/download/"}
@@ -117,7 +117,10 @@ export default class ConnectionSetup extends React.Component<
 						Options (Advanced) → Streaming → Twitch Extension
 					</TrackerInstructions>
 				</CenterParagraph>
-				<p>Make sure you've completed the setup in your deck tracker.</p>
+				<p>
+					Make sure you've completed the Twitch Extension setup in Hearthstone
+					Deck Tracker.
+				</p>
 				<ConnectionPreview
 					twitch={this.props.progress > ConnectionProgress.CONNECT_ACCOUNT}
 					tracker={this.props.progress > ConnectionProgress.INSTALL_TRACKER}
