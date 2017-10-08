@@ -3367,7 +3367,7 @@ react-hot-loader@^3.0.0-beta.7:
 
 "react-hs-components@https://libs.hearthsim.net/react-hs-components-v0.0.1.tgz":
   version "0.0.1"
-  resolved "https://libs.hearthsim.net/react-hs-components-v0.0.1.tgz#ee399fd8ac8012e1c0783a93620f6fb5e387a552"
+  resolved "https://libs.hearthsim.net/react-hs-components-v0.0.1.tgz#43781649b9200d83a25533ab78e1203321a8f797"
 
 react-proxy@^3.0.0-alpha.0:
   version "3.0.0-alpha.1"
