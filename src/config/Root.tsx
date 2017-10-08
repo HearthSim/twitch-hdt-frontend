@@ -32,12 +32,12 @@ export default class Root extends React.Component<RootProps, RootState> {
 					channelId: auth.channelId,
 					clientId: auth.clientId,
 				},
-				this.refreshProgress,
+				() => this.refreshProgress(3),
 			);
 		});
 	}
 
-	refreshProgress = async () => {
+	refreshProgress = async (retries: number = 1) => {
 		try {
 			this.setState({ working: true });
 			const response = await fetch("https://twitch-ebs.hearthsim.net/setup/", {
@@ -75,12 +75,19 @@ export default class Root extends React.Component<RootProps, RootState> {
 					}
 					break;
 				default:
-					throw new Error(`Unexpected status code ${response.status}`);
+					if (retries > 0) {
+						this.refreshProgress(retries - 1);
+						break;
+					} else {
+						throw new Error(`Unexpected status code ${response.status}`);
+					}
 			}
-			this.setState({
-				working: false,
-				installerProgress: progress,
-			});
+			if (progress !== null) {
+				this.setState({
+					working: false,
+					installerProgress: progress,
+				});
+			}
 		} catch (e) {
 			console.error(e);
 			this.setState({
