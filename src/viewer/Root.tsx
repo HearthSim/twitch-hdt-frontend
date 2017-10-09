@@ -3,6 +3,7 @@ import Overlay from "./Overlay";
 import {
 	BoardStateData,
 	BoardStateMessage,
+	EBSConfiguration,
 	GameEndMessage,
 	Message,
 } from "../twitch-hdt";
@@ -14,6 +15,7 @@ interface RootProps extends React.ClassAttributes<Root> {}
 
 interface RootState {
 	boardState: BoardStateData | null;
+	config: EBSConfiguration;
 	hasError: boolean;
 }
 
@@ -25,6 +27,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 		this.state = {
 			boardState: null,
 			hasError: false,
+			config: {},
 		};
 		this.queue = new AsyncQueue();
 		window.Twitch.ext.onContext((context, changed) => {
@@ -73,8 +76,14 @@ export default class Root extends React.Component<RootProps, RootState> {
 			return message.type === type;
 		};
 
+		const config: EBSConfiguration | undefined =
+			typeof message.config === "object" ? message.config : undefined;
+
 		if (isOfType<BoardStateMessage>(message, "board_state")) {
-			this.setState({ boardState: message.data });
+			this.setState({
+				boardState: message.data,
+				config: config as EBSConfiguration,
+			});
 		} else if (isOfType<GameEndMessage>(message, "end_game")) {
 			this.setState((prevState: RootState) => {
 				if (!prevState.boardState) {
@@ -82,6 +91,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 				}
 				return {
 					boardState: {} as BoardStateData,
+					config: config as EBSConfiguration,
 				};
 			});
 		} else {
@@ -93,7 +103,10 @@ export default class Root extends React.Component<RootProps, RootState> {
 		return (
 			<TwitchExtProvider>
 				<CardsProvider>
-					<Overlay boardState={this.state.boardState || null} />
+					<Overlay
+						boardState={this.state.boardState || null}
+						config={this.state.config}
+					/>
 				</CardsProvider>
 			</TwitchExtProvider>
 		);

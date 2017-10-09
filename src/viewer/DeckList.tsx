@@ -216,6 +216,15 @@ class DeckList extends React.Component<
 	}
 
 	render() {
+		let position = this.props.position;
+		if (
+			[DecklistPosition.TOP_LEFT, DecklistPosition.TOP_RIGHT].indexOf(
+				position,
+			) === -1
+		) {
+			position = DecklistPosition.TOP_RIGHT;
+		}
+
 		const dbfIds = Object.keys(this.props.cardList).map(Number);
 		const cards = dbfIds
 			.map(dbfId => this.props.cards.getByDbfId(dbfId))
@@ -230,10 +239,7 @@ class DeckList extends React.Component<
 		}
 
 		return (
-			<Wrapper
-				position={this.props.position}
-				innerRef={ref => (this.ref = ref)}
-			>
+			<Wrapper position={position} innerRef={ref => (this.ref = ref)}>
 				<CardList
 					style={{
 						transform: `scale(${scaleX}, ${scaleY})`,

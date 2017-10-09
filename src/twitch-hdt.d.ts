@@ -2,6 +2,12 @@ export type Message = BaseMessage | BoardStateMessage | GameEndMessage;
 
 interface BaseMessage {
 	type: string;
+	config: EBSConfiguration;
+}
+
+interface EBSConfiguration {
+	deck_position?: string;
+	hidden?: string;
 }
 
 export interface BoardStateMessage extends BaseMessage {

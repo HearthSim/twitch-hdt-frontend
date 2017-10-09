@@ -1,15 +1,16 @@
 import * as React from "react";
 import styled from "styled-components";
 import { withProps } from "../utils/styled";
-import { BoardStateData } from "../twitch-hdt";
+import { BoardStateData, EBSConfiguration } from "../twitch-hdt";
 import * as PropTypes from "prop-types";
 import Entity from "./Entity";
 import DeckList from "./DeckList";
-import { DecklistPosition } from "../config/configuration";
+import { DecklistPosition, Feature, hasFeature } from "../config/configuration";
 import { TwitchExtProps, witchTwitchExt } from "../utils/twitch";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
-	boardState?: BoardStateData | null;
+	boardState: BoardStateData | null;
+	config: EBSConfiguration;
 }
 
 interface PositionProps {
@@ -220,27 +221,38 @@ class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 				? this.props.boardState.opponent
 				: {};
 
+		const hideDecklist = hasFeature(
+			this.props.config.hidden && !isNaN(+this.props.config.hidden)
+				? +this.props.config.hidden
+				: 0,
+			Feature.DECKLIST,
+		);
+
 		return (
 			<Wrapper>
 				<Portal innerRef={(ref: any) => (this.portal = ref)} />
-				<DeckListBounds
-					top={
-						this.props.twitchExtContext &&
-						(this.props.twitchExtContext.isFullScreen ||
-							this.props.twitchExtContext.isTheatreMode)
-							? "100px"
-							: "50px"
-					}
-				>
-					<DeckList
-						cardList={player.deck && player.deck.cards ? player.deck.cards : []}
-						name={player.deck && player.deck.name}
-						hero={player.deck && player.deck.hero}
-						format={player.deck && player.deck.format}
-						rarities={false}
-						position={DecklistPosition.TOP_RIGHT}
-					/>
-				</DeckListBounds>
+				{hideDecklist ? null : (
+					<DeckListBounds
+						top={
+							this.props.twitchExtContext &&
+							(this.props.twitchExtContext.isFullScreen ||
+								this.props.twitchExtContext.isTheatreMode)
+								? "100px"
+								: "50px"
+						}
+					>
+						<DeckList
+							cardList={
+								player.deck && player.deck.cards ? player.deck.cards : []
+							}
+							name={player.deck && player.deck.name}
+							hero={player.deck && player.deck.hero}
+							format={player.deck && player.deck.format}
+							rarities={false}
+							position={this.props.config.deck_position as DecklistPosition}
+						/>
+					</DeckListBounds>
+				)}
 				<Board top={"29.75vh"}>
 					{this.renderBoard(
 						Array.isArray(opponent.board) ? opponent.board : [],
