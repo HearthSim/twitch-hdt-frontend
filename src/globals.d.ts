@@ -14,3 +14,8 @@ declare module "*.otf" {
 }
 
 declare const APPLICATION_VERSION: string;
+
+declare module "deckstrings" {
+	export function decode(deckString: string): object;
+	export function encode(deck: object): string;
+}
