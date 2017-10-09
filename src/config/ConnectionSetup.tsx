@@ -53,7 +53,7 @@ const BigFriendlyButton = styled.button`
 	}
 `;
 
-const DownloadLink = BigFriendlyButton.withComponent("a").extend`
+const DownloadLink = (BigFriendlyButton.withComponent("a") as any).extend`
 	margin-top: 1.5em;
 	text-align: center;
 	text-decoration: none;

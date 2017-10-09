@@ -3,6 +3,7 @@ import { DecklistPosition } from "./configuration";
 import StreamPreview from "./StreamPreview";
 import { Fieldset, Heading } from "./Installer";
 import styled from "styled-components";
+import { withProps } from "../utils/styled";
 
 const VerticalList = styled.ul`
 	padding-left: 0;
@@ -13,10 +14,9 @@ const VerticalList = styled.ul`
 	}
 `;
 
-const Row = styled.div`
+const Row = withProps<any>()(styled.div)`
 	display: flex;
-	width: ${props =>
-		typeof props.width !== "undefined" ? props.width : "100%"};
+	width: ${props => (typeof props.width !== "undefined" ? props.width : "100%")};
 	flex-direction: row;
 
 	& > * {
