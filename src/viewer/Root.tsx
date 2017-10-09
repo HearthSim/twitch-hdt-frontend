@@ -8,6 +8,7 @@ import {
 } from "../twitch-hdt";
 import { CardsProvider } from "../utils/cards";
 import AsyncQueue from "./AsyncQueue";
+import { TwitchExtProvider } from "../utils/twitch";
 
 interface RootProps extends React.ClassAttributes<Root> {}
 
@@ -93,9 +94,11 @@ export default class Root extends React.Component<RootProps, RootState> {
 			return <p>hasError</p>;
 		}
 		return (
-			<CardsProvider>
-				<Overlay boardState={this.state.boardState || null} />
-			</CardsProvider>
+			<TwitchExtProvider>
+				<CardsProvider>
+					<Overlay boardState={this.state.boardState || null} />
+				</CardsProvider>
+			</TwitchExtProvider>
 		);
 	}
 }
