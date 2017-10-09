@@ -22,6 +22,7 @@ interface PositionProps {
 const Wrapper = styled.div`
 	width: 100vw;
 	height: 100vh;
+	user-select: none;
 `;
 
 const Portal = styled.div`
