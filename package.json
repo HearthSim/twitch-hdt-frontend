@@ -21,7 +21,7 @@
 	"dependencies": {
 		"@types/prop-types": "^15.5.2",
 		"@types/react": "^16.0.7",
-		"@types/react-dom": "^15.5.4",
+		"@types/react-dom": "^16.0.1",
 		"@types/react-hot-loader": "^3.0.4",
 		"@types/webpack-env": "^1.13.1",
 		"babel-core": "^6.26.0",
@@ -41,7 +41,7 @@
 		"react": "^16.0.0",
 		"react-dom": "^16.0.0",
 		"react-hot-loader": "^3.0.0-beta.7",
-		"react-hs-components": "https://libs.hearthsim.net/react-hs-components-v0.0.1.tgz",
+		"react-hs-components": "https://libs.hearthsim.net/react-hs-components-v0.0.3.tgz",
 		"resource-hints-webpack-plugin": "^0.0.1",
 		"styled-components": "2.1.2",
 		"ts-loader": "^2.3.7",

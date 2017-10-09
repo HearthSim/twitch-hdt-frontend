@@ -17,7 +17,9 @@ const Stream = styled.div`
 	}
 `;
 
-const OverlayElement = styled.div`background-color: #835944;`;
+const OverlayElement = styled.div`
+	background-color: #835944;
+`;
 
 const DeckList = withProps<{ position: DecklistPosition }>()(
 	OverlayElement.extend,

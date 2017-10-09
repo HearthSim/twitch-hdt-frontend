@@ -36,7 +36,9 @@ export const Fieldset = styled.fieldset`
 	border: solid 1px gray;
 `;
 
-export const Heading = styled.h1`margin-top: 0;`;
+export const Heading = styled.h1`
+	margin-top: 0;
+`;
 
 export default class Installer extends React.Component<
 	InstallerProps,

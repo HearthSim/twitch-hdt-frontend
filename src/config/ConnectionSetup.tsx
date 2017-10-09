@@ -21,7 +21,9 @@ const Icon = styled.img`
 	}
 `;
 
-const CenterParagraph = styled.p`text-align: center;`;
+const CenterParagraph = styled.p`
+	text-align: center;
+`;
 
 const BigFriendlyButton = styled.button`
 	font-size: 1em;
@@ -57,9 +59,13 @@ const DownloadLink = BigFriendlyButton.withComponent("a").extend`
 	text-decoration: none;
 `;
 
-const SuccessMessage = styled.span`color: green;`;
+const SuccessMessage = styled.span`
+	color: green;
+`;
 
-const ErrorMessage = styled.span`color: #dd0002;`;
+const ErrorMessage = styled.span`
+	color: #dd0002;
+`;
 
 const TrackerInstructions = styled.code`
 	display: block;
