@@ -141,7 +141,7 @@ const DeckListBounds = withProps<PositionProps>()(styled.div)`
 	top: ${props => props.top || "100px"};
 	width: 100vw;
 	height: calc(100vh - ${props => props.top || "100px"} - 80px);
-	//overflow: hidden;
+	overflow: hidden;
 	pointer-events: none;
 	z-index: 100;
 
