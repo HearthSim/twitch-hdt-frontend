@@ -235,6 +235,9 @@ class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 				>
 					<DeckList
 						cardList={player.deck && player.deck.cards ? player.deck.cards : []}
+						name={player.deck && player.deck.name}
+						hero={player.deck && player.deck.hero}
+						format={player.deck && player.deck.format}
 						rarities={false}
 						position={DecklistPosition.TOP_RIGHT}
 					/>
