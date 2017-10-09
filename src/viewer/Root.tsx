@@ -90,9 +90,6 @@ export default class Root extends React.Component<RootProps, RootState> {
 	};
 
 	render() {
-		if (this.state.hasError) {
-			return <p>hasError</p>;
-		}
 		return (
 			<TwitchExtProvider>
 				<CardsProvider>
