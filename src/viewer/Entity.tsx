@@ -8,12 +8,6 @@ import { PortalProps, withPortal } from "../utils/portal";
 const EntityDiv = styled.div`
 	width: 100%;
 	height: 100%;
-	opacity: 0.5;
-	background-color: blue;
-
-	&:hover {
-		background-color: orange;
-	}
 `;
 
 interface EntityProps extends React.ClassAttributes<Entity> {
