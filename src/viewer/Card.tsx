@@ -22,7 +22,7 @@ class Card extends React.Component<CardProps & CardsProps, {}> {
 
 		const viewPortHeight = window.innerHeight;
 		const vh = viewPortHeight / 100;
-		const height = vh * 40;
+		const height = vh * 46.25;
 		const width = height * widthOverHeight;
 
 		const elementWidth = this.props.width || 0;
