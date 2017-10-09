@@ -8,6 +8,7 @@ import { PortalProps, withPortal } from "../utils/portal";
 const EntityDiv = styled.div`
 	width: 100%;
 	height: 100%;
+	cursor: default;
 `;
 
 interface EntityProps extends React.ClassAttributes<Entity> {
