@@ -2,6 +2,7 @@ import * as React from "react";
 import { Card as ComponentCard } from "react-hs-components";
 import { CardsProps, withCards } from "../utils/cards";
 import { getPlaceholder } from "./placeholders";
+import { TwitchExtProps, witchTwitchExt } from "../utils/twitch";
 
 interface CardProps extends React.ClassAttributes<Card> {
 	dbfId: number;
@@ -11,7 +12,10 @@ interface CardProps extends React.ClassAttributes<Card> {
 	flipped?: boolean;
 }
 
-class Card extends React.Component<CardProps & CardsProps, {}> {
+class Card extends React.Component<
+	CardProps & CardsProps & TwitchExtProps,
+	{}
+> {
 	render() {
 		const card = this.props.cards.getByDbfId(this.props.dbfId);
 		if (!card || !card.id) {
@@ -34,6 +38,17 @@ class Card extends React.Component<CardProps & CardsProps, {}> {
 
 		const x = this.props.x || 0;
 
+		// Evade black gradients at top and bottom on Twitch
+		let topMargin = 0;
+		let bottomMargin = 40;
+		if (
+			this.props.twitchExtContext &&
+			(this.props.twitchExtContext.isFullScreen ||
+				this.props.twitchExtContext.isTheatreMode)
+		) {
+			topMargin = 50;
+		}
+
 		return (
 			<ComponentCard
 				id={card.id}
@@ -42,8 +57,11 @@ class Card extends React.Component<CardProps & CardsProps, {}> {
 					height,
 					top: this.props.y
 						? Math.max(
-								Math.min(this.props.y - height / 2, viewPortHeight - height),
-								0,
+								Math.min(
+									this.props.y - height / 2,
+									viewPortHeight - height - bottomMargin,
+								),
+								topMargin,
 							)
 						: 0,
 					left: !flip ? x + elementWidth / 2 : "unset",
@@ -57,4 +75,4 @@ class Card extends React.Component<CardProps & CardsProps, {}> {
 	}
 }
 
-export default withCards(Card);
+export default withCards(witchTwitchExt(Card));
