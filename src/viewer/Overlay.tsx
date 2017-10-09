@@ -19,6 +19,11 @@ interface PositionProps {
 	left?: string;
 }
 
+const Wrapper = styled.div`
+	width: 100vw;
+	height: 100vh;
+`;
+
 const Portal = styled.div`
 	width: 100vw;
 	height: 100vh;
@@ -214,71 +219,75 @@ class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 				? this.props.boardState.opponent
 				: {};
 
-		return [
-			<Portal key="portal" innerRef={(ref: any) => (this.portal = ref)} />,
-			<DeckListBounds
-				key="decklist"
-				top={
-					this.props.twitchExtContext &&
-					(this.props.twitchExtContext.isFullScreen ||
-						this.props.twitchExtContext.isTheatreMode)
-						? "100px"
-						: "50px"
-				}
-			>
-				<DeckList
-					cardList={player.deck && player.deck.cards ? player.deck.cards : []}
-					rarities={false}
-					position={DecklistPosition.TOP_RIGHT}
-				/>
-			</DeckListBounds>,
-			<Board key="opponentBoard" top={"29.75vh"}>
-				{this.renderBoard(Array.isArray(opponent.board) ? opponent.board : [])}
-			</Board>,
-			<Board key="playerBoard" bottom={"37.6vh"}>
-				{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
-			</Board>,
-			<Quest key="opponentQuest" top={"7.0vh"} left={"0.32vh"}>
-				<Entity dbfId={opponent.quest ? opponent.quest.dbfId : null} />
-			</Quest>,
-			<Quest key="playerQuest" bottom={"30.4vh"}>
-				<Entity dbfId={player.quest ? player.quest.dbfId : null} />
-			</Quest>,
-			<Center key="opponentSecrets" top={"8vh"} left={"0.1vh"}>
-				{this.renderSecrets(
-					Array.isArray(opponent.secrets) ? opponent.secrets : [],
-					!!opponent.quest,
-				)}
-			</Center>,
-			<Center key="playerScrets" bottom={"35vh"}>
-				{this.renderSecrets(
-					Array.isArray(player.secrets) ? player.secrets : [],
-					!!player.quest,
-				)}
-			</Center>,
-			<Center key="opponentHero" top={"8vh"}>
-				<Hero>
-					<Entity dbfId={opponent.hero || null} />
-				</Hero>
-			</Center>,
-			<Center key="playerHero" bottom={"15.2vh"}>
-				<Hero>
-					<Entity dbfId={player.hero || null} />
-				</Hero>
-			</Center>,
-			<HeroPower key="opponentHeroPower" top={"15vh"} right={"66.4vh"}>
-				<Entity dbfId={opponent.hero_power || null} />
-			</HeroPower>,
-			<HeroPower key="playerHeroPower" bottom={"16.9vh"} right={"65.6vh"}>
-				<Entity dbfId={player.hero_power || null} />
-			</HeroPower>,
-			<Weapon key="opponentWeapon" top={"15.5vh"} left={"65.8vh"}>
-				<Entity dbfId={opponent.weapon || null} />
-			</Weapon>,
-			<Weapon key="playerWeapon" bottom={"16.8vh"} left={"64.25vh"}>
-				<Entity dbfId={player.weapon || null} />
-			</Weapon>,
-		] as any;
+		return (
+			<Wrapper>
+				<Portal key="portal" innerRef={(ref: any) => (this.portal = ref)} />
+				<DeckListBounds
+					key="decklist"
+					top={
+						this.props.twitchExtContext &&
+						(this.props.twitchExtContext.isFullScreen ||
+							this.props.twitchExtContext.isTheatreMode)
+							? "100px"
+							: "50px"
+					}
+				>
+					<DeckList
+						cardList={player.deck && player.deck.cards ? player.deck.cards : []}
+						rarities={false}
+						position={DecklistPosition.TOP_RIGHT}
+					/>
+				</DeckListBounds>
+				<Board top={"29.75vh"}>
+					{this.renderBoard(
+						Array.isArray(opponent.board) ? opponent.board : [],
+					)}
+				</Board>
+				<Board bottom={"37.6vh"}>
+					{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
+				</Board>
+				<Quest top={"7.0vh"} left={"0.32vh"}>
+					<Entity dbfId={opponent.quest ? opponent.quest.dbfId : null} />
+				</Quest>
+				<Quest bottom={"30.4vh"}>
+					<Entity dbfId={player.quest ? player.quest.dbfId : null} />
+				</Quest>
+				<Center top={"8vh"} left={"0.1vh"}>
+					{this.renderSecrets(
+						Array.isArray(opponent.secrets) ? opponent.secrets : [],
+						!!opponent.quest,
+					)}
+				</Center>
+				<Center bottom={"35vh"}>
+					{this.renderSecrets(
+						Array.isArray(player.secrets) ? player.secrets : [],
+						!!player.quest,
+					)}
+				</Center>
+				<Center top={"8vh"}>
+					<Hero>
+						<Entity dbfId={opponent.hero || null} />
+					</Hero>
+				</Center>
+				<Center bottom={"15.2vh"}>
+					<Hero>
+						<Entity dbfId={player.hero || null} />
+					</Hero>
+				</Center>
+				<HeroPower key="opponentHeroPower" top={"15vh"} right={"66.4vh"}>
+					<Entity dbfId={opponent.hero_power || null} />
+				</HeroPower>
+				<HeroPower key="playerHeroPower" bottom={"16.9vh"} right={"65.6vh"}>
+					<Entity dbfId={player.hero_power || null} />
+				</HeroPower>
+				<Weapon top={"15.5vh"} left={"65.8vh"}>
+					<Entity dbfId={opponent.weapon || null} />
+				</Weapon>
+				<Weapon bottom={"16.8vh"} left={"64.25vh"}>
+					<Entity dbfId={player.weapon || null} />
+				</Weapon>
+			</Wrapper>
+		);
 	}
 }
 
