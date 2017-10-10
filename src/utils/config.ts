@@ -1,3 +1,5 @@
+import { EBSConfiguration } from "../twitch-hdt";
+
 export const enum DecklistPosition {
 	TOP_LEFT = "topleft",
 	TOP_RIGHT = "topright",
@@ -20,4 +22,9 @@ export const setFeature = (
 
 export const hasFeature = (mask: number, feature: Feature): boolean => {
 	return (mask & feature) === 1;
+};
+
+export const defaultConfiguration: EBSConfiguration = {
+	deck_position: "topright",
+	hidden: "0",
 };
