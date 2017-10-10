@@ -43,6 +43,10 @@ interface PositionProps {
 	position: DecklistPosition;
 }
 
+interface HiddenProps {
+	hidden?: boolean;
+}
+
 const Wrapper = withProps<PositionProps>()(styled.div)`
 	width: 25vh;
 	max-width: 240px;
@@ -53,7 +57,7 @@ const Wrapper = withProps<PositionProps>()(styled.div)`
 		props.position === DecklistPosition.TOP_RIGHT ? "0.75vh" : "unset"};
 `;
 
-const Header = styled.header`
+const Header = withProps<HiddenProps>()(styled.header)`
 	width: 100%;
 	text-align: center;
 	color: white;
@@ -64,6 +68,13 @@ const Header = styled.header`
 	flex-direction: row;
 	align-items: center;
 	border: solid 1px black;
+
+	opacity: ${props => (props.hidden ? "0.5" : "1")};
+	transition: opacity 0.7s;
+
+	&:hover {
+		opacity: 1;
+	}
 
 	h1 {
 		cursor: default;
@@ -246,7 +257,7 @@ class DeckList extends React.Component<
 					}}
 				>
 					<li>
-						<Header>
+						<Header hidden={this.state.hidden}>
 							<h1>
 								{this.state.copied ? "Copied!" : this.props.name || "Unnamed"}
 							</h1>
