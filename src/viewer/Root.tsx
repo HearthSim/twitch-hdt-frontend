@@ -7,9 +7,8 @@ import {
 	GameEndMessage,
 	Message,
 } from "../twitch-hdt";
-import { CardsProvider } from "../utils/cards";
 import AsyncQueue from "./AsyncQueue";
-import { TwitchExtProvider } from "../utils/twitch";
+import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 
 interface RootProps extends React.ClassAttributes<Root> {}
 
@@ -19,7 +18,7 @@ interface RootState {
 	hasError: boolean;
 }
 
-export default class Root extends React.Component<RootProps, RootState> {
+class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 	queue: AsyncQueue<Message>;
 
 	constructor(props: RootProps) {
@@ -30,13 +29,6 @@ export default class Root extends React.Component<RootProps, RootState> {
 			config: {},
 		};
 		this.queue = new AsyncQueue();
-		window.Twitch.ext.onContext((context, changed) => {
-			if (changed.indexOf("hlsLatencyBroadcaster") === -1) {
-				return;
-			}
-
-			this.queue.delay = context.hlsLatencyBroadcaster;
-		});
 	}
 
 	componentDidCatch(error: Error, info: React.ErrorInfo) {
@@ -62,6 +54,12 @@ export default class Root extends React.Component<RootProps, RootState> {
 				this.queue.write(m, new Date().getTime());
 			},
 		);
+	}
+
+	componentWillReceiveProps(props: RootProps & TwitchExtProps) {
+		if (this.props.twitchExtContext) {
+			this.queue.delay = this.props.twitchExtContext.hlsLatencyBroadcaster;
+		}
 	}
 
 	componentWillUnmount(): void {
@@ -101,14 +99,12 @@ export default class Root extends React.Component<RootProps, RootState> {
 
 	render() {
 		return (
-			<TwitchExtProvider>
-				<CardsProvider>
-					<Overlay
-						boardState={this.state.boardState || null}
-						config={this.state.config}
-					/>
-				</CardsProvider>
-			</TwitchExtProvider>
+			<Overlay
+				boardState={this.state.boardState || null}
+				config={this.state.config}
+			/>
 		);
 	}
 }
+
+export default withTwitchExt(Root);

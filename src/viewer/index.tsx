@@ -2,12 +2,18 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { AppContainer } from "react-hot-loader";
 import Root from "./Root";
+import { TwitchExtProvider } from "../utils/twitch";
+import { CardsProvider } from "../utils/cards";
 
 const rootElement = document.getElementById("root");
 const render = (Component: React.ComponentClass) => {
 	ReactDOM.render(
 		<AppContainer>
-			<Component />
+			<TwitchExtProvider>
+				<CardsProvider>
+					<Component />
+				</CardsProvider>
+			</TwitchExtProvider>
 		</AppContainer>,
 		rootElement,
 	);
