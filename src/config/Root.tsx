@@ -110,7 +110,6 @@ export default class Root extends React.Component<RootProps, RootState> {
 				});
 			}
 		} catch (e) {
-			console.error(e);
 			this.setState({
 				working: false,
 				connectionProgress: ConnectionProgress.ERROR,
@@ -119,56 +118,70 @@ export default class Root extends React.Component<RootProps, RootState> {
 	};
 
 	refreshConfiguration = async () => {
-		this.setState({
-			working: true,
-		});
-		const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
-			method: "GET",
-			mode: "cors",
-			headers: new Headers(this.getHeaders()),
-		});
-		const received = await response.json();
-		const configuration: EBSConfiguration = {};
-		Object.keys(received)
-			.filter(k => !!received[k])
-			.forEach((k: keyof EBSConfiguration) => (configuration[k] = received[k]));
-		this.setState({
-			configuration,
-			working: false,
-		});
+		try {
+			this.setState({
+				working: true,
+			});
+			const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
+				method: "GET",
+				mode: "cors",
+				headers: new Headers(this.getHeaders()),
+			});
+			const received = await response.json();
+			const configuration: EBSConfiguration = {};
+			Object.keys(received)
+				.filter(k => !!received[k])
+				.forEach(
+					(k: keyof EBSConfiguration) => (configuration[k] = received[k]),
+				);
+			this.setState({
+				configuration,
+				working: false,
+			});
+		} catch (e) {
+			this.setState({
+				working: false,
+			});
+		}
 	};
 
 	putConfiguration = async (configuration: EBSConfiguration) => {
-		const previousConfiguration = Object.assign({}, this.state.configuration);
-		const proposedConfiguration = Object.assign(
-			{},
-			defaultConfiguration,
-			this.state.configuration,
-			configuration,
-		);
-		this.setState({
-			working: true,
-			configuration: proposedConfiguration,
-		});
-		const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
-			method: "PUT",
-			mode: "cors",
-			headers: new Headers({
-				"Content-Type": "application/json",
-				...this.getHeaders(),
-			}),
-			body: JSON.stringify(proposedConfiguration),
-		});
-		let newConfiguration = previousConfiguration;
-		if (response.status === 200) {
-			try {
-				newConfiguration = await response.json();
-			} catch (e) {}
+		try {
+			const previousConfiguration = Object.assign({}, this.state.configuration);
+			const proposedConfiguration = Object.assign(
+				{},
+				defaultConfiguration,
+				this.state.configuration,
+				configuration,
+			);
+			this.setState({
+				working: true,
+				configuration: proposedConfiguration,
+			});
+			const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
+				method: "PUT",
+				mode: "cors",
+				headers: new Headers({
+					"Content-Type": "application/json",
+					...this.getHeaders(),
+				}),
+				body: JSON.stringify(proposedConfiguration),
+			});
+			let newConfiguration = previousConfiguration;
+			if (response.status === 200) {
+				try {
+					newConfiguration = await response.json();
+				} catch (e) {}
+			}
+			this.setState({
+				working: false,
+				configuration: newConfiguration,
+			});
+		} catch (e) {
+			this.setState({
+				working: false,
+			});
 		}
-		this.setState({
-			working: false,
-			configuration: newConfiguration,
-		});
 	};
 
 	render() {
