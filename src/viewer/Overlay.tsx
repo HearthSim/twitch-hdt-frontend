@@ -6,7 +6,7 @@ import * as PropTypes from "prop-types";
 import Entity from "./Entity";
 import DeckList from "./DeckList";
 import { DecklistPosition, Feature, hasFeature } from "../utils/config";
-import { TwitchExtProps, witchTwitchExt } from "../utils/twitch";
+import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
 	boardState: BoardStateData | null;
@@ -306,4 +306,4 @@ class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 	}
 }
 
-export default witchTwitchExt(Overlay);
+export default withTwitchExt(Overlay);

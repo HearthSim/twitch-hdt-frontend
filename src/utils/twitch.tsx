@@ -45,6 +45,6 @@ export class TwitchExtProvider extends React.Component<
 	}
 }
 
-export const witchTwitchExt = makeHOC<TwitchExtProps>({
+export const withTwitchExt = makeHOC<TwitchExtProps>({
 	twitchExtContext: PropTypes.object,
 });

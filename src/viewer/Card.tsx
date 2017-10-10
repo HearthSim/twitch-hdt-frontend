@@ -2,7 +2,7 @@ import * as React from "react";
 import { Card as ComponentCard } from "react-hs-components";
 import { CardsProps, withCards } from "../utils/cards";
 import { getPlaceholder } from "./placeholders";
-import { TwitchExtProps, witchTwitchExt } from "../utils/twitch";
+import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 
 interface CardProps extends React.ClassAttributes<Card> {
 	dbfId: number;
@@ -75,4 +75,4 @@ class Card extends React.Component<
 	}
 }
 
-export default withCards(witchTwitchExt(Card));
+export default withCards(withTwitchExt(Card));
