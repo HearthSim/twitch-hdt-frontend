@@ -39,6 +39,7 @@ if (isProduction) {
 			uglifyOptions: {
 				compress: {
 					drop_console: true,
+					pure_funcs: ["onUnhandled"],
 				},
 				mangle: false,
 				output: {
