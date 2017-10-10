@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import { DecklistPosition } from "./configuration";
+import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
 
 const Stream = styled.div`

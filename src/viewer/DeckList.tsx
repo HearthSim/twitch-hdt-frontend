@@ -4,7 +4,7 @@ import { CardData } from "hearthstonejson";
 import { CardsProps, withCards } from "../utils/cards";
 import CardTile from "./CardTile";
 import styled from "styled-components";
-import { DecklistPosition } from "../config/configuration";
+import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
 import { copy } from "clipboard-js";
 

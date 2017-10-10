@@ -1,5 +1,5 @@
 import * as React from "react";
-import { DecklistPosition } from "./configuration";
+import { DecklistPosition } from "../utils/config";
 import StreamPreview from "./StreamPreview";
 import { Fieldset, Heading } from "./Installer";
 import styled from "styled-components";

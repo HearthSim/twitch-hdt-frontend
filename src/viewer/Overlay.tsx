@@ -5,7 +5,7 @@ import { BoardStateData, EBSConfiguration } from "../twitch-hdt";
 import * as PropTypes from "prop-types";
 import Entity from "./Entity";
 import DeckList from "./DeckList";
-import { DecklistPosition, Feature, hasFeature } from "../config/configuration";
+import { DecklistPosition, Feature, hasFeature } from "../utils/config";
 import { TwitchExtProps, witchTwitchExt } from "../utils/twitch";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
