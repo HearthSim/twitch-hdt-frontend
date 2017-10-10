@@ -247,7 +247,9 @@ class DeckList extends React.Component<
 				>
 					<li>
 						<Header>
-							<h1>{this.state.copied ? "Copied!" : this.props.name}</h1>
+							<h1>
+								{this.state.copied ? "Copied!" : this.props.name || "Unnamed"}
+							</h1>
 							<CopyButton
 								onClick={() => {
 									copy(this.getDeckstring()).then(() => {
