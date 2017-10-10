@@ -222,9 +222,8 @@ class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 
 		return (
 			<Wrapper>
-				<Portal key="portal" innerRef={(ref: any) => (this.portal = ref)} />
+				<Portal innerRef={(ref: any) => (this.portal = ref)} />
 				<DeckListBounds
-					key="decklist"
 					top={
 						this.props.twitchExtContext &&
 						(this.props.twitchExtContext.isFullScreen ||
@@ -278,10 +277,10 @@ class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 						<Entity dbfId={player.hero || null} />
 					</Hero>
 				</Center>
-				<HeroPower key="opponentHeroPower" top={"15vh"} right={"66.4vh"}>
+				<HeroPower top={"15vh"} right={"66.4vh"}>
 					<Entity dbfId={opponent.hero_power || null} />
 				</HeroPower>
-				<HeroPower key="playerHeroPower" bottom={"16.9vh"} right={"65.6vh"}>
+				<HeroPower bottom={"16.9vh"} right={"65.6vh"}>
 					<Entity dbfId={player.hero_power || null} />
 				</HeroPower>
 				<Weapon top={"15.5vh"} left={"65.8vh"}>
