@@ -74,23 +74,17 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 			return message.type === type;
 		};
 
-		const config: EBSConfiguration | undefined =
-			typeof message.config === "object" ? message.config : undefined;
-
+		const config: { config?: EBSConfiguration } =
+			typeof message.config === "object" ? { config: message.config } : {};
 		if (isOfType<BoardStateMessage>(message, "board_state")) {
 			this.setState({
 				boardState: message.data,
-				config: config as EBSConfiguration,
+				...(config as any),
 			});
 		} else if (isOfType<GameEndMessage>(message, "end_game")) {
-			this.setState((prevState: RootState) => {
-				if (!prevState.boardState) {
-					return {};
-				}
-				return {
-					boardState: {} as BoardStateData,
-					config: config as EBSConfiguration,
-				};
+			this.setState({
+				boardState: null,
+				...(config as any),
 			});
 		} else {
 			console.debug(`Unexpected message.type "${message.type}"`);
