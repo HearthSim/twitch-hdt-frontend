@@ -82,8 +82,9 @@ const Header = withProps<HiddenProps>()(styled.header)`
 		flex: 1 1 0;
 		padding: 2px 6px 0 6px;
 		margin: 0;
-		font-family: "Chunkfive", sans-serif;
-		font-weight: normal;
+		font-family: sans-serif;
+		font-weight: bold;
+		text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;

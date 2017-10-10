@@ -1,17 +1,8 @@
 import * as React from "react";
 import { CardTile as ComponentCardTile } from "react-hs-components";
 import { CardsProps, withCards } from "../utils/cards";
-import { injectGlobal } from "styled-components";
-import Chunkfive from "./Chunkfive.otf";
 import Entity from "./Entity";
 import gift from "./gift.png";
-
-injectGlobal`
-  @font-face {
-    font-family: "Chunkfive";
-    src: url(${Chunkfive});
-  }
-`;
 
 interface CardTileProps extends React.ClassAttributes<Card> {
 	dbfId: number;
@@ -40,6 +31,8 @@ class Card extends React.Component<CardTileProps & CardsProps, {}> {
 					}
 					icon={this.props.gift ? gift : undefined}
 					disabled={this.props.count === 0}
+					fontFamily={"sans-serif"}
+					fontWeight={"bold"}
 				/>
 			</Entity>
 		);
