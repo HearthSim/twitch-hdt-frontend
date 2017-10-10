@@ -221,12 +221,14 @@ class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 				? this.props.boardState.opponent
 				: {};
 
-		const hideDecklist = hasFeature(
-			this.props.config.hidden && !isNaN(+this.props.config.hidden)
-				? +this.props.config.hidden
-				: 0,
-			Feature.DECKLIST,
-		);
+		const hideDecklist =
+			!this.props.boardState ||
+			hasFeature(
+				this.props.config.hidden && !isNaN(+this.props.config.hidden)
+					? +this.props.config.hidden
+					: 0,
+				Feature.DECKLIST,
+			);
 
 		return (
 			<Wrapper>
