@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import OverlaySetup from "./OverlaySetup";
 import ConnectionSetup from "./ConnectionSetup";
+import { EBSConfiguration } from "../twitch-hdt";
 
 export const enum ConnectionProgress {
 	UNKNOWN,
@@ -16,6 +17,8 @@ interface InstallerProps extends React.ClassAttributes<Installer> {
 	refreshProgress: () => void;
 	initialLoad?: boolean;
 	working?: boolean;
+	configuration: EBSConfiguration | null;
+	setConfiguration: (configuration: EBSConfiguration) => void;
 }
 
 interface InstallerState {}
@@ -112,11 +115,15 @@ export default class Installer extends React.Component<
 		return (
 			<Wrapper>
 				<ConnectionSetup
-					working={this.props.working}
+					working={this.props.working && !setupComplete}
 					refreshProgress={this.props.refreshProgress}
 					progress={this.props.progress}
 				/>
-				<OverlaySetup disabled={disabled}>
+				<OverlaySetup
+					configuration={this.props.configuration}
+					setConfiguration={this.props.setConfiguration}
+					disabled={disabled}
+				>
 					{!setupComplete ? (
 						<FieldsetShield>
 							<span>Deck Tracking setup required</span>

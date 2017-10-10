@@ -1,5 +1,7 @@
 import * as React from "react";
 import Installer, { ConnectionProgress } from "./Installer";
+import { EBSConfiguration } from "../twitch-hdt";
+import { defaultConfiguration } from "../utils/config";
 
 interface RootProps extends React.ClassAttributes<Root> {}
 
@@ -10,6 +12,7 @@ interface RootState {
 	connectionProgress: ConnectionProgress;
 	initialLoad: boolean;
 	working: boolean;
+	configuration: EBSConfiguration | null;
 }
 
 export default class Root extends React.Component<RootProps, RootState> {
@@ -22,6 +25,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 			connectionProgress: ConnectionProgress.UNKNOWN,
 			initialLoad: false,
 			working: true,
+			configuration: null,
 		};
 	}
 
@@ -39,6 +43,16 @@ export default class Root extends React.Component<RootProps, RootState> {
 		});
 	}
 
+	getHeaders() {
+		return {
+			Accept: "application/json",
+			Authorization: `Bearer ${this.state.authToken}`,
+			"X-Twitch-User-Id": this.state.channelId,
+			"X-Twitch-Client-Id": this.state.clientId,
+			"X-Twitch-Extension-Version": APPLICATION_VERSION,
+		};
+	}
+
 	refreshProgress = async (retries: number = 1) => {
 		try {
 			this.setState({
@@ -47,18 +61,15 @@ export default class Root extends React.Component<RootProps, RootState> {
 			const response = await fetch("https://twitch-ebs.hearthsim.net/setup/", {
 				method: "POST",
 				mode: "cors",
-				headers: new Headers({
-					Accept: "application/json",
-					Authorization: `Bearer ${this.state.authToken}`,
-					"X-Twitch-User-Id": this.state.channelId,
-					"X-Twitch-Client-Id": this.state.clientId,
-					"X-Twitch-Extension-Version": APPLICATION_VERSION,
-				}),
+				headers: new Headers(this.getHeaders()),
 			});
-			let progress = null;
+			let keepWorking = false;
+			let progress: ConnectionProgress | null = null;
 			switch (response.status) {
 				case 200:
 					progress = ConnectionProgress.READY;
+					this.refreshConfiguration();
+					keepWorking = true;
 					break;
 				case 403:
 					const contentType = response.headers.get("content-type");
@@ -87,10 +98,15 @@ export default class Root extends React.Component<RootProps, RootState> {
 					}
 			}
 			if (progress !== null) {
-				this.setState({
-					working: false,
-					initialLoad: true,
-					connectionProgress: progress,
+				this.setState(prevState => {
+					const state = Object.assign({}, prevState, {
+						initialLoad: true,
+						connectionProgress: progress,
+					});
+					if (!keepWorking) {
+						state.working = false;
+					}
+					return state;
 				});
 			}
 		} catch (e) {
@@ -102,6 +118,59 @@ export default class Root extends React.Component<RootProps, RootState> {
 		}
 	};
 
+	refreshConfiguration = async () => {
+		this.setState({
+			working: true,
+		});
+		const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
+			method: "GET",
+			mode: "cors",
+			headers: new Headers(this.getHeaders()),
+		});
+		const received = await response.json();
+		const configuration: EBSConfiguration = {};
+		Object.keys(received)
+			.filter(k => !!received[k])
+			.forEach((k: keyof EBSConfiguration) => (configuration[k] = received[k]));
+		this.setState({
+			configuration,
+			working: false,
+		});
+	};
+
+	putConfiguration = async (configuration: EBSConfiguration) => {
+		const previousConfiguration = Object.assign({}, this.state.configuration);
+		const proposedConfiguration = Object.assign(
+			{},
+			defaultConfiguration,
+			this.state.configuration,
+			configuration,
+		);
+		this.setState({
+			working: true,
+			configuration: proposedConfiguration,
+		});
+		const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
+			method: "PUT",
+			mode: "cors",
+			headers: new Headers({
+				"Content-Type": "application/json",
+				...this.getHeaders(),
+			}),
+			body: JSON.stringify(proposedConfiguration),
+		});
+		let newConfiguration = previousConfiguration;
+		if (response.status === 200) {
+			try {
+				newConfiguration = await response.json();
+			} catch (e) {}
+		}
+		this.setState({
+			working: false,
+			configuration: newConfiguration,
+		});
+	};
+
 	render() {
 		return (
 			<Installer
@@ -109,6 +178,8 @@ export default class Root extends React.Component<RootProps, RootState> {
 				refreshProgress={this.refreshProgress}
 				working={this.state.working}
 				initialLoad={!this.state.initialLoad}
+				configuration={this.state.configuration}
+				setConfiguration={this.putConfiguration}
 			/>
 		);
 	}

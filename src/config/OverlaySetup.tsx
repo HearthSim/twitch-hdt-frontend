@@ -1,9 +1,15 @@
 import * as React from "react";
-import { DecklistPosition } from "../utils/config";
+import {
+	DecklistPosition,
+	Feature,
+	hasFeature,
+	setFeature,
+} from "../utils/config";
 import StreamPreview from "./StreamPreview";
-import { ErrorMessage, Fieldset, FieldsetShield, Heading } from "./Installer";
+import { Fieldset, Heading } from "./Installer";
 import styled from "styled-components";
 import { withProps } from "../utils/styled";
+import { EBSConfiguration } from "../twitch-hdt";
 
 const VerticalList = styled.ul`
 	padding-left: 0;
@@ -26,42 +32,53 @@ const Row = withProps<any>()(styled.div)`
 
 interface OverlaySetupProps extends React.ClassAttributes<OverlaySetup> {
 	disabled?: boolean;
+	working?: boolean;
+	configuration: EBSConfiguration | null;
+	setConfiguration: (configuration: EBSConfiguration) => void;
 }
 
-interface OverlaySetupState {
-	disableDecklist?: boolean;
-	decklistPosition: DecklistPosition;
-}
-
-export default class OverlaySetup extends React.Component<
-	OverlaySetupProps,
-	OverlaySetupState
-> {
-	constructor(props: OverlaySetupProps, context: any) {
-		super(props, context);
-		this.state = {
-			disableDecklist: false,
-			decklistPosition: DecklistPosition.TOP_LEFT,
-		};
+export default class OverlaySetup extends React.Component<OverlaySetupProps> {
+	getHiddenFeatures(): number {
+		const defaultHidden = 0;
+		const proposedHidden =
+			this.props.configuration && !!this.props.configuration.hidden
+				? +this.props.configuration.hidden
+				: NaN;
+		return !isNaN(proposedHidden) ? proposedHidden : defaultHidden;
 	}
 
 	changeDecklistPosition = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const target = event.target;
-		this.setState({ decklistPosition: target.value as DecklistPosition });
+		this.props.setConfiguration({
+			deck_position: event.target.value as DecklistPosition,
+		});
+	};
+
+	setDecklist = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const hiddenFeatures = this.getHiddenFeatures();
+		this.props.setConfiguration({
+			hidden:
+				"" + setFeature(hiddenFeatures, Feature.DECKLIST, event.target.checked),
+		});
 	};
 
 	render() {
+		let decklistPosition = DecklistPosition.TOP_RIGHT;
+		if (this.props.configuration) {
+			decklistPosition =
+				(this.props.configuration.deck_position as DecklistPosition) ||
+				decklistPosition;
+		}
+
+		const hiddenFeatures = this.getHiddenFeatures();
+		const decklistEnabled = hasFeature(hiddenFeatures, Feature.DECKLIST);
+
 		return (
 			<Fieldset>
 				{this.props.children}
 				<Heading>Overlay</Heading>
 				<p>Customize your interactive overlay on Twitch.</p>
 				<StreamPreview
-					position={
-						!this.state.disableDecklist
-							? this.state.decklistPosition
-							: undefined
-					}
+					position={decklistEnabled ? decklistPosition : undefined}
 				/>
 				<Row>
 					<div>
@@ -70,11 +87,9 @@ export default class OverlaySetup extends React.Component<
 								<label>
 									<input
 										type="checkbox"
-										checked={!this.state.disableDecklist}
+										checked={decklistEnabled}
 										disabled={this.props.disabled}
-										onChange={e => {
-											this.setState({ disableDecklist: !e.target.checked });
-										}}
+										onChange={this.setDecklist}
 									/>{" "}
 									Show deck list
 								</label>
@@ -88,13 +103,8 @@ export default class OverlaySetup extends React.Component<
 									<label>
 										<input
 											type="radio"
-											checked={
-												this.state.decklistPosition ===
-												DecklistPosition.TOP_LEFT
-											}
-											disabled={
-												this.state.disableDecklist || this.props.disabled
-											}
+											checked={decklistPosition === DecklistPosition.TOP_LEFT}
+											disabled={!decklistEnabled || this.props.disabled}
 											value={DecklistPosition.TOP_LEFT}
 											onChange={this.changeDecklistPosition}
 										/>{" "}
@@ -103,13 +113,8 @@ export default class OverlaySetup extends React.Component<
 									<label>
 										<input
 											type="radio"
-											checked={
-												this.state.decklistPosition ===
-												DecklistPosition.TOP_RIGHT
-											}
-											disabled={
-												this.state.disableDecklist || this.props.disabled
-											}
+											checked={decklistPosition === DecklistPosition.TOP_RIGHT}
+											disabled={!decklistEnabled || this.props.disabled}
 											value={DecklistPosition.TOP_RIGHT}
 											onChange={this.changeDecklistPosition}
 										/>{" "}
