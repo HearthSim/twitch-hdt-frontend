@@ -9,6 +9,7 @@ const Stream = styled.div`
 	border: 1px solid gray;
 	width: 100%;
 	height: auto;
+	z-index: 5;
 
 	&:after {
 		display: block;
@@ -18,7 +19,7 @@ const Stream = styled.div`
 `;
 
 const OverlayElement = styled.div`
-	background-color: #835944;
+	background-color: #315376;
 `;
 
 const DeckList = withProps<{ position: DecklistPosition }>()(

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DecklistPosition } from "../utils/config";
 import StreamPreview from "./StreamPreview";
-import { Fieldset, Heading } from "./Installer";
+import { ErrorMessage, Fieldset, FieldsetShield, Heading } from "./Installer";
 import styled from "styled-components";
 import { withProps } from "../utils/styled";
 
@@ -24,7 +24,9 @@ const Row = withProps<any>()(styled.div)`
 	}
 `;
 
-interface OverlaySetupProps {}
+interface OverlaySetupProps extends React.ClassAttributes<OverlaySetup> {
+	disabled?: boolean;
+}
 
 interface OverlaySetupState {
 	disableDecklist?: boolean;
@@ -51,6 +53,7 @@ export default class OverlaySetup extends React.Component<
 	render() {
 		return (
 			<Fieldset>
+				{this.props.children}
 				<Heading>Overlay</Heading>
 				<p>Customize your interactive overlay on Twitch.</p>
 				<StreamPreview
@@ -68,6 +71,7 @@ export default class OverlaySetup extends React.Component<
 									<input
 										type="checkbox"
 										checked={!this.state.disableDecklist}
+										disabled={this.props.disabled}
 										onChange={e => {
 											this.setState({ disableDecklist: !e.target.checked });
 										}}
@@ -88,7 +92,9 @@ export default class OverlaySetup extends React.Component<
 												this.state.decklistPosition ===
 												DecklistPosition.TOP_LEFT
 											}
-											disabled={this.state.disableDecklist}
+											disabled={
+												this.state.disableDecklist || this.props.disabled
+											}
 											value={DecklistPosition.TOP_LEFT}
 											onChange={this.changeDecklistPosition}
 										/>{" "}
@@ -101,7 +107,9 @@ export default class OverlaySetup extends React.Component<
 												this.state.decklistPosition ===
 												DecklistPosition.TOP_RIGHT
 											}
-											disabled={this.state.disableDecklist}
+											disabled={
+												this.state.disableDecklist || this.props.disabled
+											}
 											value={DecklistPosition.TOP_RIGHT}
 											onChange={this.changeDecklistPosition}
 										/>{" "}

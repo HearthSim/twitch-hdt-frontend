@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { withProps } from "../utils/styled";
 
 interface HSReplayNetConnectionProps {
-	twitch: boolean;
-	tracker: boolean;
+	working?: boolean;
+	twitch: boolean | null;
+	tracker: boolean | null;
 }
 
 const Wrapper = styled.ol`
@@ -59,7 +60,7 @@ export default class HSReplayNetConnection extends React.Component<
 	HSReplayNetConnectionProps,
 	{}
 > {
-	renderConnection(connected: boolean) {
+	renderConnection(connected: boolean | null) {
 		if (connected) {
 			return "────────";
 		} else {
@@ -71,14 +72,26 @@ export default class HSReplayNetConnection extends React.Component<
 		return (
 			<Wrapper>
 				<Element connected={true}>Twitch</Element>
-				<Connection connected={this.props.twitch}>
+				<Connection connected={this.props.working ? null : this.props.twitch}>
 					{this.renderConnection(this.props.twitch)}
 				</Connection>
-				<Element connected={this.props.twitch}>HSReplay.net</Element>
-				<Connection connected={this.props.twitch ? this.props.tracker : null}>
+				<Element connected={this.props.working ? null : this.props.twitch}>
+					HSReplay.net
+				</Element>
+				<Connection
+					connected={
+						this.props.working
+							? null
+							: this.props.twitch ? this.props.tracker : null
+					}
+				>
 					{this.renderConnection(this.props.tracker)}
 				</Connection>
-				<Element connected={this.props.twitch ? this.props.tracker : null}>
+				<Element
+					connected={
+						this.props.twitch && !this.props.working ? this.props.tracker : null
+					}
+				>
 					HDT
 				</Element>
 			</Wrapper>

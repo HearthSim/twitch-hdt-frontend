@@ -1,5 +1,11 @@
 import * as React from "react";
-import { Fieldset, Heading, ConnectionProgress } from "./Installer";
+import {
+	ConnectionProgress,
+	ErrorMessage,
+	Fieldset,
+	Heading,
+	SuccessMessage,
+} from "./Installer";
 import styled from "styled-components";
 import ConnectionPreview from "./ConnectionPreview";
 import WindowsIcon from "./windows.svg";
@@ -25,6 +31,10 @@ const CenterParagraph = styled.p`
 	text-align: center;
 `;
 
+const CenterDiv = styled.div`
+	text-align: center;
+`;
+
 const BigFriendlyButton = styled.button`
 	font-size: 1em;
 	display: inline-block;
@@ -38,7 +48,6 @@ const BigFriendlyButton = styled.button`
 	&:hover {
 		color: white;
 		background-color: black;
-		border-color: white;
 
 		& > img {
 			filter: invert();
@@ -53,18 +62,30 @@ const BigFriendlyButton = styled.button`
 	}
 `;
 
+const RefreshButton = BigFriendlyButton.extend`
+	width: auto;
+	min-width: 100px;
+	font-weight: normal;
+	cursor: pointer;
+
+	a + &,
+	button + & {
+		margin-left: 6px;
+	}
+`;
+
+const ActionButton = (BigFriendlyButton.withComponent("a") as any).extend`
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	width: auto;
+	min-width: 200px;
+`;
+
 const DownloadLink = (BigFriendlyButton.withComponent("a") as any).extend`
 	margin-top: 1.5em;
 	text-align: center;
 	text-decoration: none;
-`;
-
-const SuccessMessage = styled.span`
-	color: green;
-`;
-
-const ErrorMessage = styled.span`
-	color: #dd0002;
 `;
 
 const TrackerInstructions = styled.code`
@@ -81,26 +102,72 @@ export default class ConnectionSetup extends React.Component<
 > {
 	getMessage() {
 		if (this.props.working) {
-			return;
+			return <CenterParagraph>Testing connection…</CenterParagraph>;
 		}
+
+		const makeRefresh = (label: string) => (
+			<RefreshButton
+				disabled={this.props.working}
+				onClick={this.props.refreshProgress}
+			>
+				{label}
+			</RefreshButton>
+		);
+
+		let message = null;
+		let buttons = [makeRefresh("Refresh")];
+
 		switch (this.props.progress) {
 			case ConnectionProgress.READY:
-				return <SuccessMessage>Connected. Waiting for data...</SuccessMessage>;
-			case ConnectionProgress.ERROR:
-				return <ErrorMessage>Something went wrong.</ErrorMessage>;
-			case ConnectionProgress.INSTALL_TRACKER:
 				return (
+					<div>
+						<CenterParagraph>
+							<SuccessMessage>
+								Setup complete!<br />Return to the Extension Manager to enable
+								the Overlay.
+							</SuccessMessage>
+						</CenterParagraph>
+						<p>
+							You can add another instance of Hearthstone Deck Tracker by
+							connecting it from the <code>Twitch Extension</code> option (see
+							above).
+						</p>
+					</div>
+				);
+			case ConnectionProgress.ERROR:
+				message = <ErrorMessage>Something went wrong</ErrorMessage>;
+				buttons = [makeRefresh("Try again")];
+				break;
+			case ConnectionProgress.INSTALL_TRACKER:
+				message = (
 					<ErrorMessage>
 						Please connect your deck tracker to HSReplay.net
 					</ErrorMessage>
 				);
+				break;
 			case ConnectionProgress.CONNECT_ACCOUNT:
-				return (
+				message = (
 					<ErrorMessage>
 						Please connect your Twitch account to HSReplay.net.
 					</ErrorMessage>
 				);
+				buttons = [
+					<ActionButton
+						href="https://hsreplay.net/account/social/connections/#account-twitch-link"
+						target="_blank"
+					>
+						Connect
+					</ActionButton>,
+				].concat(buttons);
+				break;
 		}
+
+		return (
+			<CenterDiv>
+				<p>{message}</p>
+				{buttons.length ? <p>{buttons}</p> : null}
+			</CenterDiv>
+		);
 	}
 
 	render() {
@@ -128,20 +195,19 @@ export default class ConnectionSetup extends React.Component<
 					Deck Tracker.
 				</p>
 				<ConnectionPreview
-					twitch={this.props.progress > ConnectionProgress.CONNECT_ACCOUNT}
-					tracker={this.props.progress > ConnectionProgress.INSTALL_TRACKER}
+					working={this.props.working}
+					twitch={
+						this.props.progress === ConnectionProgress.ERROR
+							? null
+							: this.props.progress > ConnectionProgress.CONNECT_ACCOUNT
+					}
+					tracker={
+						this.props.progress === ConnectionProgress.ERROR
+							? null
+							: this.props.progress > ConnectionProgress.INSTALL_TRACKER
+					}
 				/>
-				<CenterParagraph>{this.getMessage()}</CenterParagraph>
-				<CenterParagraph>
-					{this.props.progress !== ConnectionProgress.READY ? (
-						<BigFriendlyButton
-							disabled={this.props.working}
-							onClick={this.props.refreshProgress}
-						>
-							{this.props.working ? "Verifying…" : "Refresh"}
-						</BigFriendlyButton>
-					) : null}
-				</CenterParagraph>
+				{this.getMessage()}
 			</Fieldset>
 		);
 	}

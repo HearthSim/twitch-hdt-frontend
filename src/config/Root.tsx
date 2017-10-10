@@ -7,7 +7,8 @@ interface RootState {
 	authToken: string | null;
 	channelId: string | null;
 	clientId: string | null;
-	installerProgress: ConnectionProgress;
+	connectionProgress: ConnectionProgress;
+	initialLoad: boolean;
 	working: boolean;
 }
 
@@ -18,7 +19,8 @@ export default class Root extends React.Component<RootProps, RootState> {
 			authToken: null,
 			channelId: null,
 			clientId: null,
-			installerProgress: ConnectionProgress.UNKNOWN,
+			connectionProgress: ConnectionProgress.UNKNOWN,
+			initialLoad: false,
 			working: true,
 		};
 	}
@@ -39,7 +41,9 @@ export default class Root extends React.Component<RootProps, RootState> {
 
 	refreshProgress = async (retries: number = 1) => {
 		try {
-			this.setState({ working: true });
+			this.setState({
+				working: true,
+			});
 			const response = await fetch("https://twitch-ebs.hearthsim.net/setup/", {
 				method: "POST",
 				mode: "cors",
@@ -85,14 +89,15 @@ export default class Root extends React.Component<RootProps, RootState> {
 			if (progress !== null) {
 				this.setState({
 					working: false,
-					installerProgress: progress,
+					initialLoad: true,
+					connectionProgress: progress,
 				});
 			}
 		} catch (e) {
 			console.error(e);
 			this.setState({
 				working: false,
-				installerProgress: ConnectionProgress.ERROR,
+				connectionProgress: ConnectionProgress.ERROR,
 			});
 		}
 	};
@@ -100,9 +105,10 @@ export default class Root extends React.Component<RootProps, RootState> {
 	render() {
 		return (
 			<Installer
-				progress={this.state.installerProgress}
+				progress={this.state.connectionProgress}
 				refreshProgress={this.refreshProgress}
 				working={this.state.working}
+				initialLoad={!this.state.initialLoad}
 			/>
 		);
 	}
