@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added automatic overlay hiding after one minute of inactivity  
+  *The overlay will only disappear if you stop playing Hearthstone, not during a long turn*
+
 ### Fixed
 - Fixed "Show deck list" setting being inverted
 - Fixed overlay not disappearing after a match is over

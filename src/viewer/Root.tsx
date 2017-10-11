@@ -20,6 +20,7 @@ interface RootState {
 
 class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 	queue: AsyncQueue<Message>;
+	timeout: number | null;
 
 	constructor(props: RootProps) {
 		super(props);
@@ -29,6 +30,7 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 			config: {},
 		};
 		this.queue = new AsyncQueue();
+		this.timeout = null;
 	}
 
 	componentDidCatch(error: Error, info: React.ErrorInfo) {
@@ -66,7 +68,19 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 		this.queue.unlisten(this.handleMessage);
 	}
 
+	refreshTimeout(): void {
+		if (this.timeout !== null) {
+			window.clearTimeout(this.timeout);
+		}
+		this.timeout = window.setTimeout(() => {
+			this.setState({ boardState: null });
+			this.timeout = null;
+		}, 120 * 1000);
+	}
+
 	handleMessage = (message: Message) => {
+		this.refreshTimeout();
+
 		const isOfType = <T extends Message>(
 			message: Message,
 			type: string,
