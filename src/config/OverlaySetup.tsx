@@ -57,7 +57,8 @@ export default class OverlaySetup extends React.Component<OverlaySetupProps> {
 		const hiddenFeatures = this.getHiddenFeatures();
 		this.props.setConfiguration({
 			hidden:
-				"" + setFeature(hiddenFeatures, Feature.DECKLIST, event.target.checked),
+				"" +
+				setFeature(hiddenFeatures, Feature.DECKLIST, !event.target.checked),
 		});
 	};
 
@@ -70,7 +71,7 @@ export default class OverlaySetup extends React.Component<OverlaySetupProps> {
 		}
 
 		const hiddenFeatures = this.getHiddenFeatures();
-		const decklistEnabled = hasFeature(hiddenFeatures, Feature.DECKLIST);
+		const decklistEnabled = !hasFeature(hiddenFeatures, Feature.DECKLIST);
 
 		return (
 			<Fieldset>
