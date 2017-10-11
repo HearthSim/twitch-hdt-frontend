@@ -81,7 +81,7 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 				boardState: message.data,
 				...(config as any),
 			});
-		} else if (isOfType<GameEndMessage>(message, "end_game")) {
+		} else if (isOfType<GameEndMessage>(message, "game_end")) {
 			this.setState({
 				boardState: null,
 				...(config as any),
