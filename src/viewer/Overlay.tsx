@@ -250,7 +250,7 @@ class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 							name={player.deck && player.deck.name}
 							hero={player.deck && player.deck.hero}
 							format={player.deck && player.deck.format}
-							rarities={false}
+							showRarities={false}
 							position={this.props.config.deck_position as DecklistPosition}
 						/>
 					</DeckListBounds>

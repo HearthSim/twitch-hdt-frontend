@@ -14,7 +14,7 @@ interface DeckListProps extends React.ClassAttributes<DeckList> {
 	name?: string;
 	hero?: number;
 	format?: number;
-	rarities?: boolean;
+	showRarities?: boolean;
 }
 
 interface DeckListState {
@@ -305,7 +305,7 @@ class DeckList extends React.Component<
 											<CardTile
 												dbfId={dbfId}
 												count={current}
-												noRarity={!this.props.rarities}
+												showRarity={this.props.showRarities}
 												gift={initial === 0}
 											/>
 										</li>

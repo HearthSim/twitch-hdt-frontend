@@ -8,7 +8,7 @@ interface CardTileProps extends React.ClassAttributes<Card> {
 	dbfId: number;
 	count?: number;
 	gift?: boolean;
-	noRarity?: boolean;
+	showRarity?: boolean;
 }
 
 class Card extends React.Component<CardTileProps & CardsProps, {}> {
@@ -22,7 +22,7 @@ class Card extends React.Component<CardTileProps & CardsProps, {}> {
 				<ComponentCardTile
 					id={card.id}
 					name={card.name || ""}
-					rarity={this.props.noRarity ? undefined : card.rarity || "COMMON"}
+					rarity={card.rarity || "COMMON"}
 					cost={card.cost || 0}
 					number={
 						this.props.count && this.props.count > 1
@@ -31,6 +31,7 @@ class Card extends React.Component<CardTileProps & CardsProps, {}> {
 					}
 					icon={this.props.gift ? gift : undefined}
 					disabled={this.props.count === 0}
+					showRarity={this.props.showRarity}
 					fontFamily={"sans-serif"}
 					fontWeight={"bold"}
 				/>

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Fixed "Show deck list" setting being inverted
 - Fixed overlay not disappearing after a match is over
+- Fixed missing star on legendary cards in deck list
 
 ## 0.0.1 - 2017-10-11
 ### Added
