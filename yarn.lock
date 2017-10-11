@@ -3383,13 +3383,13 @@ react-hot-loader@^3.0.0-beta.7:
     redbox-react "^1.3.6"
     source-map "^0.4.4"
 
-"react-hs-components@https://libs.hearthsim.net/react-hs-components-v0.0.4.tgz":
-  version "0.0.4"
-  resolved "https://libs.hearthsim.net/react-hs-components-v0.0.4.tgz#22fdcb2cfb714c6847b50f79c10651d71dc7cf1f"
-
 "react-hs-components@https://libs.hearthsim.net/react-hs-components-v0.0.5.tgz":
   version "0.0.5"
   resolved "https://libs.hearthsim.net/react-hs-components-v0.0.5.tgz#8687420c68eeb3e09d159ddf8466f2460dca2d50"
+
+"react-hs-components@https://libs.hearthsim.net/react-hs-components-v0.0.6.tgz":
+  version "0.0.6"
+  resolved "https://libs.hearthsim.net/react-hs-components-v0.0.6.tgz#b85d93d3128db726d8205abe820a743b4e75375d"
 
 react-proxy@^3.0.0-alpha.0:
   version "3.0.0-alpha.1"
