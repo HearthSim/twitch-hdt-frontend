@@ -91,8 +91,27 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 		const config: { config?: EBSConfiguration } =
 			typeof message.config === "object" ? { config: message.config } : {};
 		if (isOfType<BoardStateMessage>(message, "board_state")) {
+			const boardState = message.data;
+
+			// 1.0 compatibility
+			if (
+				message.version === "1.0" &&
+				boardState.player &&
+				boardState.player.deck
+			) {
+				let cards: any = boardState.player.deck.cards;
+				if (typeof cards === "object") {
+					const dbfIds = Object.keys(cards);
+					cards = dbfIds.map(Number).map((dbfId: number) => {
+						const card: any = cards[dbfId];
+						return [dbfId, card[0], card[1]];
+					});
+				}
+				boardState.player.deck.cards = cards;
+			}
+
 			this.setState({
-				boardState: message.data,
+				boardState: boardState,
 				...(config as any),
 			});
 		} else if (isOfType<GameEndMessage>(message, "game_end")) {

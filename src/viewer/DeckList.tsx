@@ -7,9 +7,10 @@ import styled from "styled-components";
 import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
 import { copy } from "clipboard-js";
+import { BoardStateDeckCard } from "../twitch-hdt";
 
 interface DeckListProps extends React.ClassAttributes<DeckList> {
-	cardList: { [dbfId: number]: [number, number] };
+	cardList: BoardStateDeckCard[];
 	position: DecklistPosition;
 	name?: string;
 	hero?: number;
@@ -170,12 +171,28 @@ class DeckList extends React.Component<
 	};
 
 	getDeckstring(): string {
-		const initialCards = Object.keys(this.props.cardList)
-			.map(Number)
-			.map((dbfId: number, index: number) => {
-				const [_, initial] = this.props.cardList[dbfId];
+		const initialCards: [number, number][] = this.props.cardList
+			.filter((card: BoardStateDeckCard) => {
+				const [dbfId, current, initial] = card;
+				return !!initial;
+			})
+			.map<[number, number]>((card: BoardStateDeckCard) => {
+				const [dbfId, current, initial] = card;
 				return [dbfId, initial];
-			});
+			})
+			.reduce<
+				[number, number][]
+			>((result: [number, number][], card: [number, number]) => {
+				result = result.slice(0);
+				for (let i = 0; i < result.length; i++) {
+					if (result[i][0] === card[0]) {
+						result[i][1] += card[1];
+						return result;
+					}
+				}
+				// new card, append
+				return result.concat([card]);
+			}, []);
 		const deckDescription = {
 			cards: initialCards,
 			heroes: [this.props.hero],
@@ -237,11 +254,31 @@ class DeckList extends React.Component<
 			position = DecklistPosition.TOP_RIGHT;
 		}
 
-		const dbfIds = Object.keys(this.props.cardList).map(Number);
-		const cards = dbfIds
-			.map(dbfId => this.props.cards.getByDbfId(dbfId))
-			.filter(x => !!x) as CardData[];
-		cards.sort(cardSorting);
+		type Triplet = [number, number, number];
+		type Quad = [CardData, number, number, number];
+		type NullableQuad = [CardData | null, number, number, number];
+
+		// prepend CardData
+		const unsortedCards: Quad[] = this.props.cardList
+			.map<NullableQuad>((card: Triplet): NullableQuad => {
+				return [
+					this.props.cards.getByDbfId(card[0] as number),
+					card[0],
+					card[1],
+					card[2],
+				];
+			})
+			.filter((x: NullableQuad) => !!x[0]) as Quad[];
+
+		// sort using CardData
+		unsortedCards.sort((a: Quad, b: Quad) => {
+			return cardSorting(a[0], b[0]);
+		});
+
+		// shift CardData
+		const cards: Triplet[] = unsortedCards.map((card: Quad): Triplet => {
+			return [card[1], card[2], card[3]];
+		});
 
 		let scaleY = this.state.scale || 1;
 		let scaleX = 1;
@@ -297,9 +334,8 @@ class DeckList extends React.Component<
 					</li>
 					{!this.state.hidden
 						? cards
-								.map((card: CardData, index: number) => {
-									const dbfId = (card as any).dbfId;
-									const [current, initial] = this.props.cardList[dbfId];
+								.map((card: Triplet, index: number) => {
+									const [dbfId, current, initial] = card;
 									return (
 										<li key={index}>
 											<CardTile

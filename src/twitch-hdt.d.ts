@@ -90,8 +90,10 @@ export interface BoardStateHand {
 	size: number;
 }
 
+export type BoardStateDeckCard = [number, number, number];
+
 export interface BoardStateDeck {
-	cards?: { [dbfId: number]: [number, number] }; // [current, initial]
+	cards?: BoardStateDeckCard[]; // [dbfId, current, initial]
 	name?: string;
 	hero?: number;
 	format?: 1 | 2;
