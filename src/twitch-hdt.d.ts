@@ -3,6 +3,7 @@ export type Message = BaseMessage | BoardStateMessage | GameEndMessage;
 interface BaseMessage {
 	type: string;
 	config: EBSConfiguration;
+	version: "1.0" | number;
 }
 
 interface EBSConfiguration {
