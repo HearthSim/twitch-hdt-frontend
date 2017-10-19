@@ -101,4 +101,5 @@ export interface BoardStateDeck {
 
 export interface GameEndMessage extends BaseMessage {
 	type: "game_end";
+	data: null;
 }
