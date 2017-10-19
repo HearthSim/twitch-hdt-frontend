@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ResourceHintWebpackPlugin = require("resource-hints-webpack-plugin");
-const package = require(path.resolve(__dirname, "package"));
+const pkg = require(path.resolve(__dirname, "package"));
 
 const isProduction = process.env.NODE_ENV === "production";
 const plugins = [];
@@ -49,8 +49,8 @@ if (isProduction) {
 		}),
 		new webpack.BannerPlugin({
 			banner: [
-				`${package.name}@${package.version}`,
-				package.homepage,
+				`${pkg.name}@${pkg.version}`,
+				pkg.homepage,
 				"HearthSim, LLC. All Rights Reserved.",
 			].join("\n"),
 			include: ["viewer", "config"].map(b => path.join(bundlePath, b)),
@@ -68,7 +68,7 @@ if (isProduction) {
 			"process.env": {
 				NODE_ENV: JSON.stringify("production"),
 			},
-			APPLICATION_VERSION: JSON.stringify(package.version),
+			APPLICATION_VERSION: JSON.stringify(pkg.version),
 		}),
 		new webpack.optimize.ModuleConcatenationPlugin(),
 		new ZipPlugin({
@@ -78,7 +78,7 @@ if (isProduction) {
 } else {
 	plugins.push(
 		new webpack.DefinePlugin({
-			APPLICATION_VERSION: JSON.stringify(package.version),
+			APPLICATION_VERSION: JSON.stringify(pkg.version),
 		}),
 		new webpack.NamedModulesPlugin(),
 	);
