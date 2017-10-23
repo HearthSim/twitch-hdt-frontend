@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Upgraded data protocol   
   *This separates cards in the deck list that are both in the initial deck and created during the game*
 
+### Fixed
+- Fixed deck list resetting the collapsed state whenever a game ends
+
 ## [0.0.2] - 2017-10-11
 ### Added
 - Added automatic overlay hiding after one minute of inactivity  

@@ -16,12 +16,13 @@ interface DeckListProps extends React.ClassAttributes<DeckList> {
 	hero?: number;
 	format?: number;
 	showRarities?: boolean;
+	collapsed?: boolean;
+	onCollapsed: (collapsed: boolean) => void;
 }
 
 interface DeckListState {
 	scale?: number;
 	copied?: boolean;
-	hidden?: boolean;
 }
 
 function cardSorting(a: CardData, b: CardData, direction = 1): number {
@@ -162,7 +163,6 @@ class DeckList extends React.Component<
 		this.state = {
 			scale: 1,
 			copied: false,
-			hidden: false,
 		};
 	}
 
@@ -295,7 +295,7 @@ class DeckList extends React.Component<
 					}}
 				>
 					<li>
-						<Header hidden={this.state.hidden}>
+						<Header hidden={this.props.collapsed}>
 							<h1>
 								{this.state.copied ? "Copied!" : this.props.name || "Unnamed"}
 							</h1>
@@ -313,10 +313,10 @@ class DeckList extends React.Component<
 							>
 								✂
 							</CopyButton>
-							{this.state.hidden ? (
+							{this.props.collapsed ? (
 								<ShowButton
 									onClick={() => {
-										this.setState({ hidden: false });
+										this.props.onCollapsed(false);
 									}}
 								>
 									➕
@@ -324,7 +324,7 @@ class DeckList extends React.Component<
 							) : (
 								<HideButton
 									onClick={() => {
-										this.setState({ hidden: true });
+										this.props.onCollapsed(true);
 									}}
 								>
 									×
@@ -332,7 +332,7 @@ class DeckList extends React.Component<
 							)}
 						</Header>
 					</li>
-					{!this.state.hidden
+					{!this.props.collapsed
 						? cards
 								.map((card: Triplet, index: number) => {
 									const [dbfId, current, initial] = card;

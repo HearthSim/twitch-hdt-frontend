@@ -151,8 +151,22 @@ const DeckListBounds = withProps<PositionProps>()(styled.div)`
 	}
 `;
 
-class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
+interface OverlayState {
+	collapseDeck?: boolean;
+}
+
+class Overlay extends React.Component<
+	OverlayProps & TwitchExtProps,
+	OverlayState
+> {
 	portal: HTMLDivElement | null;
+
+	constructor(props: OverlayProps & TwitchExtProps, context: any) {
+		super(props, context);
+		this.state = {
+			collapseDeck: false,
+		};
+	}
 
 	public renderBoard(dbfIds: number[]): any {
 		return dbfIds.map((dbfId: number, i: number) => (
@@ -254,6 +268,10 @@ class Overlay extends React.Component<OverlayProps & TwitchExtProps, {}> {
 							format={player.deck && player.deck.format}
 							showRarities={false}
 							position={this.props.config.deck_position as DecklistPosition}
+							collapsed={!!this.state.collapseDeck}
+							onCollapsed={(collapseDeck: boolean) => {
+								this.setState({ collapseDeck });
+							}}
 						/>
 					</DeckListBounds>
 				)}
