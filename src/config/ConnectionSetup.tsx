@@ -9,6 +9,7 @@ import {
 import styled from "styled-components";
 import ConnectionPreview from "./ConnectionPreview";
 import WindowsIcon from "./windows.svg";
+import ActivateImage from "./activate.png";
 
 interface ConnectionSetupProps extends React.ClassAttributes<ConnectionSetup> {
 	progress: ConnectionProgress;
@@ -120,7 +121,8 @@ export default class ConnectionSetup extends React.Component<
 						<CenterParagraph>
 							<SuccessMessage>
 								Setup complete!<br />Return to the Extension Manager to enable
-								the Overlay.
+								the Overlay:
+								<img src={ActivateImage} />
 							</SuccessMessage>
 						</CenterParagraph>
 						<p>

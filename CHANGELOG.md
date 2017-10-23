@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   *This separates cards in the deck list that are both in the initial deck and created during the game*
 - Improved deck list icons
 - Updated Hearthstone Deck Tracker download url
+- Improved setup guide
 
 ### Fixed
 - Fixed deck list resetting the collapsed state whenever a game ends
