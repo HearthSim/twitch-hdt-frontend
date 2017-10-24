@@ -21,10 +21,6 @@ const Icon = styled.img`
 	vertical-align: middle;
 	margin-top: -3px;
 	margin-right: 0.7em;
-
-	&:hover {
-		color: white;
-	}
 `;
 
 const CenterParagraph = styled.p`
