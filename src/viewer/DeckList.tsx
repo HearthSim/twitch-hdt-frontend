@@ -8,6 +8,7 @@ import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
 import { copy } from "clipboard-js";
 import { BoardStateDeckCard } from "../twitch-hdt";
+import { CollapseIcon, ExpandIcon } from "./icons";
 
 interface DeckListProps extends React.ClassAttributes<DeckList> {
 	cardList: BoardStateDeckCard[];
@@ -82,7 +83,7 @@ const Header = withProps<HiddenProps>()(styled.header)`
 		cursor: default;
 		font-size: 0.8em;
 		flex: 1 1 0;
-		padding: 2px 6px 0 6px;
+		padding: 0 6px 0 6px;
 		margin: 0;
 		font-family: sans-serif;
 		font-weight: bold;
@@ -107,12 +108,20 @@ const HeaderButton = styled.button`
 	cursor: pointer;
 
 	&:active,
-	&:hover {
+	&:hover,
+	&:focus {
 		background-color: #1c2f42;
 	}
 
 	&:focus {
 		outline: none;
+	}
+
+	img {
+		position: relative;
+		top: -1px;
+		vertical-align: middle;
+		filter: invert();
 	}
 `;
 
@@ -121,9 +130,7 @@ const CopyButton = HeaderButton.extend`
 	cursor: copy;
 `;
 
-const HideButton = HeaderButton.extend`
-	font-size: 1.5em;
-`;
+const HideButton = HeaderButton.extend``;
 
 const ShowButton = HeaderButton.extend``;
 
@@ -319,7 +326,7 @@ class DeckList extends React.Component<
 										this.props.onCollapsed(false);
 									}}
 								>
-									➕
+									<img src={ExpandIcon} />
 								</ShowButton>
 							) : (
 								<HideButton
@@ -327,7 +334,7 @@ class DeckList extends React.Component<
 										this.props.onCollapsed(true);
 									}}
 								>
-									×
+									<img src={CollapseIcon} />
 								</HideButton>
 							)}
 						</Header>

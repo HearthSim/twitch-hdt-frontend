@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Upgraded data protocol   
   *This separates cards in the deck list that are both in the initial deck and created during the game*
+- Improved deck list icons
 
 ### Fixed
 - Fixed deck list resetting the collapsed state whenever a game ends
