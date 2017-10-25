@@ -6,22 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- Added deck list animations
+- Added pin/unpin behaviour to deck list  
+  *The deck list will now vanish if it's unpinned and the mouse is either offstream or kept still*
+- Added flash effect to changing cards in deck list
 
 ### Changed
-- Upgraded data protocol   
-  *This separates cards in the deck list that are both in the initial deck and created during the game*
+- Improved the scaling behaviour of the deck list
+- Improved connection setup
 - Improved deck list icons
 - Updated Hearthstone Deck Tracker download url
-- Improved setup guide
-- Improved the scaling behaviour of the deck list
-- Changed deck list collapse/expand behaviour to pin/unpin  
-  *Deck list will completely vanish if mouse is unpinned and either offstream or kept still*
 
 ### Fixed
-- Fixed deck list resetting the collapsed state whenever a game ends
-- Fixed icon colors in Firefox
+- Fixed deck list resetting itself whenever a game ends
+- Fixed cards appearing as created if they were in the initial deck but also created
+- Fixed black icons in Firefox
 - Fixed focus lingering on "Copy deck" button
+
+### Removed
+- Removed deck list collapsing as it can now be unpinned 
 
 ## [0.0.2] - 2017-10-11
 ### Added
