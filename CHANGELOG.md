@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Improved deck list icons
 - Updated Hearthstone Deck Tracker download url
 - Improved setup guide
+- Improved the scaling behaviour of the deck list
 
 ### Fixed
 - Fixed deck list resetting the collapsed state whenever a game ends

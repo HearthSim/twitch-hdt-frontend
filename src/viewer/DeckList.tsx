@@ -51,8 +51,7 @@ interface HiddenProps {
 }
 
 const Wrapper = withProps<PositionProps>()(styled.div)`
-	width: 25vh;
-	max-width: 240px;
+	width: 240px;
 	position: absolute;
 	left: ${props =>
 		props.position === DecklistPosition.TOP_LEFT ? "0.75vh" : "unset"};
@@ -142,7 +141,7 @@ const CardList = styled.ul`
 	flex-direction: column;
 
 	// scaling
-	transform-origin: top;
+	transform-origin: top right;
 `;
 
 const CopyDeckButton = styled.button`
@@ -287,18 +286,11 @@ class DeckList extends React.Component<
 			return [card[1], card[2], card[3]];
 		});
 
-		let scaleY = this.state.scale || 1;
-		let scaleX = 1;
-
-		if (scaleY < 0.9) {
-			scaleX -= Math.pow(0.9 - scaleY, 2);
-		}
-
 		return (
 			<Wrapper position={position} innerRef={ref => (this.ref = ref)}>
 				<CardList
 					style={{
-						transform: `scale(${scaleX}, ${scaleY})`,
+						transform: `scale(${this.state.scale || 1})`,
 					}}
 				>
 					<li>
