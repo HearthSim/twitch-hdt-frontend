@@ -4,7 +4,7 @@ import { CardsProps, withCards } from "../utils/cards";
 import Entity from "./Entity";
 import gift from "./gift.png";
 
-interface CardTileProps extends React.ClassAttributes<Card> {
+interface CardTileProps extends React.ClassAttributes<CardTile> {
 	dbfId: number;
 	count?: number;
 	gift?: boolean;
@@ -12,7 +12,7 @@ interface CardTileProps extends React.ClassAttributes<Card> {
 	tooltipDisabled?: boolean;
 }
 
-class Card extends React.Component<CardTileProps & CardsProps, {}> {
+class CardTile extends React.Component<CardTileProps & CardsProps> {
 	render() {
 		const card = this.props.cards.getByDbfId(this.props.dbfId);
 		if (!card || !card.id) {
@@ -42,4 +42,4 @@ class Card extends React.Component<CardTileProps & CardsProps, {}> {
 	}
 }
 
-export default withCards(Card);
+export default withCards(CardTile);
