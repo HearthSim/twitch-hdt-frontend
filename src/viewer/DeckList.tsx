@@ -316,6 +316,10 @@ class DeckList extends React.Component<
 											}, 3000);
 										});
 									});
+									const target = document.activeElement as HTMLElement;
+									if (target && typeof target.blur === "function") {
+										target.blur();
+									}
 								}}
 							>
 								<img src={CopyDeckIcon} />
