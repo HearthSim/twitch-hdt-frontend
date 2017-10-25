@@ -120,7 +120,7 @@ const HeaderButton = styled.button`
 		position: relative;
 		top: -1px;
 		vertical-align: middle;
-		filter: invert();
+		filter: invert(100%);
 	}
 `;
 

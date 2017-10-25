@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Fixed deck list resetting the collapsed state whenever a game ends
+- Fixed icon colors in Firefox
 
 ## [0.0.2] - 2017-10-11
 ### Added

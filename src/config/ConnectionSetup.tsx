@@ -47,7 +47,7 @@ const BigFriendlyButton = styled.button`
 		background-color: black;
 
 		& > img {
-			filter: invert();
+			filter: invert(100%);
 		}
 	}
 
