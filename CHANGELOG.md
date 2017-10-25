@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added pin/unpin behaviour to deck list  
   *The deck list will now vanish if it's unpinned and the mouse is either offstream or kept still*
 - Added flash effect to changing cards in deck list
+- Added tooltip for remaining cards in deck
 
 ### Changed
 - Improved the scaling behaviour of the deck list

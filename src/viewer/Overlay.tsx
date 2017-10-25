@@ -137,6 +137,20 @@ const Weapon = withProps<PositionProps>()(OverlayElement.extend)`
 	clip-path: circle(50% at 50% 50%);
 `;
 
+const Deck = withProps<PositionProps>()(OverlayElement.extend)`
+	top: ${(props: any) => props.top || "unset"};
+	right: ${(props: any) => props.right || "unset"};
+	bottom: ${(props: any) => props.bottom || "unset"};
+	width: 6vh;
+	height: 15vh;
+	transform: rotate(-1deg);
+`;
+
+const Expander = styled.div`
+	width: 100%;
+	height: 100%;
+`;
+
 const DeckListBounds = withProps<PositionProps>()(styled.div)`
 	position: absolute;
 	top: ${props => props.top || "100px"};
@@ -359,6 +373,34 @@ class Overlay extends React.Component<
 				<Weapon bottom={"16.8vh"} left={"64.25vh"}>
 					<Entity dbfId={player.weapon || null} />
 				</Weapon>
+				<Deck top={"24vh"} right={"24vh"}>
+					<Expander
+						title={
+							opponent.deck
+								? opponent.deck.size
+									? `${opponent.deck.size} card${+opponent.deck.size !== 1
+											? "s"
+											: ""} remaining`
+									: `Out of cards! Next draw fatigues for ${(opponent.fatigue ||
+											0) + 1} damage.`
+								: ""
+						}
+					/>
+				</Deck>
+				<Deck bottom={"33vh"} right={"24vh"}>
+					<Expander
+						title={
+							player.deck
+								? player.deck.size
+									? `${player.deck.size} card${+player.deck.size !== 1
+											? "s"
+											: ""} remaining`
+									: `Out of cards! Next draw fatigues for ${(player.fatigue ||
+											0) + 1} damage.`
+								: ""
+						}
+					/>
+				</Deck>
 			</Wrapper>
 		);
 	}
