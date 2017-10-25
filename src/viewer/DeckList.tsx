@@ -8,7 +8,7 @@ import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
 import { copy } from "clipboard-js";
 import { BoardStateDeckCard } from "../twitch-hdt";
-import { CollapseIcon, CopyDeckIcon, ExpandIcon } from "./icons";
+import { CopyDeckIcon, PinIcon, UnpinIcon } from "./icons";
 
 interface DeckListProps extends React.ClassAttributes<DeckList> {
 	cardList: BoardStateDeckCard[];
@@ -17,8 +17,9 @@ interface DeckListProps extends React.ClassAttributes<DeckList> {
 	hero?: number;
 	format?: number;
 	showRarities?: boolean;
-	collapsed?: boolean;
-	onCollapsed: (collapsed: boolean) => void;
+	pinned?: boolean;
+	onPinned: (pinned: boolean) => void;
+	hidden?: boolean;
 }
 
 interface DeckListState {
@@ -46,20 +47,25 @@ interface PositionProps {
 	position: DecklistPosition;
 }
 
-interface HiddenProps {
-	hidden?: boolean;
+interface OpacityProps {
+	opacity?: number;
 }
 
-const Wrapper = withProps<PositionProps>()(styled.div)`
+const Wrapper = withProps<PositionProps & OpacityProps>()(styled.div)`
 	width: 240px;
 	position: absolute;
 	left: ${props =>
 		props.position === DecklistPosition.TOP_LEFT ? "0.75vh" : "unset"};
 	right: ${props =>
 		props.position === DecklistPosition.TOP_RIGHT ? "0.75vh" : "unset"};
+
+	opacity: ${(props: OpacityProps) =>
+		typeof props.opacity === "number" ? props.opacity : 1};
+	transition: opacity ${(props: OpacityProps) =>
+		(props.opacity || 0) > 0.5 ? `0.25s ease-out` : `1.5s ease-in`};
 `;
 
-const Header = withProps<HiddenProps>()(styled.header)`
+const Header = styled.header`
 	width: 100%;
 	text-align: center;
 	color: white;
@@ -70,9 +76,6 @@ const Header = withProps<HiddenProps>()(styled.header)`
 	flex-direction: row;
 	align-items: center;
 	border: solid 1px black;
-
-	opacity: ${props => (props.hidden ? "0.5" : "1")};
-	transition: opacity 0.7s;
 
 	&:hover {
 		opacity: 1;
@@ -86,7 +89,8 @@ const Header = withProps<HiddenProps>()(styled.header)`
 		margin: 0;
 		font-family: sans-serif;
 		font-weight: bold;
-		text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+		text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+			1px 1px 0 #000;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -287,14 +291,18 @@ class DeckList extends React.Component<
 		});
 
 		return (
-			<Wrapper position={position} innerRef={ref => (this.ref = ref)}>
+			<Wrapper
+				position={position}
+				opacity={this.props.hidden ? 0 : this.props.pinned ? 1 : 0.85}
+				innerRef={ref => (this.ref = ref)}
+			>
 				<CardList
 					style={{
 						transform: `scale(${this.state.scale || 1})`,
 					}}
 				>
 					<li>
-						<Header hidden={this.props.collapsed}>
+						<Header>
 							<h1>
 								{this.state.copied ? "Copied!" : this.props.name || "Unnamed"}
 							</h1>
@@ -312,42 +320,40 @@ class DeckList extends React.Component<
 							>
 								<img src={CopyDeckIcon} />
 							</CopyButton>
-							{this.props.collapsed ? (
+							{this.props.pinned ? (
 								<ShowButton
 									onClick={() => {
-										this.props.onCollapsed(false);
+										this.props.onPinned(false);
 									}}
 								>
-									<img src={ExpandIcon} />
+									<img src={PinIcon} />
 								</ShowButton>
 							) : (
 								<HideButton
 									onClick={() => {
-										this.props.onCollapsed(true);
+										this.props.onPinned(true);
 									}}
 								>
-									<img src={CollapseIcon} />
+									<img src={UnpinIcon} />
 								</HideButton>
 							)}
 						</Header>
 					</li>
-					{!this.props.collapsed
-						? cards
-								.map((card: Triplet, index: number) => {
-									const [dbfId, current, initial] = card;
-									return (
-										<li key={index}>
-											<CardTile
-												dbfId={dbfId}
-												count={current}
-												showRarity={this.props.showRarities}
-												gift={initial === 0}
-											/>
-										</li>
-									);
-								})
-								.filter(x => !!x)
-						: null}
+					{cards
+						.map((card: Triplet, index: number) => {
+							const [dbfId, current, initial] = card;
+							return (
+								<li key={index}>
+									<CardTile
+										dbfId={dbfId}
+										count={current}
+										showRarity={this.props.showRarities}
+										gift={initial === 0}
+									/>
+								</li>
+							);
+						})
+						.filter(x => !!x)}
 				</CardList>
 			</Wrapper>
 		);

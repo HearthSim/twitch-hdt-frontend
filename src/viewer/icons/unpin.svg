@@ -1,0 +1,4 @@
+<svg aria-labelledby="unpin-decklist-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <title id="unpin-decklist-icon">Unpin deck list</title>
+    <circle cx="12" cy="12" r="6.5" fill="none" stroke="black" stroke-width="3"/>
+</svg>

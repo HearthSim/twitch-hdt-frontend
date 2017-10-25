@@ -152,7 +152,8 @@ const DeckListBounds = withProps<PositionProps>()(styled.div)`
 `;
 
 interface OverlayState {
-	collapseDeck?: boolean;
+	hovering?: boolean;
+	pinDeck?: boolean;
 }
 
 class Overlay extends React.Component<
@@ -160,12 +161,36 @@ class Overlay extends React.Component<
 	OverlayState
 > {
 	portal: HTMLDivElement | null;
+	movementTimeout: number;
 
 	constructor(props: OverlayProps & TwitchExtProps, context: any) {
 		super(props, context);
 		this.state = {
-			collapseDeck: false,
+			hovering: true,
+			pinDeck: true,
 		};
+	}
+
+	componentDidMount(): void {
+		this.refreshMovementTimeout();
+	}
+
+	clearMovementTimeout() {
+		if (!this.movementTimeout) {
+			return;
+		}
+		window.clearTimeout(this.movementTimeout);
+	}
+
+	refreshMovementTimeout() {
+		this.clearMovementTimeout();
+		this.movementTimeout = window.setTimeout(() => {
+			this.setState({ hovering: false });
+		}, 2500);
+	}
+
+	componentWillUnmount(): void {
+		this.clearMovementTimeout();
 	}
 
 	public renderBoard(dbfIds: number[]): any {
@@ -245,7 +270,17 @@ class Overlay extends React.Component<
 			);
 
 		return (
-			<Wrapper>
+			<Wrapper
+				onMouseEnter={() => {
+					this.setState({ hovering: true });
+				}}
+				onMouseMove={() => {
+					this.refreshMovementTimeout();
+				}}
+				onMouseLeave={() => {
+					this.setState({ hovering: false });
+				}}
+			>
 				<Portal innerRef={(ref: any) => (this.portal = ref)} />
 				{hideDecklist ? null : (
 					<DeckListBounds
@@ -268,10 +303,11 @@ class Overlay extends React.Component<
 							format={player.deck && player.deck.format}
 							showRarities={false}
 							position={this.props.config.deck_position as DecklistPosition}
-							collapsed={!!this.state.collapseDeck}
-							onCollapsed={(collapseDeck: boolean) => {
-								this.setState({ collapseDeck });
+							pinned={!!this.state.pinDeck}
+							onPinned={(pinDeck: boolean) => {
+								this.setState({ pinDeck });
 							}}
+							hidden={!this.state.pinDeck && !this.state.hovering}
 						/>
 					</DeckListBounds>
 				)}

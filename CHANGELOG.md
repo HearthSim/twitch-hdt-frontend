@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Updated Hearthstone Deck Tracker download url
 - Improved setup guide
 - Improved the scaling behaviour of the deck list
+- Changed deck list collapse/expand behaviour to pin/unpin  
+  *Deck list will completely vanish if mouse is unpinned and either offstream or kept still*
 
 ### Fixed
 - Fixed deck list resetting the collapsed state whenever a game ends
