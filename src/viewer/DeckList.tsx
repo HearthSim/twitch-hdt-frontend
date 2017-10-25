@@ -349,6 +349,7 @@ class DeckList extends React.Component<
 										count={current}
 										showRarity={this.props.showRarities}
 										gift={initial === 0}
+										tooltipDisabled={this.props.hidden}
 									/>
 								</li>
 							);

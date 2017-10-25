@@ -17,6 +17,7 @@ const EntityDiv = styled.div`
 interface EntityProps extends React.ClassAttributes<Entity> {
 	dbfId: number | null;
 	flipped?: boolean;
+	disabled?: boolean;
 }
 
 interface EntityState {
@@ -49,7 +50,13 @@ class Entity extends React.Component<
 		const card = this.props.cards.getByDbfId(this.props.dbfId);
 
 		let tooltip = null;
-		if (this.state.isHovering && this.props.portal && card && card.id) {
+		if (
+			this.state.isHovering &&
+			!this.props.disabled &&
+			this.props.portal &&
+			card &&
+			card.id
+		) {
 			tooltip = (ReactDOM as any).createPortal(
 				<Card
 					dbfId={this.props.dbfId}

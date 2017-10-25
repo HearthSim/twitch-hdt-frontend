@@ -9,6 +9,7 @@ interface CardTileProps extends React.ClassAttributes<Card> {
 	count?: number;
 	gift?: boolean;
 	showRarity?: boolean;
+	tooltipDisabled?: boolean;
 }
 
 class Card extends React.Component<CardTileProps & CardsProps, {}> {
@@ -18,7 +19,7 @@ class Card extends React.Component<CardTileProps & CardsProps, {}> {
 			return <div>Invalid card</div>;
 		}
 		return (
-			<Entity dbfId={this.props.dbfId}>
+			<Entity dbfId={this.props.dbfId} disabled={this.props.tooltipDisabled}>
 				<ComponentCardTile
 					id={card.id}
 					name={card.name || ""}
