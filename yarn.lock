@@ -3398,6 +3398,10 @@ react-hot-loader@^3.0.0-beta.7:
   version "0.0.6"
   resolved "https://libs.hearthsim.net/react-hs-components-v0.0.6.tgz#b85d93d3128db726d8205abe820a743b4e75375d"
 
+"react-hs-components@https://libs.hearthsim.net/react-hs-components-v0.1.0.tgz":
+  version "0.1.0"
+  resolved "https://libs.hearthsim.net/react-hs-components-v0.1.0.tgz#97faea7d5b09e0b7381155877ba412b5634e6e34"
+
 react-proxy@^3.0.0-alpha.0:
   version "3.0.0-alpha.1"
   resolved "https://registry.yarnpkg.com/react-proxy/-/react-proxy-3.0.0-alpha.1.tgz#4400426bcfa80caa6724c7755695315209fa4b07"

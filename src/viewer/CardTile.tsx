@@ -31,6 +31,7 @@ class Card extends React.Component<CardTileProps & CardsProps, {}> {
 					}
 					icon={this.props.gift ? gift : undefined}
 					disabled={this.props.count === 0}
+					animated
 					showRarity={this.props.showRarity}
 					fontFamily={"sans-serif"}
 					fontWeight={"bold"}
