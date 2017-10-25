@@ -1,0 +1,31 @@
+<svg
+	aria-labelledby="copy-deck-icon"
+	role="img"
+	viewBox="0 0 24 24"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+    <title id="copy-deck-icon">Copy deck</title>
+	<defs>
+		<g id="decklist">
+			<rect
+				fill="none"
+				stroke="black"
+				stroke-width="2"
+				width="10"
+				height="16"
+				x="1"
+				y="1"
+			/>
+			<rect
+				fill="black"
+				width="10"
+				height="3"
+				x="1"
+				y="1"
+			/>
+		</g>
+	</defs>
+	<use xlink:href="#decklist" x="3" y="5"/>
+	<use xlink:href="#decklist" x="8" y="0"/>
+</svg>

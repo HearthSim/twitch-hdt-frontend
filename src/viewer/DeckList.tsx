@@ -8,7 +8,7 @@ import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
 import { copy } from "clipboard-js";
 import { BoardStateDeckCard } from "../twitch-hdt";
-import { CollapseIcon, ExpandIcon } from "./icons";
+import { CollapseIcon, CopyDeckIcon, ExpandIcon } from "./icons";
 
 interface DeckListProps extends React.ClassAttributes<DeckList> {
 	cardList: BoardStateDeckCard[];
@@ -318,7 +318,7 @@ class DeckList extends React.Component<
 									});
 								}}
 							>
-								✂
+								<img src={CopyDeckIcon} />
 							</CopyButton>
 							{this.props.collapsed ? (
 								<ShowButton
