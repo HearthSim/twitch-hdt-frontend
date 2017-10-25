@@ -93,6 +93,11 @@ const TrackerInstructions = styled.code`
 	margin: 0.4em 0 3em 0;
 `;
 
+const InstructionImage = styled.img`
+	border: 1px solid gray;
+	margin: 1em 0 0 0;
+`;
+
 export default class ConnectionSetup extends React.Component<
 	ConnectionSetupProps,
 	{}
@@ -122,7 +127,7 @@ export default class ConnectionSetup extends React.Component<
 							<SuccessMessage>
 								Setup complete!<br />Return to the Extension Manager to enable
 								the Overlay:
-								<img src={ActivateImage} />
+								<InstructionImage src={ActivateImage} />
 							</SuccessMessage>
 						</CenterParagraph>
 						<p>
