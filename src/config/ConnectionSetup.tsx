@@ -180,7 +180,7 @@ export default class ConnectionSetup extends React.Component<
 				<p>Download and connect Hearthstone Deck Tracker.</p>
 				<CenterParagraph>
 					<DownloadLink
-						href={"https://hsdecktracker.net/download-twitch/"}
+						href={"https://hsdecktracker.net/download/"}
 						target={"_blank"}
 					>
 						<Icon src={WindowsIcon} />
