@@ -26,7 +26,7 @@ interface InstallerState {}
 const Wrapper = styled.div`
 	font-family: "Helvetica Neue", helvetica;
 	width: 100vw;
-	height: 100vh;
+	min-height: 100vh;
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
