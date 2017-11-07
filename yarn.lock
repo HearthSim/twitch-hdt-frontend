@@ -2122,9 +2122,9 @@ he@1.1.x:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-hearthstonejson@^0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/hearthstonejson/-/hearthstonejson-0.6.6.tgz#72870cd953b474c05faccb673a4716031126990b"
+hearthstonejson@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/hearthstonejson/-/hearthstonejson-0.7.0.tgz#1a5130b3cc186cfe02d14992c62917d065a60c51"
   dependencies:
     isomorphic-fetch "^2.2.1"
 

@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import HearthstoneJSON, { CardData as HSJSONCard } from "hearthstonejson";
 import { makeHOC } from "./hocs";
 
-type Card = HSJSONCard & { dbfId: number }; // see HearthSim/npm-hearthstonejson#6
+type Card = HSJSONCard;
 
 export interface CardsProps {
 	cards: Cards;
@@ -28,9 +28,14 @@ export class HearthstoneJSONCards implements Cards {
 
 	fetch(): Promise<void> {
 		return new HearthstoneJSON().getLatest().then((c: Card[]) => {
-			c.map(card => {
-				this._cards[card.dbfId] = card;
-			});
+			c
+				.map(card => {
+					if (card.dbfId) {
+						this._cards[card.dbfId] = card;
+					}
+					return null;
+				})
+				.filter(x => x !== null);
 		});
 	}
 
