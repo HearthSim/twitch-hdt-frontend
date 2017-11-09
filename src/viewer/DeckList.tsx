@@ -168,7 +168,7 @@ class DeckList extends React.Component<
 	copiedTimeout: number | null;
 	ref: HTMLDivElement;
 
-	constructor(props: DeckListProps & CardsProps, context: any) {
+	constructor(props: DeckListProps & CardsProps, context?: any) {
 		super(props, context);
 		this.state = {
 			scale: 1,

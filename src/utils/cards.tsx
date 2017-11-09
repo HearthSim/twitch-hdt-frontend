@@ -58,7 +58,7 @@ export class CardsProvider extends React.Component<
 		cards: PropTypes.object.isRequired,
 	};
 
-	constructor(props: CardsProviderProps, context: any) {
+	constructor(props: CardsProviderProps, context?: any) {
 		super(props, context);
 		this.state = {
 			cards: new EmptyCards(),

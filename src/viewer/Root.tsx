@@ -22,7 +22,7 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 	queue: AsyncQueue<Message>;
 	timeout: number | null;
 
-	constructor(props: RootProps) {
+	constructor(props: RootProps, context?: any) {
 		super(props);
 		this.state = {
 			boardState: null,

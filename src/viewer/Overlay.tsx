@@ -177,7 +177,7 @@ class Overlay extends React.Component<
 	portal: HTMLDivElement | null;
 	movementTimeout: number;
 
-	constructor(props: OverlayProps & TwitchExtProps, context: any) {
+	constructor(props: OverlayProps & TwitchExtProps, context?: any) {
 		super(props, context);
 		this.state = {
 			hovering: true,

@@ -33,7 +33,7 @@ class Entity extends React.Component<
 > {
 	ref: HTMLDivElement | null;
 
-	constructor(props: EntityProps & CardsProps & PortalProps, context: any) {
+	constructor(props: EntityProps & CardsProps & PortalProps, context?: any) {
 		super(props, context);
 		this.state = {
 			isHovering: false,

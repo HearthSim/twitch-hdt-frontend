@@ -16,7 +16,7 @@ interface RootState {
 }
 
 export default class Root extends React.Component<RootProps, RootState> {
-	constructor(props: RootProps, context: any) {
+	constructor(props: RootProps, context?: any) {
 		super(props, context);
 		this.state = {
 			authToken: null,

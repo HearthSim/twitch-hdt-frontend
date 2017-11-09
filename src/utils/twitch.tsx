@@ -21,7 +21,7 @@ export class TwitchExtProvider extends React.Component<
 		twitchExtContext: PropTypes.object,
 	};
 
-	constructor(props: TwitchExtProviderProps, context: any) {
+	constructor(props: TwitchExtProviderProps, context?: any) {
 		super(props, context);
 		this.state = {
 			context: null,
