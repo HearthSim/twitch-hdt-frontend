@@ -3,6 +3,8 @@
 
 This repository contains the official Twitch extension for Hearthstone Deck Tracker.
 
+Follow the [setup guide](https://hsdecktracker.net/twitch/setup/) to add the extension to your channel.
+
 ## Development
 
 - Install dependencies: `yarn install`
