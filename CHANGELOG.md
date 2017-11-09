@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed focus lingering on "Copy deck" button
 
 ### Removed
-- Removed deck list collapsing as it can now be unpinned 
+- Removed deck list collapsing as it can now be unpinned
 
 ## [0.0.2] - 2017-10-11
 ### Added
