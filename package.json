@@ -19,7 +19,6 @@
 		"lint": "prettier --list-different \"{src/**/*.ts{,x},*.js}\""
 	},
 	"dependencies": {
-		"@types/clipboard-js": "^0.3.2",
 		"@types/prop-types": "^15.5.2",
 		"@types/react": "^16.0.7",
 		"@types/react-dom": "^16.0.1",
@@ -33,7 +32,7 @@
 		"babel-preset-env": "^1.6.0",
 		"babel-preset-react": "^6.24.1",
 		"clean-webpack-plugin": "^0.1.17",
-		"clipboard-js": "^0.3.5",
+		"clipboard-polyfill": "^2.3.0",
 		"cross-env": "^5.0.5",
 		"deckstrings": "^1.1.0",
 		"file-loader": "^1.1.4",

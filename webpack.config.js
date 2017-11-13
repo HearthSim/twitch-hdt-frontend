@@ -10,7 +10,7 @@ const plugins = [];
 const bundlePath = "js/";
 const vendorLibraries = [
 	"babel-polyfill",
-	"clipboard-js",
+	"clipboard-polyfill",
 	"deckstrings",
 	"hearthstonejson",
 	"prop-types",

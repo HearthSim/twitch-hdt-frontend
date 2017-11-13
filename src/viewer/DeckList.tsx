@@ -6,7 +6,7 @@ import CardTile from "./CardTile";
 import styled from "styled-components";
 import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
-import { copy } from "clipboard-js";
+import clipboard from "clipboard-polyfill";
 import { BoardStateDeckCard } from "../twitch-hdt";
 import { CopyDeckIcon, PinIcon, UnpinIcon } from "./icons";
 
@@ -308,7 +308,7 @@ class DeckList extends React.Component<
 							</h1>
 							<CopyButton
 								onClick={() => {
-									copy(this.getDeckstring()).then(() => {
+									clipboard.writeText(this.getDeckstring()).then(() => {
 										this.setState({ copied: true }, () => {
 											this.clearTimeout();
 											this.copiedTimeout = window.setTimeout(() => {
