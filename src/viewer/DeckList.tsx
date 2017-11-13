@@ -190,19 +190,20 @@ class DeckList extends React.Component<
 				const [dbfId, current, initial] = card;
 				return [dbfId, initial];
 			})
-			.reduce<
-				[number, number][]
-			>((result: [number, number][], card: [number, number]) => {
-				result = result.slice(0);
-				for (let i = 0; i < result.length; i++) {
-					if (result[i][0] === card[0]) {
-						result[i][1] += card[1];
-						return result;
+			.reduce<[number, number][]>(
+				(result: [number, number][], card: [number, number]) => {
+					result = result.slice(0);
+					for (let i = 0; i < result.length; i++) {
+						if (result[i][0] === card[0]) {
+							result[i][1] += card[1];
+							return result;
+						}
 					}
-				}
-				// new card, append
-				return result.concat([card]);
-			}, []);
+					// new card, append
+					return result.concat([card]);
+				},
+				[],
+			);
 		const deckDescription = {
 			cards: initialCards,
 			heroes: [this.props.hero],

@@ -6,7 +6,7 @@ import { TwitchExtProvider } from "../utils/twitch";
 import { CardsProvider } from "../utils/cards";
 
 const rootElement = document.getElementById("root");
-const render = (Component: React.ComponentClass) => {
+const render = (Component: React.ComponentClass<any>) => {
 	ReactDOM.render(
 		<AppContainer>
 			<TwitchExtProvider>

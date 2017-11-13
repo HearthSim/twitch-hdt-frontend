@@ -7,10 +7,10 @@ import { ValidationMap } from "prop-types";
  */
 export const makeHOC = <PInject extends {}>(
 	contextTypes: ValidationMap<any>,
-) => <P, S>(
+) => <P extends {}>(
 	Component: React.ComponentClass<P & PInject>,
 ): React.ComponentClass<P> =>
-	class GenericHOC extends React.Component<P & PInject, S> {
+	class GenericHOC extends React.Component<P> {
 		static displayName = `${Object.keys(contextTypes)
 			.map(capitalize)
 			.join("")}HOC`;

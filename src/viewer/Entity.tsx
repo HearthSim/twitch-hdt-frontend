@@ -93,7 +93,8 @@ class Entity extends React.Component<
 						isHovering: false,
 						x: null,
 						y: null,
-					})}
+					})
+				}
 				innerRef={(ref: HTMLDivElement | null) => (this.ref = ref)}
 			>
 				{tooltip}

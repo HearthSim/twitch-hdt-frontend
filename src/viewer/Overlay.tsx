@@ -378,9 +378,9 @@ class Overlay extends React.Component<
 						title={
 							opponent.deck
 								? opponent.deck.size
-									? `${opponent.deck.size} card${+opponent.deck.size !== 1
-											? "s"
-											: ""} remaining`
+									? `${opponent.deck.size} card${
+											+opponent.deck.size !== 1 ? "s" : ""
+										} remaining`
 									: `Out of cards! Next draw fatigues for ${(opponent.fatigue ||
 											0) + 1} damage.`
 								: ""
@@ -392,9 +392,9 @@ class Overlay extends React.Component<
 						title={
 							player.deck
 								? player.deck.size
-									? `${player.deck.size} card${+player.deck.size !== 1
-											? "s"
-											: ""} remaining`
+									? `${player.deck.size} card${
+											+player.deck.size !== 1 ? "s" : ""
+										} remaining`
 									: `Out of cards! Next draw fatigues for ${(player.fatigue ||
 											0) + 1} damage.`
 								: ""

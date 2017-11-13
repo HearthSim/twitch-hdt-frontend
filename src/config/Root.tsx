@@ -132,7 +132,8 @@ export default class Root extends React.Component<RootProps, RootState> {
 			Object.keys(received)
 				.filter(k => !!received[k])
 				.forEach(
-					(k: keyof EBSConfiguration) => (configuration[k] = received[k]),
+					(k: string) =>
+						(configuration[k as keyof EBSConfiguration] = received[k]),
 				);
 			this.setState({
 				configuration,
