@@ -1,16 +1,21 @@
 language: node_js
-cache: yarn
 node_js:
   - "node"
-jobs:
+env: SCRIPT=build
+matrix:
   include:
-    - stage: build
-      script: yarn build
-    - stage: lint
-      script: yarn lint
+    - node_js: "node"
+    - node_js: "node"
+      env: SCRIPT=lint
+cache:
+  yarn: true
+  directories:
+    - node_modules
 install:
   - npm install -g yarn
   - yarn --pure-lockfile
+script:
+  - yarn run $SCRIPT
 notifications:
   email:
     on_failure: always
