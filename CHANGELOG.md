@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 - Updated Hearthstone Deck Tracker download url
+- Updated connectivity error message in setup
 
 ### Fixed
 - Fixed left panel in configuration screen overflowing

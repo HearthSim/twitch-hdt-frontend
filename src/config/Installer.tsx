@@ -104,6 +104,11 @@ export default class Installer extends React.Component<
 				return (
 					<MessageWrapper>
 						<p>Unable to reach extension backend service</p>
+						<p>
+							Please check your browser addons, or if this persists, contact us
+							at{" "}
+							<a href="mailto:support@hearthsim.net">support@hearthsim.net</a>.
+						</p>
 					</MessageWrapper>
 				);
 			}
