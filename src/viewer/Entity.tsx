@@ -8,7 +8,7 @@ import { PortalProps, withPortal } from "../utils/portal";
 const EntityDiv = styled.div`
 	width: 100%;
 	height: 100%;
-	cursor: default;
+	cursor: inherit;
 	-webkit-font-smoothing: antialiased;
 	-webkit-backface-visibility: hidden;
 	-moz-osx-font-smoothing: grayscale;
