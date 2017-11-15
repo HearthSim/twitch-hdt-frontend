@@ -9,6 +9,7 @@ import { withProps } from "../utils/styled";
 import clipboard from "clipboard-polyfill";
 import { BoardStateDeckCard } from "../twitch-hdt";
 import { CopyDeckIcon, PinIcon, UnpinIcon } from "./icons";
+const isEqual = require("lodash.isequal"); // see https://github.com/Microsoft/TypeScript/issues/5073
 
 interface DeckListProps extends React.ClassAttributes<DeckList> {
 	cardList: BoardStateDeckCard[];
@@ -383,7 +384,7 @@ class DeckList extends React.Component<
 		prevProps: DeckListProps & CardsProps,
 		prevState: DeckListState,
 	) {
-		if (prevProps.cardList !== this.props.cardList) {
+		if (isEqual(prevProps.cardList, this.props.cardList)) {
 			return;
 		}
 		this.resize();

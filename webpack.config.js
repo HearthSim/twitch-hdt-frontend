@@ -13,6 +13,7 @@ const vendorLibraries = [
 	"clipboard-polyfill",
 	"deckstrings",
 	"hearthstonejson",
+	"lodash.isequal",
 	"prop-types",
 	"react",
 	"react-dom",
