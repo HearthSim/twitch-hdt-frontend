@@ -290,6 +290,7 @@ class Overlay extends React.Component<
 				}}
 				onMouseMove={() => {
 					this.refreshMovementTimeout();
+					this.setState({ hovering: true });
 				}}
 				onMouseLeave={() => {
 					this.setState({ hovering: false });
