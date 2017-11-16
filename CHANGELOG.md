@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed left panel in configuration screen overflowing
 - Fixed deck list not reappearing after mouse is kept still
 - Fixed too much whitespace when deck list was aligned to left
+- Fixed typo in setup
 
 ## [0.1.0] - 2017-10-26
 ### Added

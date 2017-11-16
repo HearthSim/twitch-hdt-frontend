@@ -95,8 +95,9 @@ export default class OverlaySetup extends React.Component<OverlaySetupProps> {
 									Show deck list
 								</label>
 								<p>
-									Let's your viewers see the remaining cards in your deck, hover
-									over single cards and copy your deck to their clipboard.
+									Lets your viewers see the remaining cards in your deck, hover
+									over single cards and copy your deck to their clipboard.<br />
+									Viewers can hide and move the deck list for themselves.
 								</p>
 							</li>
 							<li>
