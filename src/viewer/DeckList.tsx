@@ -155,7 +155,7 @@ const HideButton = HeaderButton.extend``;
 
 const ShowButton = HeaderButton.extend``;
 
-const CardList = withProps<{ moving?: boolean }>()(styled.ul)`
+const CardList = withProps<{ moving?: boolean; left: boolean }>()(styled.ul)`
 	margin: 0;
 	list-style-type: none;
 	padding-left: 0;
@@ -166,7 +166,7 @@ const CardList = withProps<{ moving?: boolean }>()(styled.ul)`
 	cursor: ${props => (props.moving ? "grabbing" : "grab")};
 
 	// scaling
-	transform-origin: top right;
+	transform-origin: ${props => (props.left ? "top left" : "top right")};
 `;
 
 const CopyDeckButton = styled.button`
@@ -375,6 +375,7 @@ class DeckList extends React.Component<
 						this.props.onMoveEnd && this.props.onMoveEnd(e);
 					}}
 					moving={this.props.moving}
+					left={this.props.position === "topleft"}
 				>
 					<li>
 						<Header>
