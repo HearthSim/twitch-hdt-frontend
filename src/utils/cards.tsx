@@ -3,14 +3,14 @@ import * as PropTypes from "prop-types";
 import HearthstoneJSON, { CardData as HSJSONCard } from "hearthstonejson";
 import { makeHOC } from "./hocs";
 
-type Card = HSJSONCard;
+export type CardDefinition = HSJSONCard;
 
 export interface CardsProps {
 	cards: Cards;
 }
 
 export interface Cards {
-	getByDbfId(dbfId: number): Card | null;
+	getByDbfId(dbfId: number): CardDefinition | null;
 }
 
 export class EmptyCards implements Cards {
@@ -20,14 +20,14 @@ export class EmptyCards implements Cards {
 }
 
 export class HearthstoneJSONCards implements Cards {
-	_cards: { [dbfId: number]: Card };
+	_cards: { [dbfId: number]: CardDefinition };
 
 	constructor() {
 		this._cards = {};
 	}
 
 	fetch(): Promise<void> {
-		return new HearthstoneJSON().getLatest().then((c: Card[]) => {
+		return new HearthstoneJSON().getLatest().then((c: CardDefinition[]) => {
 			c
 				.map(card => {
 					if (card.dbfId) {
@@ -39,7 +39,7 @@ export class HearthstoneJSONCards implements Cards {
 		});
 	}
 
-	getByDbfId(dbfId: number): Card | null {
+	getByDbfId(dbfId: number): CardDefinition | null {
 		return this._cards[dbfId];
 	}
 }

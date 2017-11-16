@@ -28,18 +28,31 @@ interface DeckListState {
 	copied?: boolean;
 }
 
-function cardSorting(a: CardData, b: CardData, direction = 1): number {
-	if ((a.cost || 0) > (b.cost || 0)) {
-		return direction;
-	}
-	if ((a.cost || 0) < (b.cost || 0)) {
-		return -direction;
-	}
-	if ((a.name || "") > (b.name || "")) {
-		return direction;
-	}
-	if ((a.name || "") < (b.name || "")) {
-		return -direction;
+function cardSorting(
+	a: CardData | null,
+	b: CardData | null,
+	direction = 1,
+): number {
+	if (a !== null && b !== null) {
+		if ((a.cost || 0) > ((b && b.cost) || 0)) {
+			return direction;
+		}
+		if ((a.cost || 0) < (b.cost || 0)) {
+			return -direction;
+		}
+		if ((a.name || "") > (b.name || "")) {
+			return direction;
+		}
+		if ((a.name || "") < (b.name || "")) {
+			return -direction;
+		}
+	} else {
+		if (a !== null && b === null) {
+			return direction;
+		}
+		if (a === null && b !== null) {
+			return -direction;
+		}
 	}
 	return 0;
 }
@@ -271,26 +284,29 @@ class DeckList extends React.Component<
 		type NullableQuad = [CardData | null, number, number, number];
 
 		// prepend CardData
-		const unsortedCards: Quad[] = this.props.cardList
-			.map<NullableQuad>((card: Triplet): NullableQuad => {
+		const unsortedCards: NullableQuad[] = this.props.cardList.map<NullableQuad>(
+			(card: Triplet): NullableQuad => {
 				return [
 					this.props.cards.getByDbfId(card[0] as number),
 					card[0],
 					card[1],
 					card[2],
 				];
-			})
-			.filter((x: NullableQuad) => !!x[0]) as Quad[];
+			},
+		);
+		//.filter((x: NullableQuad) => !!x[0]) as Quad[];
 
 		// sort using CardData
-		unsortedCards.sort((a: Quad, b: Quad) => {
+		unsortedCards.sort((a: NullableQuad, b: NullableQuad) => {
 			return cardSorting(a[0], b[0]);
 		});
 
 		// shift CardData
-		const cards: Triplet[] = unsortedCards.map((card: Quad): Triplet => {
-			return [card[1], card[2], card[3]];
-		});
+		const cards: Triplet[] = unsortedCards.map(
+			(card: NullableQuad): Triplet => {
+				return [card[1], card[2], card[3]];
+			},
+		);
 
 		return (
 			<Wrapper
