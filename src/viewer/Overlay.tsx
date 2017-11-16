@@ -4,16 +4,16 @@ import { withProps } from "../utils/styled";
 import { BoardStateData, EBSConfiguration } from "../twitch-hdt";
 import * as PropTypes from "prop-types";
 import Entity from "./Entity";
-import DeckList from "./DeckList";
 import { DecklistPosition, Feature, hasFeature } from "../utils/config";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
+import DeckListOverlay from "./DeckListOverlay";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
 	boardState: BoardStateData | null;
 	config: EBSConfiguration;
 }
 
-interface PositionProps {
+export interface PositionProps {
 	top?: string;
 	right?: string;
 	bottom?: string;
@@ -24,6 +24,7 @@ const Wrapper = styled.div`
 	width: 100vw;
 	height: 100vh;
 	user-select: none;
+	overflow: hidden;
 `;
 
 const Portal = styled.div`
@@ -151,20 +152,6 @@ const Expander = styled.div`
 	height: 100%;
 `;
 
-const DeckListBounds = withProps<PositionProps>()(styled.div)`
-	position: absolute;
-	top: ${props => props.top || "100px"};
-	width: 100vw;
-	height: calc(100vh - ${props => props.top || "100px"} - 80px);
-	overflow: hidden;
-	pointer-events: none;
-	z-index: 100;
-
-	> * > * {
-		pointer-events: all;
-	}
-`;
-
 interface OverlayState {
 	hovering?: boolean;
 	pinDeck?: boolean;
@@ -288,7 +275,7 @@ class Overlay extends React.Component<
 				onMouseEnter={() => {
 					this.setState({ hovering: true });
 				}}
-				onMouseMove={() => {
+				onMouseMove={e => {
 					this.refreshMovementTimeout();
 					this.setState({ hovering: true });
 				}}
@@ -298,33 +285,15 @@ class Overlay extends React.Component<
 			>
 				<Portal innerRef={(ref: any) => (this.portal = ref)} />
 				{hideDecklist ? null : (
-					<DeckListBounds
-						top={
-							this.props.twitchExtContext &&
-							(this.props.twitchExtContext.isFullScreen ||
-								this.props.twitchExtContext.isTheatreMode)
-								? "100px"
-								: "50px"
-						}
-					>
-						<DeckList
-							cardList={
-								player.deck && Array.isArray(player.deck.cards)
-									? player.deck.cards
-									: []
-							}
-							name={player.deck && player.deck.name}
-							hero={player.deck && player.deck.hero}
-							format={player.deck && player.deck.format}
-							showRarities={false}
-							position={this.props.config.deck_position as DecklistPosition}
-							pinned={!!this.state.pinDeck}
-							onPinned={(pinDeck: boolean) => {
-								this.setState({ pinDeck });
-							}}
-							hidden={!this.state.pinDeck && !this.state.hovering}
-						/>
-					</DeckListBounds>
+					<DeckListOverlay
+						deck={player.deck}
+						position={this.props.config.deck_position as DecklistPosition}
+						pinDeck={!!this.state.pinDeck}
+						onPinDeck={(pinDeck: boolean) => {
+							this.setState({ pinDeck });
+						}}
+						engaged={this.state.hovering}
+					/>
 				)}
 				<Board top={"29.75vh"}>
 					{this.renderBoard(

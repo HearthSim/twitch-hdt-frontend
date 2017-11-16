@@ -9,6 +9,8 @@ import { withProps } from "../utils/styled";
 import clipboard from "clipboard-polyfill";
 import { BoardStateDeckCard } from "../twitch-hdt";
 import { CopyDeckIcon, PinIcon, UnpinIcon } from "./icons";
+import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
+
 const isEqual = require("lodash.isequal"); // see https://github.com/Microsoft/TypeScript/issues/5073
 
 interface DeckListProps extends React.ClassAttributes<DeckList> {
@@ -21,6 +23,9 @@ interface DeckListProps extends React.ClassAttributes<DeckList> {
 	pinned?: boolean;
 	onPinned: (pinned: boolean) => void;
 	hidden?: boolean;
+	moving?: boolean;
+	onMoveStart?: (e: React.MouseEvent<HTMLElement>) => void;
+	onMoveEnd?: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 interface DeckListState {
@@ -96,7 +101,6 @@ const Header = styled.header`
 	}
 
 	h1 {
-		cursor: default;
 		font-size: 0.8em;
 		flex: 1 1 0;
 		padding: 0 6px 0 6px;
@@ -151,12 +155,15 @@ const HideButton = HeaderButton.extend``;
 
 const ShowButton = HeaderButton.extend``;
 
-const CardList = styled.ul`
+const CardList = withProps<{ moving?: boolean }>()(styled.ul)`
 	margin: 0;
 	list-style-type: none;
 	padding-left: 0;
 	display: flex;
 	flex-direction: column;
+
+	// movement
+	cursor: ${props => (props.moving ? "grabbing" : "grab")};
 
 	// scaling
 	transform-origin: top right;
@@ -176,13 +183,16 @@ const CopyDeckButton = styled.button`
 `;
 
 class DeckList extends React.Component<
-	DeckListProps & CardsProps,
+	DeckListProps & CardsProps & TwitchExtProps,
 	DeckListState
 > {
 	copiedTimeout: number | null;
 	ref: HTMLDivElement;
 
-	constructor(props: DeckListProps & CardsProps, context?: any) {
+	constructor(
+		props: DeckListProps & CardsProps & TwitchExtProps,
+		context?: any,
+	) {
 		super(props, context);
 		this.state = {
 			scale: 1,
@@ -269,6 +279,46 @@ class DeckList extends React.Component<
 		this.clearTimeout();
 	}
 
+	shouldComponentUpdate(
+		nextProps: Readonly<DeckListProps & CardsProps & TwitchExtProps>,
+		nextState: Readonly<DeckListState>,
+		nextContext: any,
+	): boolean {
+		if (
+			nextState.scale !== this.state.scale ||
+			nextState.copied !== this.state.copied
+		) {
+			return true;
+		}
+		if (
+			this.didPlayerLayoutChange(
+				this.props.twitchExtContext,
+				nextProps.twitchExtContext,
+			)
+		) {
+			return true;
+		}
+		return (
+			nextProps.cards !== this.props.cards ||
+			!isEqual(nextProps.cardList, this.props.cardList) ||
+			nextProps.position !== this.props.position ||
+			nextProps.name !== this.props.name ||
+			nextProps.hero !== this.props.hero ||
+			nextProps.format !== this.props.format ||
+			nextProps.showRarities !== this.props.showRarities ||
+			nextProps.pinned !== this.props.pinned ||
+			nextProps.onPinned !== this.props.onPinned ||
+			nextProps.hidden !== this.props.hidden ||
+			nextProps.moving !== this.props.moving ||
+			nextProps.onMoveStart !== this.props.onMoveStart ||
+			nextProps.onMoveEnd !== this.props.onMoveEnd
+		);
+	}
+
+	stopPropagation(e: { stopPropagation: () => void }) {
+		e.stopPropagation();
+	}
+
 	render() {
 		let position = this.props.position;
 		if (
@@ -318,6 +368,13 @@ class DeckList extends React.Component<
 					style={{
 						transform: `scale(${this.state.scale || 1})`,
 					}}
+					onMouseDown={e => {
+						this.props.onMoveStart && this.props.onMoveStart(e);
+					}}
+					onMouseUp={e => {
+						this.props.onMoveEnd && this.props.onMoveEnd(e);
+					}}
+					moving={this.props.moving}
 				>
 					<li>
 						<Header>
@@ -339,6 +396,8 @@ class DeckList extends React.Component<
 										target.blur();
 									}
 								}}
+								onMouseDown={this.stopPropagation}
+								title="Copy deck to clipboard"
 							>
 								<img src={CopyDeckIcon} />
 							</CopyButton>
@@ -347,6 +406,8 @@ class DeckList extends React.Component<
 									onClick={() => {
 										this.props.onPinned(false);
 									}}
+									onMouseDown={this.stopPropagation}
+									title="Automatically hide deck list"
 								>
 									<img src={PinIcon} />
 								</ShowButton>
@@ -355,6 +416,8 @@ class DeckList extends React.Component<
 									onClick={() => {
 										this.props.onPinned(true);
 									}}
+									onMouseDown={this.stopPropagation}
+									title="Keep deck list visible"
 								>
 									<img src={UnpinIcon} />
 								</HideButton>
@@ -371,7 +434,7 @@ class DeckList extends React.Component<
 										count={current}
 										showRarity={this.props.showRarities}
 										gift={initial === 0}
-										tooltipDisabled={this.props.hidden}
+										tooltipDisabled={this.props.hidden || this.props.moving}
 									/>
 								</li>
 							);
@@ -386,6 +449,9 @@ class DeckList extends React.Component<
 		if (!this.ref || !this.ref.parentElement) {
 			return;
 		}
+		if (this.props.moving) {
+			return;
+		}
 		const parent = this.ref.parentElement;
 		const { height: ownHeight } = this.ref.getBoundingClientRect();
 		const { height: boundsHeight } = parent.getBoundingClientRect();
@@ -396,15 +462,34 @@ class DeckList extends React.Component<
 		this.setState({ scale });
 	}
 
+	didPlayerLayoutChange(
+		contextA?: TwitchExtContext,
+		contextB?: TwitchExtContext,
+	): boolean {
+		if (!contextA || !contextB) {
+			return false;
+		}
+		return (
+			contextA.isTheatreMode !== contextB.isTheatreMode ||
+			contextA.isFullScreen !== contextB.isFullScreen
+		);
+	}
+
 	componentDidUpdate(
-		prevProps: DeckListProps & CardsProps,
+		prevProps: DeckListProps & CardsProps & TwitchExtProps,
 		prevState: DeckListState,
 	) {
-		if (isEqual(prevProps.cardList, this.props.cardList)) {
+		if (
+			isEqual(prevProps.cardList, this.props.cardList) &&
+			!this.didPlayerLayoutChange(
+				prevProps.twitchExtContext,
+				this.props.twitchExtContext,
+			)
+		) {
 			return;
 		}
 		this.resize();
 	}
 }
 
-export default withCards(DeckList);
+export default withTwitchExt(withCards(DeckList));

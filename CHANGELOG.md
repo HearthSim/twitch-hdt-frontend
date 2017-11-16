@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added drag and drop to deck list for viewers  
+  *Viewers can use this to override the deck list position on their device*
+
 ### Changed
 - Updated Hearthstone Deck Tracker download url
 - Updated connectivity error message in setup
