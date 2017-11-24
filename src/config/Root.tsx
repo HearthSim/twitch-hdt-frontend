@@ -99,7 +99,7 @@ export default class Root extends React.Component<RootProps, RootState> {
 			}
 			if (progress !== null) {
 				this.setState(prevState => {
-					const state = Object.assign({}, prevState, {
+					const state: RootState = Object.assign({}, prevState, {
 						initialLoad: true,
 						connectionProgress: progress,
 					});
