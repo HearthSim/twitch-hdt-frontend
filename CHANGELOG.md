@@ -64,7 +64,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added setup interface with connection guide and basic overlay configuration
 
 [Unreleased]: https://github.com/HearthSim/twitch-hdt-frontend/compare/0.1.2...HEAD
-[0.1.1]: https://github.com/HearthSim/twitch-hdt-frontend/compare/0.1.1...0.1.2
+[0.1.2]: https://github.com/HearthSim/twitch-hdt-frontend/compare/0.1.1...0.1.2
 [0.1.1]: https://github.com/HearthSim/twitch-hdt-frontend/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/HearthSim/twitch-hdt-frontend/compare/0.0.2...0.1.0
 [0.0.2]: https://github.com/HearthSim/twitch-hdt-frontend/compare/0.0.1...0.0.2
