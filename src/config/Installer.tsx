@@ -24,7 +24,7 @@ interface InstallerProps extends React.ClassAttributes<Installer> {
 interface InstallerState {}
 
 const Wrapper = styled.div`
-	font-family: "Helvetica Neue", helvetica;
+	font-family: "Helvetica Neue", helvetica, sans-serif;
 	width: 100vw;
 	min-height: 100vh;
 	display: flex;
