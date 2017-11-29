@@ -44,6 +44,13 @@ export default class Root extends React.Component<RootProps, RootState> {
 	}
 
 	getHeaders() {
+		if (
+			!this.state.authToken === null ||
+			this.state.channelId === null ||
+			this.state.clientId === null
+		) {
+			throw new Error("Unable to contact EBS without auth data");
+		}
 		return {
 			Accept: "application/json",
 			Authorization: `Bearer ${this.state.authToken}`,
