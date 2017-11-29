@@ -43,7 +43,7 @@ interface TwitchExt {
 	onContext(
 		contextCallback: (
 			context: TwitchExtContext,
-			changed: keyof TwitchExtContext,
+			changed: (keyof TwitchExtContext)[],
 		) => void,
 	): void;
 
