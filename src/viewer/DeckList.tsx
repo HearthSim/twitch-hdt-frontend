@@ -8,7 +8,7 @@ import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
 import clipboard from "clipboard-polyfill";
 import { BoardStateDeckCard } from "../twitch-hdt";
-import { CopyDeckIcon, PinIcon, UnpinIcon } from "./icons";
+import { CopyDeckIcon, PinIcon, UnpinIcon, HSReplayNetIcon } from "./icons";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 
 const isEqual = require("lodash.isequal"); // see https://github.com/Microsoft/TypeScript/issues/5073
@@ -70,6 +70,10 @@ interface OpacityProps {
 	opacity?: number;
 }
 
+interface PaddingProps {
+	padding?: string;
+}
+
 const Wrapper = withProps<PositionProps & OpacityProps>()(styled.div)`
 	width: 240px;
 	position: absolute;
@@ -101,6 +105,7 @@ const Header = styled.header`
 	}
 
 	h1 {
+		text-align: left;
 		font-size: 0.8em;
 		flex: 1 1 0;
 		padding: 0 6px 0 6px;
@@ -177,9 +182,9 @@ const CopyDeckButton = styled.button`
 	}
 `;
 
-const Icon = styled.img`
+const Icon = withProps<PaddingProps>()(styled.img)`
 	height: 100%;
-	padding: 7px 0;
+	padding: ${props => (props.padding ? props.padding : "7px 0")};
 	filter: drop-shadow(-1px -1px 0 rgba(0, 0, 0, 0.5))
 		drop-shadow(-1px 1px 0 rgba(0, 0, 0, 0.5))
 		drop-shadow(1px -1px 0 rgba(0, 0, 0, 0.5))
@@ -383,7 +388,12 @@ class DeckList extends React.Component<
 				>
 					<li>
 						<Header>
-							<h1>
+							<Icon
+								src={HSReplayNetIcon}
+								padding="4px"
+								title="Powered by HSReplay.net"
+							/>
+							<h1 title={this.props.name || "Unnamed Deck"}>
 								{this.state.copied ? "Copied!" : this.props.name || "Unnamed"}
 							</h1>
 							<CopyButton
