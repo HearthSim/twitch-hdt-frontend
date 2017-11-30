@@ -7,25 +7,29 @@
 >
     <title id="copy-deck-icon">Copy deck</title>
 	<defs>
+		<clipPath id="cut">
+			<rect x="0" y="0" width="16" height="6" />
+			<rect x="4" y="0" width="16" height="30" />
+		</clipPath>
 		<g id="decklist">
 			<rect
 				fill="none"
-				stroke="black"
+				stroke="white"
 				stroke-width="2"
-				width="10"
+				width="11"
 				height="16"
 				x="1"
 				y="1"
 			/>
 			<rect
-				fill="black"
-				width="10"
+				fill="white"
+				width="11"
 				height="3"
 				x="1"
 				y="1"
 			/>
 		</g>
 	</defs>
-	<use xlink:href="#decklist" x="3" y="5"/>
-	<use xlink:href="#decklist" x="8" y="0"/>
+	<use xlink:href="#decklist" x="2" y="5"/>
+	<use xlink:href="#decklist" x="9" y="0"  clip-path="url(#cut)"/>
 </svg>

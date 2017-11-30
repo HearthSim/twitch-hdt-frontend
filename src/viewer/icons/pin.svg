@@ -1,4 +1,4 @@
 <svg aria-labelledby="pin-decklist-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <title id="pin-decklist-icon">Pin deck list</title>
-    <circle cx="12" cy="12" r="8" />
+    <circle cx="12" cy="12" r="8" fill="white" />
 </svg>

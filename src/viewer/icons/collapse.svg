@@ -1,4 +1,4 @@
 <svg aria-labelledby="hide-decklist-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <title id="hide-decklist-icon">Hide deck list</title>
-    <path d="M 12,6 2,18 22,18 Z" />
+    <path d="M 12,6 2,18 22,18 Z" fill="white" />
 </svg>

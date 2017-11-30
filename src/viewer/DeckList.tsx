@@ -122,11 +122,13 @@ const HeaderButton = styled.button`
 	flex: 0 0 auto;
 	font-weight: bold;
 	border-top: none;
-	border-right: none;
+	border-right: 1px solid transparent;
 	border-bottom: none;
 	border-left: 1px solid black;
 	background-color: #315376;
 	cursor: pointer;
+	padding: 0;
+	text-align: center;
 
 	&:active,
 	&:hover,
@@ -136,13 +138,6 @@ const HeaderButton = styled.button`
 
 	&:focus {
 		outline: none;
-	}
-
-	img {
-		position: relative;
-		top: -1px;
-		vertical-align: middle;
-		filter: invert(100%);
 	}
 `;
 
@@ -180,6 +175,15 @@ const CopyDeckButton = styled.button`
 	&:hover {
 		background-color: #2c79a4;
 	}
+`;
+
+const Icon = styled.img`
+	height: 100%;
+	padding: 7px 0;
+	filter: drop-shadow(-1px -1px 0 rgba(0, 0, 0, 0.5))
+		drop-shadow(-1px 1px 0 rgba(0, 0, 0, 0.5))
+		drop-shadow(1px -1px 0 rgba(0, 0, 0, 0.5))
+		drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.5));
 `;
 
 class DeckList extends React.Component<
@@ -400,7 +404,7 @@ class DeckList extends React.Component<
 								onMouseDown={this.stopPropagation}
 								title="Copy deck to clipboard"
 							>
-								<img src={CopyDeckIcon} />
+								<Icon src={CopyDeckIcon} />
 							</CopyButton>
 							{this.props.pinned ? (
 								<ShowButton
@@ -410,7 +414,7 @@ class DeckList extends React.Component<
 									onMouseDown={this.stopPropagation}
 									title="Automatically hide deck list"
 								>
-									<img src={PinIcon} />
+									<Icon src={PinIcon} />
 								</ShowButton>
 							) : (
 								<HideButton
@@ -420,7 +424,7 @@ class DeckList extends React.Component<
 									onMouseDown={this.stopPropagation}
 									title="Keep deck list visible"
 								>
-									<img src={UnpinIcon} />
+									<Icon src={UnpinIcon} />
 								</HideButton>
 							)}
 						</Header>
