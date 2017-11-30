@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
-import { DecklistPosition } from "../utils/config";
-import { withProps } from "../utils/styled";
+import { DecklistPosition } from "../../../utils/config";
+import { withProps } from "../../../utils/styled";
 
 const Stream = styled.div`
 	position: relative;
@@ -52,12 +52,12 @@ const Minion = OverlayElement.extend`
 	clip-path: ellipse(50% 50% at 50% 50%);
 `;
 
-interface StreamPreviewProps {
+interface OverlayPreviewProps {
 	position?: DecklistPosition;
 }
 
-export default class StreamPreview extends React.Component<
-	StreamPreviewProps,
+export default class OverlayPreview extends React.Component<
+	OverlayPreviewProps,
 	{}
 > {
 	render() {

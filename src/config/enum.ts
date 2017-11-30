@@ -1,0 +1,8 @@
+export const enum ConnectionStatus {
+	UNKNOWN,
+	ACCOUNT_NOT_LINKED,
+	UPSTREAM_CLIENT_NOT_FOUND,
+	READY,
+	BAD_UPSTREAM,
+	ERROR,
+}

@@ -1,19 +1,21 @@
 import * as React from "react";
-import {
-	ConnectionProgress,
-	ErrorMessage,
-	Fieldset,
-	Heading,
-	SuccessMessage,
-} from "./Installer";
 import styled from "styled-components";
 import ConnectionPreview from "./ConnectionPreview";
 import WindowsIcon from "./windows.svg";
 import ActivateImage from "./activate.png";
+import { ConnectionStatus } from "../../enum";
+import {
+	ErrorMessage,
+	Fieldset,
+	Heading,
+	SuccessMessage,
+} from "../ConfigView/ConfigView";
 
-interface ConnectionSetupProps extends React.ClassAttributes<ConnectionSetup> {
-	progress: ConnectionProgress;
-	refreshProgress: () => void;
+const Fragment = (React as any).Fragment;
+
+interface ConnectionAdminProps extends React.ClassAttributes<ConnectionAdmin> {
+	connectionStatus: ConnectionStatus;
+	refreshConnectionStatus: () => any;
 	working?: boolean;
 }
 
@@ -98,9 +100,8 @@ const InstructionImage = styled.img`
 	margin: 1em 0 0 0;
 `;
 
-export default class ConnectionSetup extends React.Component<
-	ConnectionSetupProps,
-	{}
+export default class ConnectionAdmin extends React.Component<
+	ConnectionAdminProps
 > {
 	getMessage() {
 		if (this.props.working) {
@@ -110,7 +111,8 @@ export default class ConnectionSetup extends React.Component<
 		const makeRefresh = (label: string) => (
 			<RefreshButton
 				disabled={this.props.working}
-				onClick={this.props.refreshProgress}
+				onClick={this.props.refreshConnectionStatus}
+				key="refresh"
 			>
 				{label}
 			</RefreshButton>
@@ -119,8 +121,8 @@ export default class ConnectionSetup extends React.Component<
 		let message = null;
 		let buttons = [makeRefresh("Refresh")];
 
-		switch (this.props.progress) {
-			case ConnectionProgress.READY:
+		switch (this.props.connectionStatus) {
+			case ConnectionStatus.READY:
 				return (
 					<div>
 						<CenterParagraph>
@@ -137,18 +139,14 @@ export default class ConnectionSetup extends React.Component<
 						</p>
 					</div>
 				);
-			case ConnectionProgress.ERROR:
-				message = <ErrorMessage>Something went wrong</ErrorMessage>;
-				buttons = [makeRefresh("Try again")];
-				break;
-			case ConnectionProgress.INSTALL_TRACKER:
+			case ConnectionStatus.UPSTREAM_CLIENT_NOT_FOUND:
 				message = (
 					<ErrorMessage>
 						Please connect your deck tracker to HSReplay.net
 					</ErrorMessage>
 				);
 				break;
-			case ConnectionProgress.CONNECT_ACCOUNT:
+			case ConnectionStatus.ACCOUNT_NOT_LINKED:
 				message = (
 					<ErrorMessage>
 						Please connect your Twitch account to HSReplay.net.
@@ -158,10 +156,20 @@ export default class ConnectionSetup extends React.Component<
 					<ActionButton
 						href="https://hsreplay.net/account/social/connections/#account-twitch-link"
 						target="_blank"
+						key="action"
 					>
 						Connect
 					</ActionButton>,
 				].concat(buttons);
+				break;
+			case ConnectionStatus.BAD_UPSTREAM:
+				message = <ErrorMessage>Unable to connect to Twitch.</ErrorMessage>;
+				buttons = [makeRefresh("Try Again")];
+				break;
+			case ConnectionStatus.ERROR:
+			default:
+				message = <ErrorMessage>Something went wrong</ErrorMessage>;
+				buttons = [makeRefresh("Try Again")];
 				break;
 		}
 
@@ -176,7 +184,7 @@ export default class ConnectionSetup extends React.Component<
 	render() {
 		return (
 			<Fieldset>
-				<Heading>Deck Tracking</Heading>
+				<Heading>Connection</Heading>
 				<p>Download and connect Hearthstone Deck Tracker.</p>
 				<CenterParagraph>
 					<DownloadLink
@@ -193,23 +201,29 @@ export default class ConnectionSetup extends React.Component<
 						Options (Advanced) → Streaming → Twitch Extension
 					</TrackerInstructions>
 				</CenterParagraph>
-				<p>
-					Make sure you've completed the Twitch Extension setup in Hearthstone
-					Deck Tracker.
-				</p>
-				<ConnectionPreview
-					working={this.props.working}
-					twitch={
-						this.props.progress === ConnectionProgress.ERROR
-							? null
-							: this.props.progress > ConnectionProgress.CONNECT_ACCOUNT
-					}
-					tracker={
-						this.props.progress === ConnectionProgress.ERROR
-							? null
-							: this.props.progress > ConnectionProgress.INSTALL_TRACKER
-					}
-				/>
+				{this.props.connectionStatus !== ConnectionStatus.READY ? (
+					<Fragment>
+						<p>
+							Make sure you've completed the Twitch Extension setup in
+							Hearthstone Deck Tracker.
+						</p>
+						<ConnectionPreview
+							working={this.props.working}
+							twitch={
+								this.props.connectionStatus === ConnectionStatus.ERROR
+									? null
+									: this.props.connectionStatus >
+										ConnectionStatus.ACCOUNT_NOT_LINKED
+							}
+							tracker={
+								this.props.connectionStatus === ConnectionStatus.ERROR
+									? null
+									: this.props.connectionStatus >
+										ConnectionStatus.UPSTREAM_CLIENT_NOT_FOUND
+							}
+						/>
+					</Fragment>
+				) : null}
 				{this.getMessage()}
 			</Fieldset>
 		);

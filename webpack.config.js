@@ -18,6 +18,9 @@ const vendorLibraries = [
 	"react",
 	"react-dom",
 	"react-hot-loader",
+	"react-redux",
+	"redux",
+	"redux-thunk",
 	"styled-components",
 ];
 

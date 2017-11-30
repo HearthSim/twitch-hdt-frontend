@@ -4,12 +4,12 @@ import {
 	Feature,
 	hasFeature,
 	setFeature,
-} from "../utils/config";
-import StreamPreview from "./StreamPreview";
-import { Fieldset, Heading } from "./Installer";
+} from "../../../utils/config";
+import StreamPreview from "./OverlayPreview";
 import styled from "styled-components";
-import { withProps } from "../utils/styled";
-import { EBSConfiguration } from "../twitch-hdt";
+import { withProps } from "../../../utils/styled";
+import { EBSConfiguration } from "../../../twitch-hdt";
+import { Fieldset, Heading } from "../ConfigView/ConfigView";
 
 const VerticalList = styled.ul`
 	padding-left: 0;
@@ -30,43 +30,40 @@ const Row = withProps<any>()(styled.div)`
 	}
 `;
 
-interface OverlaySetupProps extends React.ClassAttributes<OverlaySetup> {
-	disabled?: boolean;
-	working?: boolean;
-	configuration: EBSConfiguration | null;
-	setConfiguration: (configuration: EBSConfiguration) => void;
+interface OverlayAdminProps extends React.ClassAttributes<OverlayAdmin> {
+	disabled: boolean;
+	settings: EBSConfiguration | null;
+	setSetting: (key: keyof EBSConfiguration, value: string) => any;
 }
 
-export default class OverlaySetup extends React.Component<OverlaySetupProps> {
+export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 	getHiddenFeatures(): number {
 		const defaultHidden = 0;
 		const proposedHidden =
-			this.props.configuration && !!this.props.configuration.hidden
-				? +this.props.configuration.hidden
+			this.props.settings && !!this.props.settings.hidden
+				? +this.props.settings.hidden
 				: NaN;
 		return !isNaN(proposedHidden) ? proposedHidden : defaultHidden;
 	}
 
 	changeDecklistPosition = (event: React.ChangeEvent<HTMLInputElement>) => {
-		this.props.setConfiguration({
-			deck_position: event.target.value as DecklistPosition,
-		});
+		this.props.setSetting("deck_position", event.target
+			.value as DecklistPosition);
 	};
 
 	setDecklist = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const hiddenFeatures = this.getHiddenFeatures();
-		this.props.setConfiguration({
-			hidden:
-				"" +
-				setFeature(hiddenFeatures, Feature.DECKLIST, !event.target.checked),
-		});
+		this.props.setSetting(
+			"hidden",
+			"" + setFeature(hiddenFeatures, Feature.DECKLIST, !event.target.checked),
+		);
 	};
 
 	render() {
 		let decklistPosition = DecklistPosition.TOP_RIGHT;
-		if (this.props.configuration) {
+		if (this.props.settings) {
 			decklistPosition =
-				(this.props.configuration.deck_position as DecklistPosition) ||
+				(this.props.settings.deck_position as DecklistPosition) ||
 				decklistPosition;
 		}
 
@@ -92,12 +89,12 @@ export default class OverlaySetup extends React.Component<OverlaySetupProps> {
 										disabled={this.props.disabled}
 										onChange={this.setDecklist}
 									/>{" "}
-									Show deck list
+									Show Decklist
 								</label>
 								<p>
 									Lets your viewers see the remaining cards in your deck, hover
 									over single cards and copy your deck to their clipboard.<br />
-									Viewers can hide and move the deck list for themselves.
+									Viewers can hide and move the decklist for themselves.
 								</p>
 							</li>
 							<li>
@@ -110,7 +107,7 @@ export default class OverlaySetup extends React.Component<OverlaySetupProps> {
 											value={DecklistPosition.TOP_LEFT}
 											onChange={this.changeDecklistPosition}
 										/>{" "}
-										Top left
+										Top Left
 									</label>
 									<label>
 										<input
@@ -120,7 +117,7 @@ export default class OverlaySetup extends React.Component<OverlaySetupProps> {
 											value={DecklistPosition.TOP_RIGHT}
 											onChange={this.changeDecklistPosition}
 										/>{" "}
-										Top right
+										Top Right
 									</label>
 								</Row>
 							</li>

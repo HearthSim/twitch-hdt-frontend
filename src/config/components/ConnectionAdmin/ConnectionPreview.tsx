@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import { withProps } from "../utils/styled";
+import { withProps } from "../../../utils/styled";
 
 interface HSReplayNetConnectionProps {
 	working?: boolean;

@@ -1,27 +1,23 @@
 import * as React from "react";
 import styled from "styled-components";
-import OverlaySetup from "./OverlaySetup";
-import ConnectionSetup from "./ConnectionSetup";
-import { EBSConfiguration } from "../twitch-hdt";
+import ConnectionAdmin from "../ConnectionAdmin/ConnectionAdmin";
+import { EBSConfiguration } from "../../../twitch-hdt";
+import { ConnectionStatus } from "../../enum";
+import OverlayAdmin from "../OverlayAdmin";
 
-export const enum ConnectionProgress {
-	UNKNOWN,
-	ERROR,
-	CONNECT_ACCOUNT,
-	INSTALL_TRACKER,
-	READY,
+interface ConfigViewProps extends React.ClassAttributes<ConfigView> {
+	connectionStatus: ConnectionStatus;
+	refreshConnectionStatus: () => any;
+	refreshSettings: () => any;
+	hasInitialized: boolean;
+	working: boolean;
+	settings: EBSConfiguration | null;
+	setSetting: (key: keyof EBSConfiguration, value: string) => any;
+	setTwitchExtContext: (context: TwitchExtContext) => any;
+	setTwitchExtAuthorized: (authorized: TwitchExtAuthorized) => any;
 }
 
-interface InstallerProps extends React.ClassAttributes<Installer> {
-	progress: ConnectionProgress;
-	refreshProgress: () => void;
-	initialLoad?: boolean;
-	working?: boolean;
-	configuration: EBSConfiguration | null;
-	setConfiguration: (configuration: EBSConfiguration) => void;
-}
-
-interface InstallerState {}
+interface ConfigViewState {}
 
 const Wrapper = styled.div`
 	font-family: "Helvetica Neue", helvetica, sans-serif;
@@ -87,12 +83,25 @@ export const ErrorMessage = styled.span`
 	color: #dd0002;
 `;
 
-export default class Installer extends React.Component<
-	InstallerProps,
-	InstallerState
+export default class ConfigView extends React.Component<
+	ConfigViewProps,
+	ConfigViewState
 > {
+	componentDidMount(): void {
+		window.Twitch.ext.onContext((context: TwitchExtContext) =>
+			this.props.setTwitchExtContext(context),
+		);
+		window.Twitch.ext.onAuthorized((auth: TwitchExtAuthorized) => {
+			this.props.setTwitchExtAuthorized(auth);
+			if (!this.props.hasInitialized) {
+				this.props.refreshConnectionStatus();
+				this.props.refreshSettings();
+			}
+		});
+	}
+
 	render() {
-		if (this.props.initialLoad) {
+		if (!this.props.hasInitialized) {
 			if (this.props.working) {
 				return (
 					<MessageWrapper>
@@ -114,27 +123,23 @@ export default class Installer extends React.Component<
 			}
 		}
 
-		const setupComplete = this.props.progress === ConnectionProgress.READY;
-		const disabled = !setupComplete || this.props.working;
+		const setupComplete =
+			this.props.connectionStatus === ConnectionStatus.READY;
 
 		return (
 			<Wrapper>
-				<ConnectionSetup
-					working={this.props.working && !setupComplete}
-					refreshProgress={this.props.refreshProgress}
-					progress={this.props.progress}
+				<ConnectionAdmin
+					working={this.props.working}
+					connectionStatus={this.props.connectionStatus}
+					refreshConnectionStatus={this.props.refreshConnectionStatus}
 				/>
-				<OverlaySetup
-					configuration={this.props.configuration}
-					setConfiguration={this.props.setConfiguration}
-					disabled={disabled}
-				>
+				<OverlayAdmin>
 					{!setupComplete ? (
 						<FieldsetShield>
-							<span>Deck Tracking setup required</span>
+							<span>Connection setup required</span>
 						</FieldsetShield>
 					) : null}
-				</OverlaySetup>
+				</OverlayAdmin>
 			</Wrapper>
 		);
 	}

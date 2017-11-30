@@ -1,13 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { AppContainer } from "react-hot-loader";
-import Root from "./Root";
+import Root from "./components/Root";
+import store from "./store";
 
 const rootElement = document.getElementById("root");
-const render = (Component: React.ComponentClass<any>) => {
+const render = (Component: typeof Root) => {
 	ReactDOM.render(
 		<AppContainer>
-			<Component />
+			<Component store={store} />
 		</AppContainer>,
 		rootElement,
 	);
@@ -16,8 +17,8 @@ const render = (Component: React.ComponentClass<any>) => {
 render(Root);
 
 if (module.hot) {
-	module.hot.accept("./Root", () => {
-		const nextRoot = (require("./Root") as any).default;
+	module.hot.accept("./components/Root", () => {
+		const nextRoot = (require("./components/Root") as any).default;
 		render(nextRoot);
 	});
 }
