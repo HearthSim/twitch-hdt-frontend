@@ -130,7 +130,12 @@ module.exports = {
 								],
 							],
 							plugins: [
-								"babel-plugin-styled-components",
+								[
+									"babel-plugin-styled-components",
+									{
+										displayName: !isProduction,
+									},
+								],
 								"babel-plugin-transform-object-rest-spread",
 							],
 						},
