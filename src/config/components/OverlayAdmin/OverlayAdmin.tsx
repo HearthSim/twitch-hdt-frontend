@@ -5,7 +5,7 @@ import {
 	hasFeature,
 	setFeature,
 } from "../../../utils/config";
-import StreamPreview from "./OverlayPreview";
+import StreamPreview from "./Preview";
 import styled from "styled-components";
 import { withProps } from "../../../utils/styled";
 import { EBSConfiguration } from "../../../twitch-hdt";
