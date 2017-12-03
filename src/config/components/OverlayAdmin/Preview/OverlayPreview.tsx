@@ -78,6 +78,7 @@ const Hero = OverlayElement.extend`
 `;
 
 interface OverlayPreviewProps {
+	isLive: boolean | null;
 	thumbnailUrl: string | null;
 	position?: DecklistPosition;
 	refreshStreamData: () => any;
@@ -94,7 +95,7 @@ export default class OverlayPreview extends React.Component<
 
 	render() {
 		let thumbnailUrl = this.props.thumbnailUrl;
-		if (thumbnailUrl !== null && this.ref) {
+		if (thumbnailUrl !== null && this.ref && this.props.isLive) {
 			thumbnailUrl = thumbnailUrl.replace(
 				"{height}",
 				"" + this.ref.clientHeight,

@@ -34,6 +34,8 @@ interface OverlayAdminProps extends React.ClassAttributes<OverlayAdmin> {
 	disabled: boolean;
 	settings: EBSConfiguration | null;
 	setSetting: (key: keyof EBSConfiguration, value: string) => any;
+	isLive: boolean;
+	refreshStreamData: () => any;
 }
 
 export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
@@ -59,6 +61,11 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 		);
 	};
 
+	refreshLive = (event: React.MouseEvent<HTMLElement>) => {
+		event.preventDefault();
+		this.props.refreshStreamData();
+	};
+
 	render() {
 		let decklistPosition = DecklistPosition.TOP_RIGHT;
 		if (this.props.settings) {
@@ -78,6 +85,12 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 				<StreamPreview
 					position={decklistEnabled ? decklistPosition : undefined}
 				/>
+				{this.props.isLive === false ? (
+					<p>
+						<em>Go live for a preview of your stream.</em>{" "}
+						<button onClick={this.refreshLive}>Refresh now</button>
+					</p>
+				) : null}
 				<Row>
 					<div>
 						<VerticalList>

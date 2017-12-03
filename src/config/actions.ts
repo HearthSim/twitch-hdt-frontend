@@ -46,6 +46,7 @@ export type Actions = {
 	SET_TWITCH_API_STREAM: {
 		type: typeof SET_TWITCH_API_STREAM;
 		stream: TwitchApiStream;
+		offline: boolean;
 	};
 };
 
@@ -213,6 +214,9 @@ const refreshStreamData = () => async (
 			case 200:
 				const json = await response.json();
 				const data = json["data"];
+				if (!data.length) {
+					return dispatch({ type: SET_TWITCH_API_STREAM, offline: true });
+				}
 				const stream: TwitchApiStream = data[0];
 				return dispatch({ type: SET_TWITCH_API_STREAM, stream: stream });
 			default:

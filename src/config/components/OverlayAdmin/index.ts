@@ -9,12 +9,14 @@ const mapStateToProps = (state: State) => ({
 	disabled:
 		state.connection.status !== ConnectionStatus.READY || state.config.readonly,
 	settings: state.config.settings,
+	isLive: state.twitch.stream === null ? null : !!state.twitch.stream,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>) =>
 	bindActionCreators(
 		{
 			setSetting: actionCreators.setSetting,
+			refreshStreamData: actionCreators.refreshStreamData,
 		},
 		dispatch,
 	);

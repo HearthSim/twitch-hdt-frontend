@@ -57,7 +57,7 @@ const rootReducer: Reducer<State> = (state, action: Actions[keyof Actions]) => {
 		case SET_TWITCH_API_STREAM:
 			return Object.assign({}, state, {
 				twitch: Object.assign({}, state.twitch, {
-					stream: action.stream,
+					stream: action.offline ? false : action.stream,
 				}),
 			});
 		default:

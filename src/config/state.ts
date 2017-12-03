@@ -15,7 +15,7 @@ export type State = {
 	readonly twitch: {
 		readonly context: TwitchExtContext | null;
 		readonly authorized: TwitchExtAuthorized | null;
-		readonly stream: TwitchApiStream | null;
+		readonly stream: TwitchApiStream | false | null;
 	};
 };
 

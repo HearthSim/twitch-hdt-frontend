@@ -6,6 +6,7 @@ import OverlayPreviewComponent from "./OverlayPreview";
 
 const mapStateToProps = (state: State) => ({
 	thumbnailUrl: state.twitch.stream ? state.twitch.stream.thumbnail_url : null,
+	isLive: state.twitch.stream === null ? null : !!state.twitch.stream,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>) =>
