@@ -1,7 +1,8 @@
 import { EBSConfiguration } from "../twitch-hdt";
 import { ConnectionStatus } from "./enum";
 import { Dispatch } from "redux";
-import { getEBSHeaders, State } from "./state";
+import { getEBSHeaders, getTwitchAPIHeaders, State } from "./state";
+import { TwitchApiStream } from "../twitch-api";
 
 export const UPDATING_CONNECTION_STATUS = "UPDATING_CONNECTION_STATUS";
 export const SET_CONNECTION_STATUS = "SET_CONNECTION_STATUS";
@@ -11,6 +12,7 @@ export const GET_SETTINGS = "GET_SETTINGS";
 export const COMMIT_SETTINGS = "COMMIT_SETTINGS";
 export const SET_TWITCH_EXT_CONTEXT = "SET_TWITCH_EXT_CONTEXT";
 export const SET_TWITCH_EXT_AUTHORIZED = "SET_TWITCH_EXT_AUTHORIZED";
+export const SET_TWITCH_API_STREAM = "SET_TWITCH_API_STREAM";
 
 export type Actions = {
 	UPDATING_CONNECTION_STATUS: {
@@ -40,6 +42,10 @@ export type Actions = {
 	SET_TWITCH_EXT_AUTHORIZED: {
 		type: typeof SET_TWITCH_EXT_AUTHORIZED;
 		authorized: TwitchExtAuthorized;
+	};
+	SET_TWITCH_API_STREAM: {
+		type: typeof SET_TWITCH_API_STREAM;
+		stream: TwitchApiStream;
 	};
 };
 
@@ -181,6 +187,40 @@ const updateConnectionStatus = () => async (
 	}
 };
 
+const refreshStreamData = () => async (
+	dispatch: Dispatch<State>,
+	getState: () => State,
+) => {
+	const state: State = getState();
+	if (!state.twitch.authorized) {
+		return;
+	}
+	try {
+		const response = await fetch(
+			`https://api.twitch.tv/helix/streams?user_id=${
+				state.twitch.authorized.channelId
+			}`,
+			{
+				method: "GET",
+				mode: "cors",
+				headers: new Headers({
+					Accept: "application/json",
+					...getTwitchAPIHeaders(getState()),
+				}),
+			},
+		);
+		switch (response.status) {
+			case 200:
+				const json = await response.json();
+				const data = json["data"];
+				const stream: TwitchApiStream = data[0];
+				return dispatch({ type: SET_TWITCH_API_STREAM, stream: stream });
+			default:
+				throw new Error(`Unexpected status code ${response.status}`);
+		}
+	} catch (e) {}
+};
+
 export const actionCreators = {
 	updateConnectionStatus,
 	setConnectionStatus: (
@@ -189,6 +229,7 @@ export const actionCreators = {
 		type: SET_CONNECTION_STATUS,
 		status: status,
 	}),
+	refreshStreamData,
 	getSettings,
 	setSetting,
 	setTwitchExtContext: (

@@ -1,5 +1,6 @@
 import { ConnectionStatus } from "./enum";
 import { EBSConfiguration } from "../twitch-hdt";
+import { TwitchApiStream } from "../twitch-api";
 
 export type State = {
 	readonly hasInitialized: boolean;
@@ -14,6 +15,7 @@ export type State = {
 	readonly twitch: {
 		readonly context: TwitchExtContext | null;
 		readonly authorized: TwitchExtAuthorized | null;
+		readonly stream: TwitchApiStream | null;
 	};
 };
 
@@ -22,7 +24,7 @@ export const initialState: State = {
 	completingSetup: false,
 	connection: { status: ConnectionStatus.UNKNOWN },
 	config: { readonly: false, settings: null },
-	twitch: { context: null, authorized: null },
+	twitch: { context: null, authorized: null, stream: null },
 };
 
 export const getEBSHeaders = (state: State): { [header: string]: string } => {
@@ -37,5 +39,19 @@ export const getEBSHeaders = (state: State): { [header: string]: string } => {
 		"X-Twitch-User-Id": authorized.channelId,
 		"X-Twitch-Client-Id": authorized.clientId,
 		"X-Twitch-Extension-Version": APPLICATION_VERSION,
+	};
+};
+
+export const getTwitchAPIHeaders = (
+	state: State,
+): { [header: string]: string } => {
+	const authorized = state.twitch.authorized;
+	if (authorized === null) {
+		throw new Error(
+			"Cannot generate headers for EBS without Twitch authorization",
+		);
+	}
+	return {
+		"Client-Id": authorized.clientId,
 	};
 };

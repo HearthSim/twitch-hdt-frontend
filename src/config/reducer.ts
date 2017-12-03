@@ -5,6 +5,7 @@ import {
 	GET_SETTINGS,
 	SET_CONNECTION_STATUS,
 	SET_SETTINGS,
+	SET_TWITCH_API_STREAM,
 	SET_TWITCH_EXT_AUTHORIZED,
 	SET_TWITCH_EXT_CONTEXT,
 	UPDATING_CONNECTION_STATUS,
@@ -51,6 +52,12 @@ const rootReducer: Reducer<State> = (state, action: Actions[keyof Actions]) => {
 			return Object.assign({}, state, {
 				twitch: Object.assign({}, state.twitch, {
 					authorized: action.authorized,
+				}),
+			});
+		case SET_TWITCH_API_STREAM:
+			return Object.assign({}, state, {
+				twitch: Object.assign({}, state.twitch, {
+					stream: action.stream,
 				}),
 			});
 		default:
