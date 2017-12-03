@@ -41,7 +41,7 @@ const BoardWrapper = styled.div`
 	display: flex;
 `;
 
-const Center = withProps<{ top?: string; bottom?: string }>()(styled.div)`
+const Centered = withProps<{ top?: string; bottom?: string }>()(styled.div)`
 	position: absolute;
 	display: flex;
 	width: 100%;
@@ -117,19 +117,19 @@ export default class OverlayPreview extends React.Component<
 					<DeckList position={this.props.position} />
 				) : null}
 				<BoardWrapper>
-					<Center top={`10.5%`}>
+					<Centered top={`10.5%`}>
 						<Hero />
-					</Center>
-					<Center top={`29.75%`}>
+					</Centered>
+					<Centered top={`29.75%`}>
+						<Minion />
+					</Centered>
+					<Centered bottom={"37.6%"}>
 						<Minion />
 						<Minion />
-					</Center>
-					<Center bottom={"37.6%"}>
-						<Minion />
-					</Center>
-					<Center bottom={`16.5%`}>
+					</Centered>
+					<Centered bottom={`16.5%`}>
 						<Hero />
-					</Center>
+					</Centered>
 				</BoardWrapper>
 			</Stream>
 		);
