@@ -48,7 +48,7 @@ export const getTwitchAPIHeaders = (
 	const authorized = state.twitch.authorized;
 	if (authorized === null) {
 		throw new Error(
-			"Cannot generate headers for EBS without Twitch authorization",
+			"Cannot generate headers for API without Twitch authorization",
 		);
 	}
 	return {
