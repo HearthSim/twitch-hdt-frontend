@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Added HSReplay.net branding to deck list
 - Added stream thumbnail to configuration page
+- Added toggle for tooltips to configuration page
+- Added offset positioning for tooltips to configuration page
 
 ### Changed
 - Reworked configuration page internals

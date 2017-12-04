@@ -7,7 +7,7 @@ export const enum DecklistPosition {
 
 export const enum Feature {
 	DECKLIST = 1,
-	// B = 2,
+	TOOLTIPS = 2,
 	// C = 4,
 	// D = 8,
 }

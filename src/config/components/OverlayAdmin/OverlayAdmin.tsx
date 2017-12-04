@@ -30,15 +30,39 @@ const Row = withProps<any>()(styled.div)`
 	}
 `;
 
+const FullWidthInput = styled.input`
+	width: 100%;
+`;
+
+const ThinInput = styled.input`
+	width: 4em;
+`;
+
+const Centered = withProps<{ margin?: string }>()(styled.div)`
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin: ${props => (props.margin ? props.margin : "unset")};
+`;
+
 interface OverlayAdminProps extends React.ClassAttributes<OverlayAdmin> {
 	disabled: boolean;
 	settings: EBSConfiguration | null;
+	previewSettings: (settings: EBSConfiguration) => any;
+	commitSettings: () => any;
 	setSetting: (key: keyof EBSConfiguration, value: string) => any;
 	isLive: boolean;
 	refreshStreamData: () => any;
 }
 
 export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
+	constructor(props: OverlayAdminProps, context: any) {
+		super(props, context);
+		this.state = {
+			horizontalGameOffset: null,
+		};
+	}
+
 	getHiddenFeatures(): number {
 		const defaultHidden = 0;
 		const proposedHidden =
@@ -53,12 +77,28 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 			.value as DecklistPosition);
 	};
 
-	setDecklist = (event: React.ChangeEvent<HTMLInputElement>) => {
+	setFeature = (feature: Feature) => (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
 		const hiddenFeatures = this.getHiddenFeatures();
 		this.props.setSetting(
 			"hidden",
-			"" + setFeature(hiddenFeatures, Feature.DECKLIST, !event.target.checked),
+			"" + setFeature(hiddenFeatures, feature, !event.target.checked),
 		);
+	};
+
+	setHorizontalGameOffset = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const target = event.target;
+		const value: number = target ? +target.value : 0;
+		this.props.previewSettings({ game_offset_horizontal: "" + value });
+	};
+
+	commitHorizontalGameOffset = (event: any) => {
+		this.props.commitSettings();
+	};
+
+	resetHorizontalGameOffset = (event: React.MouseEvent<HTMLButtonElement>) => {
+		this.props.setSetting("game_offset_horizontal", "" + 0);
 	};
 
 	refreshLive = (event: React.MouseEvent<HTMLElement>) => {
@@ -75,16 +115,20 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 		}
 
 		const hiddenFeatures = this.getHiddenFeatures();
+		const tooltipsEnabled = !hasFeature(hiddenFeatures, Feature.TOOLTIPS);
 		const decklistEnabled = !hasFeature(hiddenFeatures, Feature.DECKLIST);
+
+		const hideTooltips = true;
+		const horizontalGameOffset = this.props.settings
+			? this.props.settings.game_offset_horizontal
+			: "0";
 
 		return (
 			<Fieldset>
 				{this.props.children}
 				<Heading>Overlay</Heading>
 				<p>Customize your interactive overlay on Twitch.</p>
-				<StreamPreview
-					position={decklistEnabled ? decklistPosition : undefined}
-				/>
+				<StreamPreview hideTooltips={hideTooltips} />
 				{this.props.isLive === false ? (
 					<p>
 						<em>Go live for a preview of your stream.</em>{" "}
@@ -98,42 +142,102 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 								<label>
 									<input
 										type="checkbox"
+										checked={tooltipsEnabled}
+										disabled={this.props.disabled}
+										onChange={this.setFeature(Feature.TOOLTIPS)}
+									/>{" "}
+									Show Tooltips
+								</label>
+							</li>
+							{tooltipsEnabled ? (
+								<li
+									style={{
+										display: !hideTooltips ? "none" : undefined,
+									}}
+								>
+									<p>
+										Let your viewers hover over Minions, Heroes, Hero Powers,
+										Weapons, Secrets, Quests and the deck to see the full card.
+									</p>
+									<label>
+										Hearthstone Offset:
+										<FullWidthInput
+											type="range"
+											value={horizontalGameOffset || 0}
+											onChange={this.setHorizontalGameOffset}
+											onBlur={this.commitHorizontalGameOffset}
+											onMouseUp={this.commitHorizontalGameOffset}
+											disabled={this.props.disabled}
+											step="0.1"
+											min="-50"
+											max="50"
+										/>
+									</label>
+									<Centered margin={"4px 0"}>
+										<ThinInput
+											type="number"
+											value={horizontalGameOffset || 0}
+											onChange={this.setHorizontalGameOffset}
+											onBlur={this.commitHorizontalGameOffset}
+											disabled={this.props.disabled}
+											step="0.1"
+											min="-50"
+											max="50"
+										/>
+										<button
+											type="reset"
+											onClick={this.resetHorizontalGameOffset}
+										>
+											Center
+										</button>
+									</Centered>
+								</li>
+							) : null}
+							<li>
+								<label>
+									<input
+										type="checkbox"
 										checked={decklistEnabled}
 										disabled={this.props.disabled}
-										onChange={this.setDecklist}
+										onChange={this.setFeature(Feature.DECKLIST)}
 									/>{" "}
 									Show Decklist
 								</label>
-								<p>
-									Lets your viewers see the remaining cards in your deck, hover
-									over single cards and copy your deck to their clipboard.<br />
-									Viewers can hide and move the decklist for themselves.
-								</p>
 							</li>
-							<li>
-								<Row width={"200px"}>
-									<label>
-										<input
-											type="radio"
-											checked={decklistPosition === DecklistPosition.TOP_LEFT}
-											disabled={!decklistEnabled || this.props.disabled}
-											value={DecklistPosition.TOP_LEFT}
-											onChange={this.changeDecklistPosition}
-										/>{" "}
-										Top Left
-									</label>
-									<label>
-										<input
-											type="radio"
-											checked={decklistPosition === DecklistPosition.TOP_RIGHT}
-											disabled={!decklistEnabled || this.props.disabled}
-											value={DecklistPosition.TOP_RIGHT}
-											onChange={this.changeDecklistPosition}
-										/>{" "}
-										Top Right
-									</label>
-								</Row>
-							</li>
+							{decklistEnabled ? (
+								<li>
+									<p>
+										Let your viewers see the remaining cards in your deck, hover
+										over single cards and copy your deck to their clipboard.<br
+										/>
+										Viewers can hide and move the decklist for themselves.
+									</p>
+									<Row width={"200px"}>
+										<label>
+											<input
+												type="radio"
+												checked={decklistPosition === DecklistPosition.TOP_LEFT}
+												disabled={!decklistEnabled || this.props.disabled}
+												value={DecklistPosition.TOP_LEFT}
+												onChange={this.changeDecklistPosition}
+											/>{" "}
+											Top Left
+										</label>
+										<label>
+											<input
+												type="radio"
+												checked={
+													decklistPosition === DecklistPosition.TOP_RIGHT
+												}
+												disabled={!decklistEnabled || this.props.disabled}
+												value={DecklistPosition.TOP_RIGHT}
+												onChange={this.changeDecklistPosition}
+											/>{" "}
+											Top Right
+										</label>
+									</Row>
+								</li>
+							) : null}
 						</VerticalList>
 					</div>
 				</Row>

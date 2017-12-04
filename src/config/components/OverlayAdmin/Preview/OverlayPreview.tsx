@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { DecklistPosition } from "../../../../utils/config";
 import { withProps } from "../../../../utils/styled";
+import { EBSConfiguration } from "../../../../twitch-hdt";
 
 const Stream = styled.div`
 	position: relative;
@@ -78,9 +79,10 @@ const Hero = OverlayElement.extend`
 `;
 
 interface OverlayPreviewProps {
+	settings: EBSConfiguration | null;
 	isLive: boolean | null;
 	thumbnailUrl: string | null;
-	position?: DecklistPosition;
+	hideTooltips?: boolean;
 	refreshStreamData: () => any;
 }
 
@@ -113,10 +115,19 @@ export default class OverlayPreview extends React.Component<
 				}}
 				innerRef={ref => (this.ref = ref)}
 			>
-				{this.props.position ? (
-					<DeckList position={this.props.position} />
+				{this.props.settings ? (
+					<DeckList
+						position={this.props.settings.deck_position as DecklistPosition}
+					/>
 				) : null}
-				<BoardWrapper>
+				<BoardWrapper
+					style={{
+						left: `${+(this.props.settings &&
+						this.props.settings.game_offset_horizontal
+							? this.props.settings.game_offset_horizontal
+							: 0)}%`,
+					}}
+				>
 					<Centered top={`10.5%`}>
 						<Hero />
 					</Centered>

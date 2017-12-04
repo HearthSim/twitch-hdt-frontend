@@ -18,6 +18,8 @@ const mapDispatchToProps = (dispatch: Dispatch<State>) =>
 	bindActionCreators(
 		{
 			setSetting: actionCreators.setSetting,
+			previewSettings: actionCreators.previewSettings,
+			commitSettings: actionCreators.commitSettings,
 			refreshStreamData: actionCreators.refreshStreamData,
 		},
 		dispatch,
