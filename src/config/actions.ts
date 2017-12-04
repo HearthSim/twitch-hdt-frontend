@@ -6,10 +6,9 @@ import { TwitchApiStream } from "../twitch-api";
 
 export const UPDATING_CONNECTION_STATUS = "UPDATING_CONNECTION_STATUS";
 export const SET_CONNECTION_STATUS = "SET_CONNECTION_STATUS";
-export const SET_SETTINGS = "SET_SETTINGS";
-export const PUT_SETTINGS = "PUT_SETTINGS";
-export const GET_SETTINGS = "GET_SETTINGS";
-export const COMMIT_SETTINGS = "COMMIT_SETTINGS";
+export const UPDATE_SETTINGS = "UPDATE_SETTINGS";
+export const PREVIEW_SETTINGS = "PREVIEW_SETTINGS";
+export const ROLLBACK_SETTINGS = "ROLLBACK_SETTINGS";
 export const SET_TWITCH_EXT_CONTEXT = "SET_TWITCH_EXT_CONTEXT";
 export const SET_TWITCH_EXT_AUTHORIZED = "SET_TWITCH_EXT_AUTHORIZED";
 export const SET_TWITCH_API_STREAM = "SET_TWITCH_API_STREAM";
@@ -22,18 +21,17 @@ export type Actions = {
 		type: typeof SET_CONNECTION_STATUS;
 		status: ConnectionStatus;
 	};
-	PUT_SETTINGS: {
-		type: typeof PUT_SETTINGS;
-	};
-	GET_SETTINGS: {
-		type: typeof GET_SETTINGS;
+	UPDATE_SETTINGS: {
+		type: typeof UPDATE_SETTINGS;
 		status: "pending" | "success" | "error";
 		settings?: EBSConfiguration;
 	};
-	SET_SETTINGS: {
-		type: typeof SET_SETTINGS;
-		status: "pending" | "complete";
-		settings: EBSConfiguration;
+	PREVIEW_SETTINGS: {
+		type: typeof PREVIEW_SETTINGS;
+		settings?: EBSConfiguration | null;
+	};
+	ROLLBACK_SETTINGS: {
+		type: typeof ROLLBACK_SETTINGS;
 	};
 	SET_TWITCH_EXT_CONTEXT: {
 		type: typeof SET_TWITCH_EXT_CONTEXT;
@@ -55,7 +53,7 @@ const getSettings = () => async (
 	getState: () => State,
 ) => {
 	dispatch({
-		type: GET_SETTINGS,
+		type: UPDATE_SETTINGS,
 		status: "pending",
 	});
 	try {
@@ -74,36 +72,52 @@ const getSettings = () => async (
 		if (!contentType || !contentType.includes("application/json")) {
 			throw new Error(`Invalid content type "${contentType}" from EBS`);
 		}
+		let settings = await response.json();
+		settings = Object.assign({}, getState().config.defaults, settings);
 		dispatch({
-			type: GET_SETTINGS,
+			type: UPDATE_SETTINGS,
 			status: "success",
-			settings: await response.json(),
+			settings,
 		});
 	} catch (e) {
 		dispatch({
-			type: GET_SETTINGS,
+			type: UPDATE_SETTINGS,
 			status: "error",
 		});
 	}
 };
 
-const setSetting = (key: keyof EBSConfiguration, value: string): any => async (
+const setSetting = (setting: keyof EBSConfiguration, value: string) => async (
+	dispatch: Dispatch<State>,
+	getState: () => State,
+) => dispatch(setSettings({ [setting]: value }));
+
+const setSettings = (settings: EBSConfiguration) => async (
 	dispatch: Dispatch<State>,
 	getState: () => State,
 ) => {
-	if (getState().config.readonly) {
+	const config = getState().config;
+	if (!settings || !config.settings || config.readonly) {
 		return;
 	}
-	let settings = getState().config.settings;
+	dispatch(actionCreators.previewSettings(settings));
+	dispatch(actionCreators.commitSettings());
+};
+
+const commitSettings = () => async (
+	dispatch: Dispatch<State>,
+	getState: () => State,
+) => {
+	const config = getState().config;
+	if (!config.settings || !config.preview || config.readonly) {
+		return;
+	}
 	try {
-		const proposedSettings = Object.assign({}, settings, {
-			[key]: value,
-		});
 		dispatch({
-			type: SET_SETTINGS,
-			settings: proposedSettings,
+			type: UPDATE_SETTINGS,
 			status: "pending",
 		});
+		const proposedSettings = Object.assign({}, config.settings, config.preview);
 		const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
 			method: "PUT",
 			mode: "cors",
@@ -120,13 +134,16 @@ const setSetting = (key: keyof EBSConfiguration, value: string): any => async (
 		if (!contentType || !contentType.includes("application/json")) {
 			throw new Error(`Invalid content type "${contentType}" from EBS`);
 		}
-		settings = await response.json();
-	} catch (e) {
-	} finally {
+		const settings = await response.json();
 		dispatch({
-			type: SET_SETTINGS,
+			type: UPDATE_SETTINGS,
 			settings: settings,
-			status: "complete",
+			status: "success",
+		});
+	} catch (e) {
+		dispatch({
+			type: UPDATE_SETTINGS,
+			status: "error",
 		});
 	}
 };
@@ -215,10 +232,16 @@ const refreshStreamData = () => async (
 				const json = await response.json();
 				const data = json["data"];
 				if (!data.length) {
-					return dispatch({ type: SET_TWITCH_API_STREAM, offline: true });
+					return dispatch({
+						type: SET_TWITCH_API_STREAM,
+						offline: true,
+					});
 				}
 				const stream: TwitchApiStream = data[0];
-				return dispatch({ type: SET_TWITCH_API_STREAM, stream: stream });
+				return dispatch({
+					type: SET_TWITCH_API_STREAM,
+					stream: stream,
+				});
 			default:
 				throw new Error(`Unexpected status code ${response.status}`);
 		}
@@ -236,6 +259,15 @@ export const actionCreators = {
 	refreshStreamData,
 	getSettings,
 	setSetting,
+	setSettings,
+	previewSettings: (settings: EBSConfiguration) => ({
+		type: PREVIEW_SETTINGS,
+		settings,
+	}),
+	commitSettings,
+	rollbackSettings: () => ({
+		type: ROLLBACK_SETTINGS,
+	}),
 	setTwitchExtContext: (
 		context: TwitchExtContext,
 	): Actions[typeof SET_TWITCH_EXT_CONTEXT] => ({

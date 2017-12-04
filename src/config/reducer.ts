@@ -1,14 +1,14 @@
 import { Reducer } from "redux";
 import {
 	Actions,
-	COMMIT_SETTINGS,
-	GET_SETTINGS,
+	UPDATE_SETTINGS,
 	SET_CONNECTION_STATUS,
-	SET_SETTINGS,
 	SET_TWITCH_API_STREAM,
 	SET_TWITCH_EXT_AUTHORIZED,
 	SET_TWITCH_EXT_CONTEXT,
 	UPDATING_CONNECTION_STATUS,
+	PREVIEW_SETTINGS,
+	ROLLBACK_SETTINGS,
 } from "./actions";
 import { State } from "./state";
 import { ConnectionStatus } from "./enum";
@@ -26,22 +26,28 @@ const rootReducer: Reducer<State> = (state, action: Actions[keyof Actions]) => {
 				hasInitialized:
 					state.hasInitialized || action.status !== ConnectionStatus.ERROR,
 			});
-		case GET_SETTINGS:
+		case UPDATE_SETTINGS:
 			const status = action.status;
 			return Object.assign({}, state, {
 				config: Object.assign({}, state.config, {
 					settings:
-						status === "success" && action.settings
+						status === "success" && action.settings !== null
 							? action.settings
 							: state.config.settings,
+					preview: status === "pending" ? state.config.preview : null,
 					readonly: status === "pending",
 				}),
 			});
-		case SET_SETTINGS:
+		case PREVIEW_SETTINGS:
 			return Object.assign({}, state, {
 				config: Object.assign({}, state.config, {
-					settings: Object.assign({}, state.config.settings, action.settings),
-					readonly: action.status === "pending",
+					preview: action.settings,
+				}),
+			});
+		case ROLLBACK_SETTINGS:
+			return Object.assign({}, state, {
+				config: Object.assign({}, state.config, {
+					preview: null,
 				}),
 			});
 		case SET_TWITCH_EXT_CONTEXT:

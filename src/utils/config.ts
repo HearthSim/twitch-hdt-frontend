@@ -23,8 +23,3 @@ export const setFeature = (
 export const hasFeature = (mask: number, feature: Feature): boolean => {
 	return (mask & feature) === 1;
 };
-
-export const defaultConfiguration: EBSConfiguration = {
-	deck_position: "topright",
-	hidden: "0",
-};

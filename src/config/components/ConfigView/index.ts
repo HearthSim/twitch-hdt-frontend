@@ -10,7 +10,9 @@ const mapStateToProps = (state: State) => ({
 	working:
 		state.completingSetup ||
 		state.connection.status === ConnectionStatus.UNKNOWN,
-	settings: state.config.settings,
+	settings: state.config.settings
+		? Object.assign({}, state.config.settings, state.config.preview)
+		: null,
 	hasInitialized: state.hasInitialized,
 });
 

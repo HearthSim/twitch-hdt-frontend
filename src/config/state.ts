@@ -10,7 +10,9 @@ export type State = {
 	};
 	readonly config: {
 		readonly settings: EBSConfiguration | null;
+		readonly preview: EBSConfiguration | null;
 		readonly readonly: boolean;
+		readonly defaults: EBSConfiguration;
 	};
 	readonly twitch: {
 		readonly context: TwitchExtContext | null;
@@ -23,7 +25,16 @@ export const initialState: State = {
 	hasInitialized: false,
 	completingSetup: false,
 	connection: { status: ConnectionStatus.UNKNOWN },
-	config: { readonly: false, settings: null },
+	config: {
+		settings: null,
+		preview: null,
+		readonly: false,
+		defaults: {
+			deck_position: "topright",
+			hidden: "0",
+			game_offset_horizontal: "0",
+		},
+	},
 	twitch: { context: null, authorized: null, stream: null },
 };
 
