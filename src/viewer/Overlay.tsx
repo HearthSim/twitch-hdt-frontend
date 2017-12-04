@@ -151,6 +151,12 @@ const Deck = withProps<PositionProps>()(OverlayElement.extend)`
 	transform: rotate(-1deg);
 `;
 
+const Offset = styled.div`
+	position: absolute;
+	width: 100%;
+	height: 100%;
+`;
+
 const Expander = styled.div`
 	width: 100%;
 	height: 100%;
@@ -301,82 +307,91 @@ class Overlay extends React.Component<
 						engaged={this.state.hovering}
 					/>
 				)}
-				<Board top={"29.75vh"}>
-					{this.renderBoard(
-						Array.isArray(opponent.board) ? opponent.board : [],
-					)}
-				</Board>
-				<Board bottom={"37.6vh"}>
-					{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
-				</Board>
-				<Quest top={"7.0vh"} left={"0.32vh"}>
-					<Entity dbfId={opponent.quest ? opponent.quest.dbfId : null} />
-				</Quest>
-				<Quest bottom={"30.4vh"}>
-					<Entity dbfId={player.quest ? player.quest.dbfId : null} />
-				</Quest>
-				<Center top={"8vh"} left={"0.1vh"}>
-					{this.renderSecrets(
-						Array.isArray(opponent.secrets) ? opponent.secrets : [],
-						!!opponent.quest,
-					)}
-				</Center>
-				<Center bottom={"35vh"}>
-					{this.renderSecrets(
-						Array.isArray(player.secrets) ? player.secrets : [],
-						!!player.quest,
-					)}
-				</Center>
-				<Center top={"8vh"}>
-					<Hero>
-						<Entity dbfId={opponent.hero || null} />
-					</Hero>
-				</Center>
-				<Center bottom={"15.2vh"}>
-					<Hero>
-						<Entity dbfId={player.hero || null} />
-					</Hero>
-				</Center>
-				<HeroPower top={"15vh"} right={"66.4vh"}>
-					<Entity dbfId={opponent.hero_power || null} />
-				</HeroPower>
-				<HeroPower bottom={"16.9vh"} right={"65.6vh"}>
-					<Entity dbfId={player.hero_power || null} />
-				</HeroPower>
-				<Weapon top={"15.5vh"} left={"65.8vh"}>
-					<Entity dbfId={opponent.weapon || null} />
-				</Weapon>
-				<Weapon bottom={"16.8vh"} left={"64.25vh"}>
-					<Entity dbfId={player.weapon || null} />
-				</Weapon>
-				<Deck top={"24vh"} right={"24vh"}>
-					<Expander
-						title={
-							opponent.deck
-								? opponent.deck.size
-									? `${opponent.deck.size} card${
-											+opponent.deck.size !== 1 ? "s" : ""
-										} remaining`
-									: `Out of cards! Next draw fatigues for ${(opponent.fatigue ||
-											0) + 1} damage.`
-								: ""
-						}
-					/>
-				</Deck>
-				<Deck bottom={"33vh"} right={"24vh"}>
-					<Expander
-						title={
-							player.deck
-								? player.deck.size
-									? `${player.deck.size} card${
-											+player.deck.size !== 1 ? "s" : ""
-										} remaining`
-									: `Out of cards! Next draw fatigues for ${(player.fatigue ||
-											0) + 1} damage.`
-								: ""
-						}
-					/>
-				</Deck>
+				<Offset
+					style={{
+						left:
+							this.props.config && this.props.config.game_offset_horizontal
+								? `${+this.props.config.game_offset_horizontal}%`
+								: "unset",
+					}}
+				>
+					<Board top={"29.75vh"}>
+						{this.renderBoard(
+							Array.isArray(opponent.board) ? opponent.board : [],
+						)}
+					</Board>
+					<Board bottom={"37.6vh"}>
+						{this.renderBoard(Array.isArray(player.board) ? player.board : [])}
+					</Board>
+					<Quest top={"7.0vh"} left={"0.32vh"}>
+						<Entity dbfId={opponent.quest ? opponent.quest.dbfId : null} />
+					</Quest>
+					<Quest bottom={"30.4vh"}>
+						<Entity dbfId={player.quest ? player.quest.dbfId : null} />
+					</Quest>
+					<Center top={"8vh"} left={"0.1vh"}>
+						{this.renderSecrets(
+							Array.isArray(opponent.secrets) ? opponent.secrets : [],
+							!!opponent.quest,
+						)}
+					</Center>
+					<Center bottom={"35vh"}>
+						{this.renderSecrets(
+							Array.isArray(player.secrets) ? player.secrets : [],
+							!!player.quest,
+						)}
+					</Center>
+					<Center top={"8vh"}>
+						<Hero>
+							<Entity dbfId={opponent.hero || null} />
+						</Hero>
+					</Center>
+					<Center bottom={"15.2vh"}>
+						<Hero>
+							<Entity dbfId={player.hero || null} />
+						</Hero>
+					</Center>
+					<HeroPower top={"15vh"} right={"66.4vh"}>
+						<Entity dbfId={opponent.hero_power || null} />
+					</HeroPower>
+					<HeroPower bottom={"16.9vh"} right={"65.6vh"}>
+						<Entity dbfId={player.hero_power || null} />
+					</HeroPower>
+					<Weapon top={"15.5vh"} left={"65.8vh"}>
+						<Entity dbfId={opponent.weapon || null} />
+					</Weapon>
+					<Weapon bottom={"16.8vh"} left={"64.25vh"}>
+						<Entity dbfId={player.weapon || null} />
+					</Weapon>
+					<Deck top={"24vh"} right={"24vh"}>
+						<Expander
+							title={
+								opponent.deck
+									? opponent.deck.size
+										? `${opponent.deck.size} card${
+												+opponent.deck.size !== 1 ? "s" : ""
+											} remaining`
+										: `Out of cards! Next draw fatigues for ${(opponent.fatigue ||
+												0) + 1} damage.`
+									: ""
+							}
+						/>
+					</Deck>
+					<Deck bottom={"33vh"} right={"24vh"}>
+						<Expander
+							title={
+								player.deck
+									? player.deck.size
+										? `${player.deck.size} card${
+												+player.deck.size !== 1 ? "s" : ""
+											} remaining`
+										: `Out of cards! Next draw fatigues for ${(player.fatigue ||
+												0) + 1} damage.`
+									: ""
+							}
+						/>
+					</Deck>
+				</Offset>
 			</Wrapper>
 		);
 	}

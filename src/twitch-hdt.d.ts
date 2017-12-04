@@ -9,6 +9,7 @@ interface BaseMessage {
 interface EBSConfiguration {
 	deck_position?: string;
 	hidden?: string;
+	game_offset_horizontal?: string;
 }
 
 export interface BoardStateMessage extends BaseMessage {
