@@ -21,5 +21,5 @@ export const setFeature = (
 };
 
 export const hasFeature = (mask: number, feature: Feature): boolean => {
-	return (mask & feature) === 1;
+	return (mask & feature) !== 0;
 };
