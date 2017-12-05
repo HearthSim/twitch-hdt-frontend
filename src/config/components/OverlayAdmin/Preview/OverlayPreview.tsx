@@ -1,6 +1,10 @@
 import * as React from "react";
 import styled from "styled-components";
-import { DecklistPosition } from "../../../../utils/config";
+import {
+	DecklistPosition,
+	Feature,
+	hasFeature,
+} from "../../../../utils/config";
 import { withProps } from "../../../../utils/styled";
 import { EBSConfiguration } from "../../../../twitch-hdt";
 
@@ -120,28 +124,31 @@ export default class OverlayPreview extends React.Component<
 						position={this.props.settings.deck_position as DecklistPosition}
 					/>
 				) : null}
-				<BoardWrapper
-					style={{
-						left: `${+(this.props.settings &&
-						this.props.settings.game_offset_horizontal
-							? this.props.settings.game_offset_horizontal
-							: 0)}%`,
-					}}
-				>
-					<Centered top={`10.5%`}>
-						<Hero />
-					</Centered>
-					<Centered top={`29.75%`}>
-						<Minion />
-					</Centered>
-					<Centered bottom={"37.6%"}>
-						<Minion />
-						<Minion />
-					</Centered>
-					<Centered bottom={`16.5%`}>
-						<Hero />
-					</Centered>
-				</BoardWrapper>
+				{this.props.settings &&
+				!hasFeature(+(this.props.settings.hidden || 0), Feature.TOOLTIPS) ? (
+					<BoardWrapper
+						style={{
+							left: `${+(this.props.settings &&
+							this.props.settings.game_offset_horizontal
+								? this.props.settings.game_offset_horizontal
+								: 0)}%`,
+						}}
+					>
+						<Centered top={`10.5%`}>
+							<Hero />
+						</Centered>
+						<Centered top={`29.75%`}>
+							<Minion />
+						</Centered>
+						<Centered bottom={"37.6%"}>
+							<Minion />
+							<Minion />
+						</Centered>
+						<Centered bottom={`16.5%`}>
+							<Hero />
+						</Centered>
+					</BoardWrapper>
+				) : null}
 			</Stream>
 		);
 	}
