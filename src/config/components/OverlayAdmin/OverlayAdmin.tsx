@@ -187,6 +187,7 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 										<button
 											type="reset"
 											onClick={this.resetHorizontalGameOffset}
+											disabled={this.props.disabled}
 										>
 											Center
 										</button>
