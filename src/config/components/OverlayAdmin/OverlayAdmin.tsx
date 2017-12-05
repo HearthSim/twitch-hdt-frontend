@@ -146,7 +146,7 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 										disabled={this.props.disabled}
 										onChange={this.setFeature(Feature.TOOLTIPS)}
 									/>{" "}
-									Show Tooltips
+									Enable Tooltips
 								</label>
 							</li>
 							{tooltipsEnabled ? (
@@ -156,11 +156,11 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 									}}
 								>
 									<p>
-										Let your viewers hover over Minions, Heroes, Hero Powers,
-										Weapons, Secrets, Quests and the deck to see the full card.
+										Allows viewers to hover over Minions, Heroes, Hero Powers,
+										Weapons, Secrets, Quests and view the full card.
 									</p>
 									<label>
-										Hearthstone Offset:
+										Horizontal Offset:
 										<FullWidthInput
 											type="range"
 											value={horizontalGameOffset || 0}
@@ -201,16 +201,14 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 										disabled={this.props.disabled}
 										onChange={this.setFeature(Feature.DECKLIST)}
 									/>{" "}
-									Show Decklist
+									Enable Decklist
 								</label>
 							</li>
 							{decklistEnabled ? (
 								<li>
 									<p>
-										Let your viewers see the remaining cards in your deck, hover
-										over single cards and copy your deck to their clipboard.<br
-										/>
-										Viewers can hide and move the decklist for themselves.
+										Show your viewers the cards remaining in your deck and allow
+										them to copy it to their clipboard.<br />
 									</p>
 									<Row width={"200px"}>
 										<label>
@@ -236,6 +234,11 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 											Top Right
 										</label>
 									</Row>
+									<p>
+										<em>
+											Viewers can hide and move the decklist for themselves.
+										</em>
+									</p>
 								</li>
 							) : null}
 						</VerticalList>
