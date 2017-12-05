@@ -119,7 +119,8 @@ export default class OverlayPreview extends React.Component<
 				}}
 				innerRef={ref => (this.ref = ref)}
 			>
-				{this.props.settings ? (
+				{this.props.settings &&
+				!hasFeature(+(this.props.settings.hidden || 0), Feature.DECKLIST) ? (
 					<DeckList
 						position={this.props.settings.deck_position as DecklistPosition}
 					/>
