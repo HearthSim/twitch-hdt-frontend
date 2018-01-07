@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ConnectionPreview from "./ConnectionPreview";
 import WindowsIcon from "./windows.svg";
 import ActivateImage from "./activate.png";
-import { ConnectionStatus } from "../../enum";
+import { ConnectionStatus } from "../../enums";
 import {
 	ErrorMessage,
 	Fieldset,

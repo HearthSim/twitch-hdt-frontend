@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import ConnectionAdmin from "../ConnectionAdmin/ConnectionAdmin";
 import { EBSConfiguration } from "../../../twitch-hdt";
-import { ConnectionStatus } from "../../enum";
+import { ConnectionStatus } from "../../enums";
 import OverlayAdmin from "../OverlayAdmin";
 
 interface ConfigViewProps extends React.ClassAttributes<ConfigView> {

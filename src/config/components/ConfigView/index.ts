@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import ConfigViewComponent from "./ConfigView";
 import { State } from "../../state";
 import { actionCreators } from "../../actions";
-import { ConnectionStatus } from "../../enum";
+import { ConnectionStatus } from "../../enums";
 
 const mapStateToProps = (state: State) => ({
 	connectionStatus: state.connection.status,

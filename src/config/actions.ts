@@ -1,5 +1,5 @@
 import { EBSConfiguration } from "../twitch-hdt";
-import { ConnectionStatus } from "./enum";
+import { ConnectionStatus } from "./enums";
 import { Dispatch } from "redux";
 import { getEBSHeaders, getTwitchAPIHeaders, State } from "./state";
 import { TwitchApiStream } from "../twitch-api";

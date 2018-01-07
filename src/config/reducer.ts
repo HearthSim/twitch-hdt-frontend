@@ -11,7 +11,7 @@ import {
 	ROLLBACK_SETTINGS,
 } from "./actions";
 import { State } from "./state";
-import { ConnectionStatus } from "./enum";
+import { ConnectionStatus } from "./enums";
 
 const rootReducer: Reducer<State> = (state, action: Actions[keyof Actions]) => {
 	switch (action.type) {

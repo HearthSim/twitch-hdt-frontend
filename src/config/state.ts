@@ -1,4 +1,4 @@
-import { ConnectionStatus } from "./enum";
+import { ConnectionStatus } from "./enums";
 import { EBSConfiguration } from "../twitch-hdt";
 import { TwitchApiStream } from "../twitch-api";
 
