@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CardTile as ComponentCardTile } from "react-hs-components";
-import { CardDefinition, CardsProps, withCards } from "../utils/cards";
+import { CardsProps, withCards } from "../utils/cards";
 import Entity from "./Entity";
 import gift from "./gift.png";
 
