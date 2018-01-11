@@ -54,7 +54,7 @@ class Entity extends React.Component<
 			card &&
 			card.id
 		) {
-			tooltip = (ReactDOM as any).createPortal(
+			tooltip = ReactDOM.createPortal(
 				<Card
 					dbfId={this.props.dbfId}
 					x={this.state.x || 0}
