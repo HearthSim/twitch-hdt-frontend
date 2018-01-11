@@ -5,7 +5,7 @@ import HeroPlaceholder from "./hero.png";
 import HeroPowerPlaceholder from "./hero_power.png";
 
 const getPlaceholder = (type: string): string => {
-	switch (type) {
+	switch (("" + type).toUpperCase()) {
 		case "SPELL":
 			return SpellPlaceholder;
 		case "WEAPON":
