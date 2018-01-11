@@ -25,10 +25,7 @@ const Wrapper = styled.div`
 	height: 100vh;
 	user-select: none;
 	overflow: hidden;
-	text-rendering: optimizeLegibility;
 	-webkit-backface-visibility: hidden;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 `;
 
 const Portal = styled.div`
