@@ -182,7 +182,7 @@ const CopyDeckButton = styled.button`
 	}
 `;
 
-const Icon = withProps<PaddingProps>()(styled.img)`
+export const Icon = withProps<PaddingProps>()(styled.img)`
 	height: 100%;
 	padding: ${props => (props.padding ? props.padding : "7px 0")};
 	filter: drop-shadow(-1px -1px 0 rgba(0, 0, 0, 0.5))
