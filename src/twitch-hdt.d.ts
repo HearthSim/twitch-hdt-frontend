@@ -97,10 +97,15 @@ export interface BoardStateDeck {
 	cards?: BoardStateDeckCard[]; // [dbfId, current, initial]
 	name?: string;
 	hero?: number;
-	format?: 1 | 2;
+	format?: FormatType;
 	wins?: number;
 	losses?: number;
 	size: number;
+}
+
+export const enum FormatType {
+	FT_WILD = 1,
+	FT_STANDARD = 2,
 }
 
 export interface GameEndMessage extends BaseMessage {

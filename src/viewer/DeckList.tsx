@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
 import clipboard from "clipboard-polyfill";
-import { BoardStateDeckCard } from "../twitch-hdt";
+import { BoardStateDeckCard, FormatType } from "../twitch-hdt";
 import { CopyDeckIcon, PinIcon, UnpinIcon, HSReplayNetIcon } from "./icons";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 
@@ -18,7 +18,7 @@ interface DeckListProps extends React.ClassAttributes<DeckList> {
 	position: DecklistPosition;
 	name?: string;
 	hero?: number;
-	format?: number;
+	format?: FormatType;
 	showRarities?: boolean;
 	pinned?: boolean;
 	onPinned: (pinned: boolean) => void;
