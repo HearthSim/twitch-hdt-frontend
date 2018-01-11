@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { CardsProps, withCards } from "../utils/cards";
 import Card from "./Card";
 import { PortalProps, withPortal } from "../utils/portal";
+import CardStatistics from "./CardStatistics";
+import * as PropTypes from "prop-types";
 
 const EntityDiv = styled.div`
 	width: 100%;
@@ -40,6 +42,11 @@ class Entity extends React.Component<
 		};
 	}
 
+	static contextTypes = {
+		statisticsContainer: PropTypes.func,
+		gameType: PropTypes.number.isRequired,
+	};
+
 	render() {
 		if (!this.props.dbfId) {
 			return null;
@@ -47,6 +54,7 @@ class Entity extends React.Component<
 		const card = this.props.cards.getByDbfId(this.props.dbfId);
 
 		let tooltip = null;
+		let statistics = null;
 		if (
 			this.state.isHovering &&
 			!this.props.disabled &&
@@ -64,6 +72,19 @@ class Entity extends React.Component<
 				/>,
 				this.props.portal,
 			);
+
+			if (card.collectible && this.context.statisticsContainer) {
+				const Container = this.context.statisticsContainer;
+				statistics = ReactDOM.createPortal(
+					<Container>
+						<CardStatistics
+							dbfId={this.props.dbfId}
+							gameType={this.context.gameType}
+						/>,
+					</Container>,
+					this.props.portal,
+				);
+			}
 		}
 
 		return (
@@ -95,6 +116,7 @@ class Entity extends React.Component<
 				innerRef={(ref: HTMLDivElement | null) => (this.ref = ref)}
 			>
 				{tooltip}
+				{statistics}
 				{this.props.children}
 			</EntityDiv>
 		);

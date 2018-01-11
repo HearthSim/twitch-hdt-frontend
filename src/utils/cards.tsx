@@ -82,3 +82,12 @@ export class CardsProvider extends React.Component<
 export const withCards = makeHOC<CardsProps>({
 	cards: PropTypes.object.isRequired,
 });
+
+export function isPlayableCard(card: CardDefinition) {
+	const type = ("" + card.type).toUpperCase();
+	const set = ("" + card.set).toUpperCase();
+	if (type === "HERO") {
+		return ["CORE", "HERO_SKINS"].indexOf(set) === -1;
+	}
+	return ["MINION", "SPELL", "WEAPON"].indexOf(type) !== -1;
+}

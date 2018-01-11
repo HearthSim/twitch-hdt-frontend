@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added stream thumbnail to configuration page
 - Added toggle for tooltips to configuration page
 - Added overlay positioning to configuration page
+- Added statistics panel when hovering collectible cards
 
 ### Changed
 - Reworked configuration internals

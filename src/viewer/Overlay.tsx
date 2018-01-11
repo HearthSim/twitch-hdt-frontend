@@ -7,6 +7,7 @@ import Entity from "./Entity";
 import { DecklistPosition, Feature, hasFeature } from "../utils/config";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import DeckListOverlay from "./DeckListOverlay";
+import CardStatistics from "./CardStatistics";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
 	boardState: BoardStateData | null;
@@ -148,6 +149,15 @@ const Deck = withProps<PositionProps>()(OverlayElement.extend)`
 	transform: rotate(-1deg);
 `;
 
+const Statistics = styled.div`
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	margin-bottom: 40px;
+	width: 24vh;
+	font-size: 2vh;
+`;
+
 const Offset = styled.div`
 	position: absolute;
 	width: 100%;
@@ -252,10 +262,21 @@ class Overlay extends React.Component<
 
 	static childContextTypes = {
 		portal: PropTypes.object,
+		statisticsContainer: PropTypes.func,
+		gameType: PropTypes.number.isRequired,
 	};
 
 	getChildContext() {
-		return { portal: this.portal };
+		return {
+			portal: this.portal,
+			statisticsContainer: Statistics,
+			gameType:
+				this.props.boardState &&
+				this.props.boardState.player &&
+				this.props.boardState.player.deck
+					? this.props.boardState.player.deck.format
+					: 2, // default to RANKED_STANDARD
+		};
 	}
 
 	render() {
