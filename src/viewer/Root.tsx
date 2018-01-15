@@ -5,6 +5,7 @@ import {
 	BoardStateMessage,
 	EBSConfiguration,
 	GameEndMessage,
+	GameStartMessage,
 	Message,
 } from "../twitch-hdt";
 import AsyncQueue from "./AsyncQueue";
@@ -119,6 +120,8 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 				boardState: null,
 				...(config as any),
 			});
+		} else if (isOfType<GameStartMessage>(message, "game_start")) {
+			// do nothing
 		} else {
 			console.debug(`Unexpected message.type "${message.type}"`);
 		}

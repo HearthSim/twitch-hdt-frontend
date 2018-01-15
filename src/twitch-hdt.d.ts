@@ -109,6 +109,11 @@ export const enum FormatType {
 	FT_STANDARD = 2,
 }
 
+export interface GameStartMessage extends BaseMessage {
+	type: "game_start";
+	data: BoardStateDeck;
+}
+
 export interface GameEndMessage extends BaseMessage {
 	type: "game_end";
 	data: null;
