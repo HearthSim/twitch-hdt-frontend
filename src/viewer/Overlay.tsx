@@ -158,11 +158,11 @@ const Statistics = styled.div`
 `;
 
 const LeftStatistics = Statistics.extend`
-	left: 0;
+	left: 1vh;
 `;
 
 const RightStatistics = Statistics.extend`
-	right: 0;
+	right: 1vh;
 `;
 
 const Offset = styled.div`
@@ -278,7 +278,7 @@ class Overlay extends React.Component<
 		return {
 			portal: this.portal,
 			statisticsContainer:
-				this.props.config.deck_position === DecklistPosition.TOP_RIGHT
+				this.props.config.deck_position === DecklistPosition.TOP_LEFT
 					? RightStatistics
 					: LeftStatistics,
 			gameType:
