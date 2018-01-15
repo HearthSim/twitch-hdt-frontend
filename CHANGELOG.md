@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Improved icons in deck list header
+- Improved scroll behaviour on configuration page
 
 ## [0.1.2] - 2017-11-17
 ### Fixed

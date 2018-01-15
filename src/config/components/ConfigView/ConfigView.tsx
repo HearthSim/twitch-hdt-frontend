@@ -21,7 +21,8 @@ interface ConfigViewState {}
 
 const Wrapper = styled.div`
 	font-family: "Helvetica Neue", helvetica, sans-serif;
-	width: 100vw;
+	width: 100%;
+	min-width: 500px;
 	min-height: 100vh;
 	display: flex;
 	flex-wrap: wrap;
