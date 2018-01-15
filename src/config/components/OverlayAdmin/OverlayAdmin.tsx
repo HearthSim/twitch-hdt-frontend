@@ -146,7 +146,7 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 										disabled={this.props.disabled}
 										onChange={this.setFeature(Feature.TOOLTIPS)}
 									/>{" "}
-									Enable Tooltips
+									Enable Tooltips{!tooltipsEnabled ? "…" : null}
 								</label>
 							</li>
 							{tooltipsEnabled ? (
@@ -202,7 +202,7 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 										disabled={this.props.disabled}
 										onChange={this.setFeature(Feature.DECKLIST)}
 									/>{" "}
-									Enable Decklist
+									Enable Decklist{!decklistEnabled ? "…" : null}
 								</label>
 							</li>
 							{decklistEnabled ? (
