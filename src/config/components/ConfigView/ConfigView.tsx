@@ -117,8 +117,8 @@ export default class ConfigView extends React.Component<
 					<MessageWrapper>
 						<p>Unable to reach extension backend service</p>
 						<p>
-							Please check your browser addons, or if this persists, contact us
-							at{" "}
+							Please check your browser extensions, or if this persists, contact
+							us at{" "}
 							<a href="mailto:support@hearthsim.net">support@hearthsim.net</a>.
 						</p>
 					</MessageWrapper>
