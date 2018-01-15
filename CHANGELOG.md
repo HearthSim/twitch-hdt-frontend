@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Added statistics panel when hovering collectible cards  
   *Shows various card statistics powered by HSReplay.net*
+- Added stream backlinking from HSReplay.net  
+  *Can be toggled on or off on the configuration page*
 - Added board positioning to configuration page
 - Added stream thumbnail to configuration page
 - Added toggle for board tooltips to configuration page

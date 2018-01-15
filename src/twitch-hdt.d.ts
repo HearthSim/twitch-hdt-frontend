@@ -10,6 +10,7 @@ interface EBSConfiguration {
 	deck_position?: string;
 	hidden?: string;
 	game_offset_horizontal?: string;
+	promote_on_hsreplaynet?: boolean;
 }
 
 export interface BoardStateMessage extends BaseMessage {

@@ -4,6 +4,7 @@ import ConnectionAdmin from "../ConnectionAdmin/ConnectionAdmin";
 import { EBSConfiguration } from "../../../twitch-hdt";
 import { ConnectionStatus } from "../../enums";
 import OverlayAdmin from "../OverlayAdmin";
+import OtherAdmin from "../OtherAdmin";
 
 interface ConfigViewProps extends React.ClassAttributes<ConfigView> {
 	connectionStatus: ConnectionStatus;
@@ -141,6 +142,13 @@ export default class ConfigView extends React.Component<
 						</FieldsetShield>
 					) : null}
 				</OverlayAdmin>
+				<OtherAdmin>
+					{!setupComplete ? (
+						<FieldsetShield>
+							<span>Connection setup required</span>
+						</FieldsetShield>
+					) : null}
+				</OtherAdmin>
 			</Wrapper>
 		);
 	}
