@@ -151,11 +151,18 @@ const Deck = withProps<PositionProps>()(OverlayElement.extend)`
 
 const Statistics = styled.div`
 	position: absolute;
-	left: 0;
 	bottom: 0;
 	margin-bottom: 40px;
 	width: 24vh;
 	font-size: 2vh;
+`;
+
+const LeftStatistics = Statistics.extend`
+	left: 0;
+`;
+
+const RightStatistics = Statistics.extend`
+	right: 0;
 `;
 
 const Offset = styled.div`
@@ -270,7 +277,10 @@ class Overlay extends React.Component<
 	getChildContext() {
 		return {
 			portal: this.portal,
-			statisticsContainer: Statistics,
+			statisticsContainer:
+				this.props.config.deck_position === DecklistPosition.TOP_RIGHT
+					? RightStatistics
+					: LeftStatistics,
 			gameType:
 				this.props.boardState &&
 				this.props.boardState.player &&
