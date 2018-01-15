@@ -28,6 +28,7 @@ const Wrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
+	align-items: flex-start;
 	justify-content: center;
 `;
 
