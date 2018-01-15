@@ -87,7 +87,7 @@ const getSettings = () => async (
 	}
 };
 
-const setSetting = (setting: keyof EBSConfiguration, value: string) => async (
+const setSetting = (setting: keyof EBSConfiguration, value: any) => async (
 	dispatch: Dispatch<State>,
 	getState: () => State,
 ) => dispatch(setSettings({ [setting]: value }));
