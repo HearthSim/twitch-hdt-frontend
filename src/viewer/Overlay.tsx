@@ -37,8 +37,8 @@ const Portal = styled.div`
 	pointer-events: none;
 	overflow: hidden;
 
-	& * {
-		pointer-events: auto;
+	> * {
+		pointer-events: none;
 	}
 `;
 
