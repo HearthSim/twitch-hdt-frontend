@@ -178,8 +178,8 @@ class Overlay extends React.Component<
 	OverlayProps & TwitchExtProps,
 	OverlayState
 > {
-	portal: HTMLDivElement | null;
-	movementTimeout: number;
+	portal: HTMLDivElement | null = null;
+	movementTimeout: number | null = null;
 
 	constructor(props: OverlayProps & TwitchExtProps, context?: any) {
 		super(props, context);
@@ -198,6 +198,7 @@ class Overlay extends React.Component<
 			return;
 		}
 		window.clearTimeout(this.movementTimeout);
+		this.movementTimeout = null;
 	}
 
 	refreshMovementTimeout() {

@@ -122,8 +122,6 @@ class Entity extends React.Component<
 	CardStatisticsProps & CardsProps,
 	CardStatisticsState
 > {
-	ref: HTMLDivElement | null;
-
 	constructor(props: CardStatisticsProps & CardsProps, context?: any) {
 		super(props, context);
 		this.state = {

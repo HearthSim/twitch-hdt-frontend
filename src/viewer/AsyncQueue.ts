@@ -8,7 +8,7 @@ export default class AsyncQueue<T extends {}> {
 	constructor(frequency?: number) {
 		this.queue = [];
 		this.listeners = [];
-		this.delay = Infinity;
+		this._delay = Infinity;
 		setInterval(() => this._work(), frequency || 300);
 	}
 

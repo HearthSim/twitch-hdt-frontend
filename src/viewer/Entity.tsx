@@ -30,7 +30,7 @@ class Entity extends React.Component<
 	EntityProps & CardsProps & PortalProps,
 	EntityState
 > {
-	ref: HTMLDivElement | null;
+	ref: HTMLDivElement | null = null;
 
 	constructor(props: EntityProps & CardsProps & PortalProps, context?: any) {
 		super(props, context);

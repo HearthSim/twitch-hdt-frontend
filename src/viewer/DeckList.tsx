@@ -195,8 +195,8 @@ class DeckList extends React.Component<
 	DeckListProps & CardsProps & TwitchExtProps,
 	DeckListState
 > {
-	copiedTimeout: number | null;
-	ref: HTMLDivElement;
+	copiedTimeout: number | null = null;
+	ref: HTMLDivElement | null = null;
 
 	constructor(
 		props: DeckListProps & CardsProps & TwitchExtProps,

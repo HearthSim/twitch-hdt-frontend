@@ -93,7 +93,7 @@ interface OverlayPreviewProps {
 export default class OverlayPreview extends React.Component<
 	OverlayPreviewProps
 > {
-	private ref: HTMLDivElement | null;
+	private ref: HTMLDivElement | null = null;
 
 	componentDidMount(): void {
 		this.props.refreshStreamData();
