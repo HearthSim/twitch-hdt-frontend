@@ -1,5 +1,6 @@
 # Twitch Extension for Hearthstone Deck Tracker
 [![Travis](https://img.shields.io/travis/HearthSim/twitch-hdt-frontend/master.svg)](https://travis-ci.org/HearthSim/twitch-hdt-frontend)
+[![GitHub release](https://img.shields.io/github/release/HearthSim/twitch-hdt-frontend.svg)](https://github.com/HearthSim/twitch-hdt-frontend/releases)
 
 This repository contains the official Twitch extension for Hearthstone Deck Tracker.
 
