@@ -21,6 +21,7 @@ interface EntityProps extends React.ClassAttributes<Entity> {
 
 interface EntityState {
 	isHovering?: boolean;
+	showStatistics?: boolean;
 	x?: number | null;
 	y?: number | null;
 	width?: number | null;
@@ -31,11 +32,13 @@ class Entity extends React.Component<
 	EntityState
 > {
 	ref: HTMLDivElement | null = null;
+	statisticsTimeout: number | null = null;
 
 	constructor(props: EntityProps & CardsProps & PortalProps, context?: any) {
 		super(props, context);
 		this.state = {
 			isHovering: false,
+			showStatistics: false,
 			x: null,
 			y: null,
 			width: null,
@@ -46,6 +49,25 @@ class Entity extends React.Component<
 		statisticsContainer: PropTypes.func,
 		gameType: PropTypes.number.isRequired,
 	};
+
+	public componentDidUpdate(
+		prevProps: Readonly<EntityProps & CardsProps & PortalProps>,
+		prevState: Readonly<EntityState>,
+		prevContext: any,
+	): void {
+		if (
+			prevState.isHovering !== this.state.isHovering &&
+			this.statisticsTimeout !== null
+		) {
+			window.clearTimeout(this.statisticsTimeout);
+		}
+		if (!prevState.isHovering && this.state.isHovering) {
+			this.statisticsTimeout = window.setTimeout(() => {
+				this.statisticsTimeout = null;
+				this.setState({ showStatistics: true });
+			}, 500);
+		}
+	}
 
 	render() {
 		if (!this.props.dbfId) {
@@ -73,7 +95,11 @@ class Entity extends React.Component<
 				this.props.portal,
 			);
 
-			if (card.collectible && this.context.statisticsContainer) {
+			if (
+				card.collectible &&
+				this.context.statisticsContainer &&
+				this.state.showStatistics
+			) {
 				const Container = this.context.statisticsContainer;
 				statistics = ReactDOM.createPortal(
 					<Container>

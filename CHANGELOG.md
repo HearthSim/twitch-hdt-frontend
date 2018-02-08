@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 - Ensure "Copy deck" button always copies a canonical deck
+- Make the statistics panel only appear after a slight delay
 
 ## [0.2.0] - 2018-01-18
 ### Added

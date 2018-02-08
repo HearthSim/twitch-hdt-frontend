@@ -7,7 +7,6 @@ import Entity from "./Entity";
 import { DecklistPosition, Feature, hasFeature } from "../utils/config";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import DeckListOverlay from "./DeckListOverlay";
-import CardStatistics from "./CardStatistics";
 
 interface OverlayProps extends React.ClassAttributes<Overlay> {
 	boardState: BoardStateData | null;
