@@ -121,7 +121,7 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 
 	componentWillReceiveProps(props: RootProps & TwitchExtProps) {
 		if (this.props.twitchExtContext) {
-			this.queue.delay = 0;
+			this.queue.delay = this.props.twitchExtContext.hlsLatencyBroadcaster;
 		}
 	}
 
