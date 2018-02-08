@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import HearthstoneJSON, { CardData as HSJSONCard } from "hearthstonejson";
+import HearthstoneJSON, {
+	CardData as HSJSONCard,
+} from "hearthstonejson-client";
 import { makeHOC } from "./hocs";
 
 export type CardDefinition = HSJSONCard;

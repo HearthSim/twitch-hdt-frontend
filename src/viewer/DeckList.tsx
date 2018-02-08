@@ -1,6 +1,6 @@
 import * as React from "react";
 import { encode } from "deckstrings";
-import { CardData } from "hearthstonejson";
+import { CardData } from "hearthstonejson-client";
 import { CardsProps, withCards } from "../utils/cards";
 import CardTile from "./CardTile";
 import styled from "styled-components";
