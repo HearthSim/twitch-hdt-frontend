@@ -37,7 +37,7 @@
 		"clean-webpack-plugin": "^0.1.17",
 		"clipboard-polyfill": "^2.3.0",
 		"cross-env": "^5.0.5",
-		"deckstrings": "^1.1.0",
+		"deckstrings": "^2.0.0-beta.1",
 		"file-loader": "^1.1.4",
 		"hearthstonejson-client": "^0.8.1",
 		"html-webpack-plugin": "^2.30.1",

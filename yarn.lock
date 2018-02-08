@@ -1498,9 +1498,9 @@ decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
-deckstrings@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/deckstrings/-/deckstrings-1.1.0.tgz#1acf0e6a821780812d5acf8c6d29a0f59063c920"
+deckstrings@^2.0.0-beta.1:
+  version "2.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/deckstrings/-/deckstrings-2.0.0-beta.1.tgz#0661b4e8dcfb71586085728992bbbb5be3c3ddb9"
 
 decode-uri-component@^0.2.0:
   version "0.2.0"
