@@ -307,7 +307,7 @@ class Overlay extends React.Component<
 				feature,
 			);
 
-		const hideDecklist = !this.props.boardState || isHidden(Feature.DECKLIST);
+		const hideDecklist = isHidden(Feature.DECKLIST);
 		const hideTooltips = !this.props.boardState || isHidden(Feature.TOOLTIPS);
 
 		return (
@@ -335,6 +335,7 @@ class Overlay extends React.Component<
 							this.setState({ pinDeck });
 						}}
 						engaged={this.state.hovering}
+						hidden={!this.props.boardState}
 					/>
 				)}
 				{hideTooltips ? null : (

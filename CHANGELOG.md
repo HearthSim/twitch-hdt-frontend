@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Ensure "Copy deck" button always copies a canonical deck
 - Fixed statistics panel result not being cached
+- Fixed deck list position resetting whenever a game ends
 
 ## [0.2.0] - 2018-01-18
 ### Added

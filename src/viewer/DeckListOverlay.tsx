@@ -35,6 +35,7 @@ interface DeckListOverlayProps extends React.ClassAttributes<DeckListOverlay> {
 	pinDeck: boolean;
 	onPinDeck: (pinDeck: boolean) => void;
 	engaged?: boolean;
+	hidden?: boolean;
 }
 
 interface Vector {
@@ -129,6 +130,10 @@ class DeckListOverlay extends React.Component<
 	}
 
 	render() {
+		if (this.props.hidden) {
+			return null;
+		}
+
 		const deck = this.props.deck;
 
 		return (
