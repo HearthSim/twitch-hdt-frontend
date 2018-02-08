@@ -1,6 +1,6 @@
 {
 	"name": "twitch-hdt-frontend",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "The official Twitch Extension for Hearthstone Deck Tracker.",
 	"homepage": "https://github.com/HearthSim/twitch-hdt-frontend",
 	"bugs": {
