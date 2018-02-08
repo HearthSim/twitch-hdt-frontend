@@ -4,6 +4,8 @@ import { CardsProps, isPlayableCard, withCards } from "../utils/cards";
 import { HSReplayNetIcon } from "./icons";
 import { Icon } from "./DeckList";
 import { FormatType } from "../twitch-hdt";
+import * as PropTypes from "prop-types";
+import { SingleCardDetailsPayload } from "../hsreplaynet";
 
 const CardStatisticsDiv = styled.div`
 	color: white;
@@ -97,17 +99,6 @@ const CardStatisticsDiv = styled.div`
 	}
 `;
 
-interface SingleCardDetailsPayload {
-	popularity_rank: number;
-	avg_copies_in_deck: number;
-	avg_turns_in_hand: number;
-	avg_turn_played: number;
-	keep_percentage: number;
-	winrate_in_opening_hand: number;
-	winrate_when_drawn: number;
-	winrate_when_played: number;
-}
-
 interface CardStatisticsProps extends React.ClassAttributes<Entity> {
 	dbfId: number | null;
 	gameType: FormatType;
@@ -129,27 +120,22 @@ class Entity extends React.Component<
 		};
 	}
 
+	static contextTypes = {
+		fetchStatistics: PropTypes.func.isRequired,
+	};
+
 	componentDidMount(): void {
 		this.requestStats();
 	}
 
 	async requestStats() {
-		const response = await fetch(
-			`https://hsreplay.net/analytics/query/single_card_details/?card_id=${
-				this.props.dbfId
-			}&GameType=${
-				this.props.gameType === FormatType.FT_WILD
-					? "RANKED_WILD"
-					: "RANKED_STANDARD"
-			}`,
-		);
-		if (response.status !== 200) {
-			console.debug(`Unexpected status code "${response.status}"`);
-			return;
-		}
-		const data = await response.json();
 		try {
-			this.setState({ statistics: data["series"]["data"]["ALL"] });
+			this.setState({
+				statistics: await this.context.fetchStatistics(
+					this.props.dbfId,
+					this.props.gameType,
+				),
+			});
 		} catch (e) {
 			console.error(e);
 		}

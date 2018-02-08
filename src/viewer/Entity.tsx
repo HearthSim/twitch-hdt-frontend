@@ -67,6 +67,9 @@ class Entity extends React.Component<
 				this.setState({ showStatistics: true });
 			}, 500);
 		}
+		if (prevState.isHovering && !this.state.isHovering) {
+			this.setState({ showStatistics: false });
+		}
 	}
 
 	render() {

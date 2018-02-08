@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Ensure "Copy deck" button always copies a canonical deck
 - Make the statistics panel only appear after a slight delay
 
+### Fixed
+- Fixed statistics panel result not being cached
+
 ## [0.2.0] - 2018-01-18
 ### Added
 - Added statistics panel when hovering collectible cards  

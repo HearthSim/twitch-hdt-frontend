@@ -4,12 +4,15 @@ import {
 	BoardStateData,
 	BoardStateMessage,
 	EBSConfiguration,
+	FormatType,
 	GameEndMessage,
 	GameStartMessage,
 	Message,
 } from "../twitch-hdt";
 import AsyncQueue from "./AsyncQueue";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
+import * as PropTypes from "prop-types";
+import { SingleCardDetailsPayload } from "../hsreplaynet";
 
 interface RootProps extends React.ClassAttributes<Root> {}
 
@@ -17,11 +20,67 @@ interface RootState {
 	boardState: BoardStateData | null;
 	config: EBSConfiguration;
 	hasError: boolean;
+	statistics: {
+		[gameType: string]: {
+			[dbfId: string]: SingleCardDetailsPayload;
+		};
+	};
 }
 
 class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 	queue: AsyncQueue<Message>;
 	timeout: number | null;
+
+	static childContextTypes = {
+		fetchStatistics: PropTypes.func,
+	};
+
+	getChildContext() {
+		return {
+			fetchStatistics: async (
+				dbfId: number | string,
+				gameType: FormatType,
+			): Promise<SingleCardDetailsPayload> => {
+				const _dbfId = "" + dbfId;
+				const _gameType =
+					gameType === FormatType.FT_WILD ? "RANKED_WILD" : "RANKED_STANDARD";
+				// cache lookup
+				if (this.state.statistics[_gameType]) {
+					const cached = this.state.statistics[_gameType][_dbfId];
+					if (cached) {
+						return cached;
+					}
+				}
+				const params = [`card_id=${_dbfId}`, `GameType=${_gameType}`];
+				const url = `https://hsreplay.net/analytics/query/single_card_details/?${params.join(
+					"&",
+				)}`;
+				const response = await fetch(url, {
+					mode: "cors",
+					headers: new Headers({
+						"X-Twitch-Extension-Version": APPLICATION_VERSION,
+					}),
+				});
+				if (response.status !== 200) {
+					throw new Error(`Unexpected status code "${response.status}"`);
+				}
+				const data = await response.json();
+				const payload = data["series"]["data"]["ALL"];
+				// cache payload
+				this.setState(prevState => ({
+					...prevState,
+					statistics: {
+						...prevState.statistics,
+						[_gameType]: {
+							...prevState.statistics[_gameType],
+							[_dbfId]: payload,
+						},
+					},
+				}));
+				return payload;
+			},
+		};
+	}
 
 	constructor(props: RootProps, context?: any) {
 		super(props);
@@ -29,6 +88,7 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 			boardState: null,
 			hasError: false,
 			config: {},
+			statistics: {},
 		};
 		this.queue = new AsyncQueue();
 		this.timeout = null;
