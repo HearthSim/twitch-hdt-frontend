@@ -367,6 +367,9 @@ class DeckList extends React.Component<
 			},
 		);
 
+		const useDeckName =
+			typeof this.props.name === "string" && this.props.name.trim().length > 0;
+
 		return (
 			<Wrapper
 				position={position}
@@ -393,8 +396,10 @@ class DeckList extends React.Component<
 								padding="4px"
 								title="Powered by HSReplay.net"
 							/>
-							<h1 title={this.props.name || "Unnamed Deck"}>
-								{this.state.copied ? "Copied!" : this.props.name || "Unnamed"}
+							<h1 title={useDeckName ? this.props.name : "Unnamed Deck"}>
+								{this.state.copied
+									? "Copied!"
+									: useDeckName ? this.props.name : "HSReplay.net"}
 							</h1>
 							<CopyButton
 								onClick={() => {
