@@ -1,12 +1,12 @@
+import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { withProps } from "../utils/styled";
 import { BoardStateData, EBSConfiguration } from "../twitch-hdt";
-import PropTypes from "prop-types";
-import Entity from "./Entity";
 import { DecklistPosition, Feature, hasFeature } from "../utils/config";
+import { withProps } from "../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import DeckListOverlay from "./DeckListOverlay";
+import Entity from "./Entity";
 
 export interface PositionProps {
 	top?: string;
@@ -181,8 +181,8 @@ interface State {
 }
 
 class Overlay extends React.Component<Props & TwitchExtProps, State> {
-	portal: HTMLDivElement | null = null;
-	movementTimeout: number | null = null;
+	public portal: HTMLDivElement | null = null;
+	public movementTimeout: number | null = null;
 
 	constructor(props: Props & TwitchExtProps, context: any) {
 		super(props, context);
@@ -192,11 +192,11 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		};
 	}
 
-	componentDidMount(): void {
+	public componentDidMount(): void {
 		this.refreshMovementTimeout();
 	}
 
-	clearMovementTimeout() {
+	public clearMovementTimeout() {
 		if (!this.movementTimeout) {
 			return;
 		}
@@ -204,14 +204,14 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		this.movementTimeout = null;
 	}
 
-	refreshMovementTimeout() {
+	public refreshMovementTimeout() {
 		this.clearMovementTimeout();
 		this.movementTimeout = window.setTimeout(() => {
 			this.setState({ hovering: false });
 		}, 2500);
 	}
 
-	componentWillUnmount(): void {
+	public componentWillUnmount(): void {
 		this.clearMovementTimeout();
 	}
 
@@ -264,13 +264,13 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 			.filter(s => s !== null);
 	}
 
-	static childContextTypes = {
+	public static childContextTypes = {
 		portal: PropTypes.object,
 		statisticsContainer: PropTypes.func,
 		gameType: PropTypes.number.isRequired,
 	};
 
-	getChildContext() {
+	public getChildContext() {
 		return {
 			portal: this.portal,
 			statisticsContainer:

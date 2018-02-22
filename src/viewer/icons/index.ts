@@ -1,9 +1,9 @@
 import CollapseIcon from "./collapse.svg";
+import CopyDeckIcon from "./copy_deck.svg";
 import ExpandIcon from "./expand.svg";
+import HSReplayNetIcon from "./hsreplaynet.svg";
 import PinIcon from "./pin.svg";
 import UnpinIcon from "./unpin.svg";
-import CopyDeckIcon from "./copy_deck.svg";
-import HSReplayNetIcon from "./hsreplaynet.svg";
 
 export {
 	CollapseIcon,

@@ -1,9 +1,9 @@
-import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
-import OtherAdminComponent from "./OtherAdmin";
-import { State } from "../../state";
+import { bindActionCreators, Dispatch } from "redux";
 import { actionCreators } from "../../actions";
 import { ConnectionStatus } from "../../enums";
+import { State } from "../../state";
+import OtherAdminComponent from "./OtherAdmin";
 
 const mapStateToProps = (state: State) => ({
 	disabled:

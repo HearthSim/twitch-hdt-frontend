@@ -1,15 +1,15 @@
-import React from "react";
+import clipboard from "clipboard-polyfill";
 import { encode } from "deckstrings";
 import { CardData } from "hearthstonejson-client";
-import { CardsProps, withCards } from "../utils/cards";
-import CardTile from "./CardTile";
+import React from "react";
 import styled from "styled-components";
+import { BoardStateDeckCard, FormatType } from "../twitch-hdt";
+import { CardsProps, withCards } from "../utils/cards";
 import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
-import clipboard from "clipboard-polyfill";
-import { BoardStateDeckCard, FormatType } from "../twitch-hdt";
-import { CopyDeckIcon, PinIcon, UnpinIcon, HSReplayNetIcon } from "./icons";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
+import CardTile from "./CardTile";
+import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "./icons";
 
 const isEqual = require("lodash.isequal"); // see https://github.com/Microsoft/TypeScript/issues/5073
 
@@ -195,8 +195,8 @@ class DeckList extends React.Component<
 	Props & CardsProps & TwitchExtProps,
 	State
 > {
-	copiedTimeout: number | null = null;
-	ref: HTMLDivElement | null = null;
+	public copiedTimeout: number | null = null;
+	public ref: HTMLDivElement | null = null;
 
 	constructor(props: Props & CardsProps & TwitchExtProps, context: any) {
 		super(props, context);
@@ -206,12 +206,12 @@ class DeckList extends React.Component<
 		};
 	}
 
-	onResize = (e: UIEvent) => {
+	public onResize = (e: UIEvent) => {
 		window.requestAnimationFrame(() => this.resize());
 	};
 
-	getDeckstring(): string {
-		const initialCards: [number, number][] = this.props.cardList
+	public getDeckstring(): string {
+		const initialCards: Array<[number, number]> = this.props.cardList
 			.filter((card: BoardStateDeckCard) => {
 				const [dbfId, current, initial] = card;
 				return !!initial;
@@ -220,8 +220,8 @@ class DeckList extends React.Component<
 				const [dbfId, current, initial] = card;
 				return [dbfId, initial];
 			})
-			.reduce<[number, number][]>(
-				(result: [number, number][], card: [number, number]) => {
+			.reduce<Array<[number, number]>>(
+				(result: Array<[number, number]>, card: [number, number]) => {
 					result = result.slice(0);
 					for (let i = 0; i < result.length; i++) {
 						if (result[i][0] === card[0]) {
@@ -267,7 +267,7 @@ class DeckList extends React.Component<
 		].join("\n");
 	}
 
-	clearTimeout() {
+	public clearTimeout() {
 		if (!this.copiedTimeout) {
 			return;
 		}
@@ -275,17 +275,17 @@ class DeckList extends React.Component<
 		this.copiedTimeout = null;
 	}
 
-	componentDidMount() {
+	public componentDidMount() {
 		window.addEventListener("resize", this.onResize);
 		this.resize();
 	}
 
-	componentWillUnmount() {
+	public componentWillUnmount() {
 		window.removeEventListener("resize", this.onResize);
 		this.clearTimeout();
 	}
 
-	shouldComponentUpdate(
+	public shouldComponentUpdate(
 		nextProps: Readonly<Props & CardsProps & TwitchExtProps>,
 		nextState: Readonly<State>,
 		nextContext: any,
@@ -321,7 +321,7 @@ class DeckList extends React.Component<
 		);
 	}
 
-	stopPropagation(e: { stopPropagation: () => void }) {
+	public stopPropagation(e: { stopPropagation: () => void }) {
 		e.stopPropagation();
 	}
 
@@ -462,7 +462,7 @@ class DeckList extends React.Component<
 		);
 	}
 
-	resize() {
+	public resize() {
 		if (!this.ref || !this.ref.parentElement) {
 			return;
 		}
@@ -472,14 +472,14 @@ class DeckList extends React.Component<
 		const parent = this.ref.parentElement;
 		const { height: ownHeight } = this.ref.getBoundingClientRect();
 		const { height: boundsHeight } = parent.getBoundingClientRect();
-		let scale = Math.min(boundsHeight / ownHeight, 1);
+		const scale = Math.min(boundsHeight / ownHeight, 1);
 		if (scale === this.state.scale) {
 			return;
 		}
 		this.setState({ scale });
 	}
 
-	didPlayerLayoutChange(
+	public didPlayerLayoutChange(
 		contextA?: TwitchExtContext,
 		contextB?: TwitchExtContext,
 	): boolean {

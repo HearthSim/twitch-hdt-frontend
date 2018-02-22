@@ -1,8 +1,8 @@
+import { Dispatch } from "redux";
+import { TwitchApiStream } from "../twitch-api";
 import { EBSConfiguration } from "../twitch-hdt";
 import { ConnectionStatus } from "./enums";
-import { Dispatch } from "redux";
 import { getEBSHeaders, getTwitchAPIHeaders, State } from "./state";
-import { TwitchApiStream } from "../twitch-api";
 
 export const UPDATING_CONNECTION_STATUS = "UPDATING_CONNECTION_STATUS";
 export const SET_CONNECTION_STATUS = "SET_CONNECTION_STATUS";
@@ -13,7 +13,7 @@ export const SET_TWITCH_EXT_CONTEXT = "SET_TWITCH_EXT_CONTEXT";
 export const SET_TWITCH_EXT_AUTHORIZED = "SET_TWITCH_EXT_AUTHORIZED";
 export const SET_TWITCH_API_STREAM = "SET_TWITCH_API_STREAM";
 
-export type Actions = {
+export interface Actions {
 	UPDATING_CONNECTION_STATUS: {
 		type: typeof UPDATING_CONNECTION_STATUS;
 	};
@@ -46,7 +46,7 @@ export type Actions = {
 		stream: TwitchApiStream;
 		offline: boolean;
 	};
-};
+}
 
 const getSettings = () => async (
 	dispatch: Dispatch<State>,
@@ -137,7 +137,7 @@ const commitSettings = () => async (
 		const settings = await response.json();
 		dispatch({
 			type: UPDATE_SETTINGS,
-			settings: settings,
+			settings,
 			status: "success",
 		});
 	} catch (e) {
@@ -230,7 +230,7 @@ const refreshStreamData = () => async (
 		switch (response.status) {
 			case 200:
 				const json = await response.json();
-				const data = json["data"];
+				const data = json.data;
 				if (!data.length) {
 					return dispatch({
 						type: SET_TWITCH_API_STREAM,
@@ -240,7 +240,7 @@ const refreshStreamData = () => async (
 				const stream: TwitchApiStream = data[0];
 				return dispatch({
 					type: SET_TWITCH_API_STREAM,
-					stream: stream,
+					stream,
 				});
 			default:
 				throw new Error(`Unexpected status code ${response.status}`);
@@ -254,7 +254,7 @@ export const actionCreators = {
 		status: ConnectionStatus,
 	): Actions[typeof SET_CONNECTION_STATUS] => ({
 		type: SET_CONNECTION_STATUS,
-		status: status,
+		status,
 	}),
 	refreshStreamData,
 	getSettings,
@@ -278,6 +278,6 @@ export const actionCreators = {
 		authorized: TwitchExtAuthorized,
 	): Actions[typeof SET_TWITCH_EXT_AUTHORIZED] => ({
 		type: SET_TWITCH_EXT_AUTHORIZED,
-		authorized: authorized,
+		authorized,
 	}),
 };

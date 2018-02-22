@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import ConnectionAdmin from "../ConnectionAdmin/ConnectionAdmin";
 import { EBSConfiguration } from "../../../twitch-hdt";
 import { ConnectionStatus } from "../../enums";
-import OverlayAdmin from "../OverlayAdmin";
+import ConnectionAdmin from "../ConnectionAdmin/ConnectionAdmin";
 import OtherAdmin from "../OtherAdmin";
+import OverlayAdmin from "../OverlayAdmin";
 
 interface Props {
 	connectionStatus: ConnectionStatus;

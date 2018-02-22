@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { AppContainer } from "react-hot-loader";
-import Root from "./Root";
-import { TwitchExtProvider } from "../utils/twitch";
 import { CardsProvider } from "../utils/cards";
+import { TwitchExtProvider } from "../utils/twitch";
+import Root from "./Root";
 
 const rootElement = document.getElementById("root");
 const render = (Component: React.ComponentClass<any>) => {

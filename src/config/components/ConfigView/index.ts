@@ -1,9 +1,9 @@
-import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
-import ConfigViewComponent from "./ConfigView";
-import { State } from "../../state";
+import { bindActionCreators, Dispatch } from "redux";
 import { actionCreators } from "../../actions";
 import { ConnectionStatus } from "../../enums";
+import { State } from "../../state";
+import ConfigViewComponent from "./ConfigView";
 
 const mapStateToProps = (state: State) => ({
 	connectionStatus: state.connection.status,

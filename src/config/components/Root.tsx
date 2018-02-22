@@ -1,5 +1,5 @@
 import React from "react";
-import { Store, Provider } from "react-redux";
+import { Provider, Store } from "react-redux";
 import { State } from "../state";
 import ConfigView from "./ConfigView";
 

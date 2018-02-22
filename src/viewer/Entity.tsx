@@ -1,11 +1,11 @@
+import PropTypes from "prop-types";
 import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { CardsProps, withCards } from "../utils/cards";
-import Card from "./Card";
 import { PortalProps, withPortal } from "../utils/portal";
+import Card from "./Card";
 import CardStatistics from "./CardStatistics";
-import PropTypes from "prop-types";
 
 const EntityDiv = styled.div`
 	width: 100%;
@@ -28,8 +28,8 @@ interface State {
 }
 
 class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
-	ref: HTMLDivElement | null = null;
-	statisticsTimeout: number | null = null;
+	public ref: HTMLDivElement | null = null;
+	public statisticsTimeout: number | null = null;
 
 	constructor(props: Props & CardsProps & PortalProps, context: any) {
 		super(props, context);
@@ -42,7 +42,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 		};
 	}
 
-	static contextTypes = {
+	public static contextTypes = {
 		statisticsContainer: PropTypes.func,
 		gameType: PropTypes.number.isRequired,
 	};

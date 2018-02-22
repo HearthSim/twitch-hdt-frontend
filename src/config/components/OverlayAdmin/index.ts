@@ -1,9 +1,9 @@
-import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
-import OverlayAdminComponent from "./OverlayAdmin";
-import { State } from "../../state";
-import { ConnectionStatus } from "../../enums";
+import { bindActionCreators, Dispatch } from "redux";
 import { actionCreators } from "../../actions";
+import { ConnectionStatus } from "../../enums";
+import { State } from "../../state";
+import OverlayAdminComponent from "./OverlayAdmin";
 
 const mapStateToProps = (state: State) => ({
 	disabled:

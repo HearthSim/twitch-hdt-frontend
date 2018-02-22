@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { EBSConfiguration } from "../../../../twitch-hdt";
 import {
 	DecklistPosition,
 	Feature,
 	hasFeature,
 } from "../../../../utils/config";
 import { withProps } from "../../../../utils/styled";
-import { EBSConfiguration } from "../../../../twitch-hdt";
 
 const Stream = styled.div`
 	position: relative;
@@ -95,7 +95,7 @@ export default class OverlayPreview extends React.Component<
 > {
 	private ref: HTMLDivElement | null = null;
 
-	componentDidMount(): void {
+	public componentDidMount(): void {
 		this.props.refreshStreamData();
 	}
 

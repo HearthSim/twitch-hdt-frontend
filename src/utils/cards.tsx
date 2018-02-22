@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
 import HearthstoneJSON, {
 	CardData as HSJSONCard,
 } from "hearthstonejson-client";
+import PropTypes from "prop-types";
+import React from "react";
 import { makeHOC } from "./hocs";
 
 export type CardDefinition = HSJSONCard;
@@ -16,19 +16,19 @@ export interface Cards {
 }
 
 export class EmptyCards implements Cards {
-	getByDbfId(dbfId: number): null {
+	public getByDbfId(dbfId: number): null {
 		return null;
 	}
 }
 
 export class HearthstoneJSONCards implements Cards {
-	_cards: { [dbfId: number]: CardDefinition };
+	public _cards: { [dbfId: number]: CardDefinition };
 
 	constructor() {
 		this._cards = {};
 	}
 
-	fetch(): Promise<void> {
+	public fetch(): Promise<void> {
 		return new HearthstoneJSON().getLatest().then((c: CardDefinition[]) => {
 			c
 				.map(card => {
@@ -41,7 +41,7 @@ export class HearthstoneJSONCards implements Cards {
 		});
 	}
 
-	getByDbfId(dbfId: number): CardDefinition | null {
+	public getByDbfId(dbfId: number): CardDefinition | null {
 		return this._cards[dbfId];
 	}
 }
@@ -53,7 +53,7 @@ interface State {
 }
 
 export class CardsProvider extends React.Component<Props, State> {
-	static childContextTypes = {
+	public static childContextTypes = {
 		cards: PropTypes.object.isRequired,
 	};
 
@@ -64,11 +64,11 @@ export class CardsProvider extends React.Component<Props, State> {
 		};
 	}
 
-	getChildContext() {
+	public getChildContext() {
 		return { cards: this.state.cards };
 	}
 
-	componentDidMount(): void {
+	public componentDidMount(): void {
 		const cards = new HearthstoneJSONCards();
 		cards.fetch().then(() => this.setState({ cards }));
 	}

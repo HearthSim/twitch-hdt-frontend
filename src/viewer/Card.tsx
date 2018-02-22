@@ -1,8 +1,8 @@
 import React from "react";
 import { Card as ComponentCard } from "react-hs-components";
 import { CardsProps, withCards } from "../utils/cards";
-import { getPlaceholder } from "./placeholders";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
+import { getPlaceholder } from "./placeholders";
 
 interface Props {
 	dbfId: number;
@@ -37,7 +37,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 
 		// Evade black gradients at top and bottom on Twitch
 		let topMargin = 0;
-		let bottomMargin = 40;
+		const bottomMargin = 40;
 		if (
 			this.props.twitchExtContext &&
 			(this.props.twitchExtContext.isFullScreen ||

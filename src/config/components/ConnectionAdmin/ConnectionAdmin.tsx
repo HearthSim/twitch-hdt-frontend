@@ -1,8 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import ConnectionPreview from "./ConnectionPreview";
-import WindowsIcon from "./windows.svg";
-import ActivateImage from "./activate.png";
 import { ConnectionStatus } from "../../enums";
 import {
 	ErrorMessage,
@@ -10,6 +7,9 @@ import {
 	Heading,
 	SuccessMessage,
 } from "../ConfigView/ConfigView";
+import ActivateImage from "./activate.png";
+import ConnectionPreview from "./ConnectionPreview";
+import WindowsIcon from "./windows.svg";
 
 interface Props {
 	connectionStatus: ConnectionStatus;

@@ -1,17 +1,17 @@
 import { Reducer } from "redux";
 import {
 	Actions,
-	UPDATE_SETTINGS,
+	PREVIEW_SETTINGS,
+	ROLLBACK_SETTINGS,
 	SET_CONNECTION_STATUS,
 	SET_TWITCH_API_STREAM,
 	SET_TWITCH_EXT_AUTHORIZED,
 	SET_TWITCH_EXT_CONTEXT,
+	UPDATE_SETTINGS,
 	UPDATING_CONNECTION_STATUS,
-	PREVIEW_SETTINGS,
-	ROLLBACK_SETTINGS,
 } from "./actions";
-import { State } from "./state";
 import { ConnectionStatus } from "./enums";
+import { State } from "./state";
 
 const rootReducer: Reducer<State> = (state, action: Actions[keyof Actions]) => {
 	switch (action.type) {

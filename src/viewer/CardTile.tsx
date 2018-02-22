@@ -29,7 +29,7 @@ class CardTile extends React.Component<Props & CardsProps> {
 					}
 					icon={this.props.gift ? gift : undefined}
 					disabled={this.props.count === 0}
-					animated
+					animated={true}
 					showRarity={this.props.showRarity}
 					fontFamily={"sans-serif"}
 					fontWeight={"bold"}

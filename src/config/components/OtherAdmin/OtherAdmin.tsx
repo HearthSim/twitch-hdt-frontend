@@ -1,8 +1,8 @@
 import React from "react";
+import styled from "styled-components";
 import { EBSConfiguration } from "../../../twitch-hdt";
 import { Fieldset, Heading } from "../ConfigView/ConfigView";
 import HSReplayNetLivePreview from "./hsreplaynet-live-preview.png";
-import styled from "styled-components";
 
 interface Props {
 	disabled: boolean;

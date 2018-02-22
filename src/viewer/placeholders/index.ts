@@ -1,8 +1,8 @@
+import HeroPlaceholder from "./hero.png";
+import HeroPowerPlaceholder from "./hero_power.png";
 import MinionPlaceholder from "./minion.png";
 import SpellPlaceholder from "./spell.png";
 import WeaponPlaceholder from "./weapon.png";
-import HeroPlaceholder from "./hero.png";
-import HeroPowerPlaceholder from "./hero_power.png";
 
 const getPlaceholder = (type: string): string => {
 	switch (("" + type).toUpperCase()) {

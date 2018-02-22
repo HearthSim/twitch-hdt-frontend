@@ -1,7 +1,7 @@
-import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
-import { State } from "../../../state";
+import { bindActionCreators, Dispatch } from "redux";
 import { actionCreators } from "../../../actions";
+import { State } from "../../../state";
 import OverlayPreviewComponent from "./OverlayPreview";
 
 const mapStateToProps = (state: State) => ({

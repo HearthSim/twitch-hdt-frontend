@@ -1,8 +1,8 @@
-import { ConnectionStatus } from "./enums";
-import { EBSConfiguration } from "../twitch-hdt";
 import { TwitchApiStream } from "../twitch-api";
+import { EBSConfiguration } from "../twitch-hdt";
+import { ConnectionStatus } from "./enums";
 
-export type State = {
+export interface State {
 	readonly hasInitialized: boolean;
 	readonly completingSetup: boolean;
 	readonly connection: {
@@ -19,7 +19,7 @@ export type State = {
 		readonly authorized: TwitchExtAuthorized | null;
 		readonly stream: TwitchApiStream | false | null;
 	};
-};
+}
 
 export const initialState: State = {
 	hasInitialized: false,

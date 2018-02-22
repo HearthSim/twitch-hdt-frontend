@@ -1,7 +1,7 @@
-import { makeHOC } from "./hocs";
 import PropTypes from "prop-types";
 import React from "react";
 import { ChildContextProvider } from "react";
+import { makeHOC } from "./hocs";
 
 export interface TwitchExtProps {
 	twitchExtContext?: TwitchExtContext;
@@ -15,7 +15,7 @@ interface State {
 
 export class TwitchExtProvider extends React.Component<Props, State>
 	implements ChildContextProvider<TwitchExtProps> {
-	static childContextTypes = {
+	public static childContextTypes = {
 		twitchExtContext: PropTypes.object,
 	};
 
@@ -34,9 +34,9 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		window.Twitch.ext.onContext(this.onContext);
 	}
 
-	onContext = (
+	public onContext = (
 		context: TwitchExtContext,
-		changed: (keyof TwitchExtContext)[],
+		changed: Array<keyof TwitchExtContext>,
 	) => {
 		this.setState(prevState => {
 			const lastContext = prevState.context === null ? {} : prevState.context;

@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { DecklistPosition } from "../utils/config";
 import { BoardStateDeck } from "../twitch-hdt";
-import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
+import { DecklistPosition } from "../utils/config";
 import { withProps } from "../utils/styled";
-import { PositionProps } from "./Overlay";
+import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import DeckList from "./DeckList";
+import { PositionProps } from "./Overlay";
 
 const Wrapper = withProps<{ active?: boolean }>()(styled.div)`
 	z-index: 100;
@@ -61,7 +61,7 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 		};
 	}
 
-	onMoveStart = (e: React.MouseEvent<HTMLElement>) => {
+	public onMoveStart = (e: React.MouseEvent<HTMLElement>) => {
 		e.stopPropagation();
 		const { clientX, clientY } = e;
 		this.setState({
@@ -70,7 +70,7 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 		});
 	};
 
-	onMove = (e: React.MouseEvent<HTMLElement>) => {
+	public onMove = (e: React.MouseEvent<HTMLElement>) => {
 		if (!this.state.moving) {
 			return;
 		}
@@ -90,7 +90,7 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 		});
 	};
 
-	onMoveEnd = (e: React.MouseEvent<HTMLElement>) => {
+	public onMoveEnd = (e: React.MouseEvent<HTMLElement>) => {
 		e.stopPropagation();
 		if (!this.state.moving) {
 			return;
@@ -109,9 +109,9 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 		}));
 	};
 
-	onPinned = (pinned: boolean) => this.props.onPinDeck(pinned);
+	public onPinned = (pinned: boolean) => this.props.onPinDeck(pinned);
 
-	componentDidUpdate(
+	public componentDidUpdate(
 		prevProps: Readonly<Props & TwitchExtProps>,
 		prevState: Readonly<State>,
 		prevContext: any,

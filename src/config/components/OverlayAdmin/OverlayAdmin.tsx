@@ -1,15 +1,15 @@
 import React from "react";
+import styled from "styled-components";
+import { EBSConfiguration } from "../../../twitch-hdt";
 import {
 	DecklistPosition,
 	Feature,
 	hasFeature,
 	setFeature,
 } from "../../../utils/config";
-import StreamPreview from "./Preview";
-import styled from "styled-components";
 import { withProps } from "../../../utils/styled";
-import { EBSConfiguration } from "../../../twitch-hdt";
 import { Fieldset, Heading } from "../ConfigView/ConfigView";
+import StreamPreview from "./Preview";
 
 const VerticalList = styled.ul`
 	padding-left: 0;
@@ -63,7 +63,7 @@ export default class OverlayAdmin extends React.Component<Props> {
 		};
 	}
 
-	getHiddenFeatures(): number {
+	public getHiddenFeatures(): number {
 		const defaultHidden = 0;
 		const proposedHidden =
 			this.props.settings && !!this.props.settings.hidden
@@ -72,12 +72,14 @@ export default class OverlayAdmin extends React.Component<Props> {
 		return !isNaN(proposedHidden) ? proposedHidden : defaultHidden;
 	}
 
-	changeDecklistPosition = (event: React.ChangeEvent<HTMLInputElement>) => {
+	public changeDecklistPosition = (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
 		this.props.setSetting("deck_position", event.target
 			.value as DecklistPosition);
 	};
 
-	setFeature = (feature: Feature) => (
+	public setFeature = (feature: Feature) => (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		const hiddenFeatures = this.getHiddenFeatures();
@@ -87,21 +89,25 @@ export default class OverlayAdmin extends React.Component<Props> {
 		);
 	};
 
-	setHorizontalGameOffset = (event: React.ChangeEvent<HTMLInputElement>) => {
+	public setHorizontalGameOffset = (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
 		const target = event.target;
 		const value: number = target ? +target.value : 0;
 		this.props.previewSettings({ game_offset_horizontal: "" + value });
 	};
 
-	commitHorizontalGameOffset = (event: any) => {
+	public commitHorizontalGameOffset = (event: any) => {
 		this.props.commitSettings();
 	};
 
-	resetHorizontalGameOffset = (event: React.MouseEvent<HTMLButtonElement>) => {
+	public resetHorizontalGameOffset = (
+		event: React.MouseEvent<HTMLButtonElement>,
+	) => {
 		this.props.setSetting("game_offset_horizontal", "" + 0);
 	};
 
-	refreshLive = (event: React.MouseEvent<HTMLElement>) => {
+	public refreshLive = (event: React.MouseEvent<HTMLElement>) => {
 		event.preventDefault();
 		this.props.refreshStreamData();
 	};
@@ -129,7 +135,7 @@ export default class OverlayAdmin extends React.Component<Props> {
 				<Heading>Overlay</Heading>
 				<p>Customize your interactive overlay on Twitch.</p>
 				<StreamPreview hideTooltips={hideTooltips} />
-				{this.props.isLive === false ? (
+				{!this.props.isLive ? (
 					<p>
 						<em>Go live for a preview of your stream.</em>{" "}
 						<button onClick={this.refreshLive}>Refresh now</button>

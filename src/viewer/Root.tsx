@@ -1,5 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
-import Overlay from "./Overlay";
+import { SingleCardDetailsPayload } from "../hsreplaynet";
 import {
 	BoardStateData,
 	BoardStateMessage,
@@ -9,10 +10,9 @@ import {
 	GameStartMessage,
 	Message,
 } from "../twitch-hdt";
-import AsyncQueue from "./AsyncQueue";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
-import PropTypes from "prop-types";
-import { SingleCardDetailsPayload } from "../hsreplaynet";
+import AsyncQueue from "./AsyncQueue";
+import Overlay from "./Overlay";
 
 interface Props {}
 
@@ -28,8 +28,8 @@ interface State {
 }
 
 class Root extends React.Component<Props & TwitchExtProps, State> {
-	queue: AsyncQueue<Message>;
-	timeout: number | null;
+	public queue: AsyncQueue<Message>;
+	public timeout: number | null;
 
 	constructor(props: Props, context: any) {
 		super(props, context);
@@ -43,7 +43,7 @@ class Root extends React.Component<Props & TwitchExtProps, State> {
 		this.timeout = null;
 	}
 
-	static childContextTypes = {
+	public static childContextTypes = {
 		fetchStatistics: PropTypes.func,
 	};
 
@@ -77,7 +77,7 @@ class Root extends React.Component<Props & TwitchExtProps, State> {
 					throw new Error(`Unexpected status code "${response.status}"`);
 				}
 				const data = await response.json();
-				const payload = data["series"]["data"]["ALL"];
+				const payload = data.series.data.ALL;
 				// cache payload
 				this.setState(prevState => ({
 					...prevState,
@@ -132,7 +132,7 @@ class Root extends React.Component<Props & TwitchExtProps, State> {
 		this.queue.unlisten(this.handleMessage);
 	}
 
-	refreshTimeout(): void {
+	public refreshTimeout(): void {
 		if (this.timeout !== null) {
 			window.clearTimeout(this.timeout);
 		}
@@ -142,7 +142,7 @@ class Root extends React.Component<Props & TwitchExtProps, State> {
 		}, 120 * 1000);
 	}
 
-	handleMessage = (message: Message) => {
+	public handleMessage = (message: Message) => {
 		this.refreshTimeout();
 
 		const isOfType = <T extends Message>(
@@ -175,7 +175,7 @@ class Root extends React.Component<Props & TwitchExtProps, State> {
 			}
 
 			this.setState({
-				boardState: boardState,
+				boardState,
 				...(config as any),
 			});
 		} else if (isOfType<GameEndMessage>(message, "game_end")) {

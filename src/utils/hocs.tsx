@@ -1,6 +1,6 @@
+import { ValidationMap } from "prop-types";
 import React from "react";
 import { capitalize } from "./strings";
-import { ValidationMap } from "prop-types";
 
 /**
  * Use this method to create a simple HOC to directly extract some props from the context.
@@ -11,10 +11,10 @@ export const makeHOC = <PInject extends {}>(
 	Component: React.ComponentClass<P & PInject>,
 ): React.ComponentClass<P> =>
 	class GenericHOC extends React.Component<P> {
-		static displayName = `${Object.keys(contextTypes)
+		public static displayName = `${Object.keys(contextTypes)
 			.map(capitalize)
 			.join("")}HOC`;
-		static contextTypes = contextTypes;
+		public static contextTypes = contextTypes;
 
 		public render(): React.ReactNode {
 			const contextVars: { [k: string]: string } = {};

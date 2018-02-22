@@ -2,8 +2,8 @@ type Listener<T> = (data: T) => void;
 
 export default class AsyncQueue<T extends {}> {
 	protected _delay: number;
-	queue: { message: T; time: number }[];
-	listeners: Listener<T>[];
+	public queue: Array<{ message: T; time: number }>;
+	public listeners: Array<Listener<T>>;
 
 	constructor(frequency?: number) {
 		this.queue = [];
@@ -21,18 +21,18 @@ export default class AsyncQueue<T extends {}> {
 		return this._delay;
 	}
 
-	write(data: T, time?: number) {
+	public write(data: T, time?: number) {
 		this.queue.push({
 			message: data,
 			time: time || new Date().getTime(),
 		});
 	}
 
-	listen(listener: Listener<T>): void {
+	public listen(listener: Listener<T>): void {
 		this.listeners.push(listener);
 	}
 
-	unlisten(listener: Listener<T>): void {
+	public unlisten(listener: Listener<T>): void {
 		this.listeners.filter(l => l === listener);
 	}
 

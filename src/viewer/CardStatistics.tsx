@@ -1,11 +1,11 @@
+import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { CardsProps, isPlayableCard, withCards } from "../utils/cards";
-import { HSReplayNetIcon } from "./icons";
-import { Icon } from "./DeckList";
-import { FormatType } from "../twitch-hdt";
-import PropTypes from "prop-types";
 import { SingleCardDetailsPayload } from "../hsreplaynet";
+import { FormatType } from "../twitch-hdt";
+import { CardsProps, isPlayableCard, withCards } from "../utils/cards";
+import { Icon } from "./DeckList";
+import { HSReplayNetIcon } from "./icons";
 
 const CardStatisticsDiv = styled.div`
 	color: white;
@@ -117,15 +117,15 @@ class Entity extends React.Component<Props & CardsProps, State> {
 		};
 	}
 
-	static contextTypes = {
+	public static contextTypes = {
 		fetchStatistics: PropTypes.func.isRequired,
 	};
 
-	componentDidMount(): void {
+	public componentDidMount(): void {
 		this.requestStats();
 	}
 
-	async requestStats() {
+	public async requestStats() {
 		try {
 			this.setState({
 				statistics: await this.context.fetchStatistics(
