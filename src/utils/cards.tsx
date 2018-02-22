@@ -46,21 +46,18 @@ export class HearthstoneJSONCards implements Cards {
 	}
 }
 
-interface CardsProviderProps extends React.ClassAttributes<CardsProvider> {}
+interface Props {}
 
-interface CardsProviderState {
+interface State {
 	cards?: Cards;
 }
 
-export class CardsProvider extends React.Component<
-	CardsProviderProps,
-	CardsProviderState
-> {
+export class CardsProvider extends React.Component<Props, State> {
 	static childContextTypes = {
 		cards: PropTypes.object.isRequired,
 	};
 
-	constructor(props: CardsProviderProps, context?: any) {
+	constructor(props: Props, context: any) {
 		super(props, context);
 		this.state = {
 			cards: new EmptyCards(),
@@ -76,7 +73,7 @@ export class CardsProvider extends React.Component<
 		cards.fetch().then(() => this.setState({ cards }));
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		return React.Children.only(this.props.children);
 	}
 }

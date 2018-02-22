@@ -8,11 +8,6 @@ import { DecklistPosition, Feature, hasFeature } from "../utils/config";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import DeckListOverlay from "./DeckListOverlay";
 
-interface OverlayProps extends React.ClassAttributes<Overlay> {
-	boardState: BoardStateData | null;
-	config: EBSConfiguration;
-}
-
 export interface PositionProps {
 	top?: string;
 	right?: string;
@@ -175,19 +170,21 @@ const Expander = styled.div`
 	height: 100%;
 `;
 
-interface OverlayState {
+interface Props {
+	boardState: BoardStateData | null;
+	config: EBSConfiguration;
+}
+
+interface State {
 	hovering?: boolean;
 	pinDeck?: boolean;
 }
 
-class Overlay extends React.Component<
-	OverlayProps & TwitchExtProps,
-	OverlayState
-> {
+class Overlay extends React.Component<Props & TwitchExtProps, State> {
 	portal: HTMLDivElement | null = null;
 	movementTimeout: number | null = null;
 
-	constructor(props: OverlayProps & TwitchExtProps, context?: any) {
+	constructor(props: Props & TwitchExtProps, context: any) {
 		super(props, context);
 		this.state = {
 			hovering: true,
@@ -289,7 +286,7 @@ class Overlay extends React.Component<
 		};
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		const player =
 			this.props.boardState && this.props.boardState.player
 				? this.props.boardState.player

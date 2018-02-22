@@ -6,7 +6,7 @@ import { ConnectionStatus } from "../../enums";
 import OverlayAdmin from "../OverlayAdmin";
 import OtherAdmin from "../OtherAdmin";
 
-interface ConfigViewProps extends React.ClassAttributes<ConfigView> {
+interface Props {
 	connectionStatus: ConnectionStatus;
 	refreshConnectionStatus: () => any;
 	refreshSettings: () => any;
@@ -17,8 +17,6 @@ interface ConfigViewProps extends React.ClassAttributes<ConfigView> {
 	setTwitchExtContext: (context: TwitchExtContext) => any;
 	setTwitchExtAuthorized: (authorized: TwitchExtAuthorized) => any;
 }
-
-interface ConfigViewState {}
 
 const Wrapper = styled.div`
 	font-family: "Helvetica Neue", helvetica, sans-serif;
@@ -86,11 +84,8 @@ export const ErrorMessage = styled.span`
 	color: #dd0002;
 `;
 
-export default class ConfigView extends React.Component<
-	ConfigViewProps,
-	ConfigViewState
-> {
-	componentDidMount(): void {
+export default class ConfigView extends React.Component<Props> {
+	public componentDidMount(): void {
 		window.Twitch.ext.onContext((context: TwitchExtContext) =>
 			this.props.setTwitchExtContext(context),
 		);
@@ -103,7 +98,7 @@ export default class ConfigView extends React.Component<
 		});
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		if (!this.props.hasInitialized) {
 			if (this.props.working) {
 				return (

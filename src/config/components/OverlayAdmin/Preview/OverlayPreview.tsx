@@ -99,7 +99,7 @@ export default class OverlayPreview extends React.Component<
 		this.props.refreshStreamData();
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		let thumbnailUrl = this.props.thumbnailUrl;
 		if (thumbnailUrl !== null && this.ref && this.props.isLive) {
 			thumbnailUrl = thumbnailUrl.replace(

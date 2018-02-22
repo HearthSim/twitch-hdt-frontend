@@ -4,7 +4,7 @@ import { CardsProps, withCards } from "../utils/cards";
 import { getPlaceholder } from "./placeholders";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 
-interface CardProps extends React.ClassAttributes<Card> {
+interface Props {
 	dbfId: number;
 	x?: number;
 	y?: number;
@@ -12,11 +12,8 @@ interface CardProps extends React.ClassAttributes<Card> {
 	flipped?: boolean;
 }
 
-class Card extends React.Component<
-	CardProps & CardsProps & TwitchExtProps,
-	{}
-> {
-	render() {
+class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
+	public render(): React.ReactNode {
 		const card = this.props.cards.getByDbfId(this.props.dbfId);
 		if (!card || !card.id) {
 			return <div>Invalid card</div>;

@@ -11,9 +11,7 @@ import {
 	SuccessMessage,
 } from "../ConfigView/ConfigView";
 
-const Fragment = (React as any).Fragment;
-
-interface ConnectionAdminProps extends React.ClassAttributes<ConnectionAdmin> {
+interface Props {
 	connectionStatus: ConnectionStatus;
 	refreshConnectionStatus: () => any;
 	working?: boolean;
@@ -100,10 +98,8 @@ const InstructionImage = styled.img`
 	margin: 1em 0 0 0;
 `;
 
-export default class ConnectionAdmin extends React.Component<
-	ConnectionAdminProps
-> {
-	getMessage() {
+export default class ConnectionAdmin extends React.Component<Props> {
+	private getMessage(): React.ReactNode {
 		if (this.props.working) {
 			return <CenterParagraph>Testing connection…</CenterParagraph>;
 		}
@@ -181,7 +177,7 @@ export default class ConnectionAdmin extends React.Component<
 		);
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		return (
 			<Fieldset>
 				<Heading>Connection</Heading>
@@ -202,7 +198,7 @@ export default class ConnectionAdmin extends React.Component<
 					</TrackerInstructions>
 				</CenterParagraph>
 				{this.props.connectionStatus !== ConnectionStatus.READY ? (
-					<Fragment>
+					<>
 						<p>
 							Make sure you've completed the Twitch Extension setup in
 							Hearthstone Deck Tracker.
@@ -222,7 +218,7 @@ export default class ConnectionAdmin extends React.Component<
 										ConnectionStatus.UPSTREAM_CLIENT_NOT_FOUND
 							}
 						/>
-					</Fragment>
+					</>
 				) : null}
 				{this.getMessage()}
 			</Fieldset>

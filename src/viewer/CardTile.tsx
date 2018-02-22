@@ -4,7 +4,7 @@ import { CardsProps, withCards } from "../utils/cards";
 import Entity from "./Entity";
 import gift from "./gift.png";
 
-interface CardTileProps extends React.ClassAttributes<CardTile> {
+interface Props {
 	dbfId: number;
 	count?: number;
 	gift?: boolean;
@@ -12,8 +12,8 @@ interface CardTileProps extends React.ClassAttributes<CardTile> {
 	tooltipDisabled?: boolean;
 }
 
-class CardTile extends React.Component<CardTileProps & CardsProps> {
-	render() {
+class CardTile extends React.Component<Props & CardsProps> {
+	public render(): React.ReactNode {
 		const card = this.props.cards.getByDbfId(this.props.dbfId);
 		return (
 			<Entity dbfId={this.props.dbfId} disabled={this.props.tooltipDisabled}>

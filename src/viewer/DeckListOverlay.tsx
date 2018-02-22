@@ -29,7 +29,12 @@ const DeckListBounds = withProps<PositionProps>()(styled.div)`
 	}
 `;
 
-interface DeckListOverlayProps extends React.ClassAttributes<DeckListOverlay> {
+interface Vector {
+	x: number;
+	y: number;
+}
+
+interface Props {
 	deck?: BoardStateDeck;
 	position: DecklistPosition;
 	pinDeck: boolean;
@@ -38,23 +43,15 @@ interface DeckListOverlayProps extends React.ClassAttributes<DeckListOverlay> {
 	hidden?: boolean;
 }
 
-interface Vector {
-	x: number;
-	y: number;
-}
-
-interface DeckListOverlayState {
+interface State {
 	moving?: boolean;
 	moveStartPosition?: Vector | null;
 	movePreviewOffset?: Vector | null;
 	viewerOffset?: Vector | null;
 }
 
-class DeckListOverlay extends React.Component<
-	DeckListOverlayProps & TwitchExtProps,
-	DeckListOverlayState
-> {
-	constructor(props: DeckListOverlayProps & TwitchExtProps, context?: any) {
+class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
+	constructor(props: Props & TwitchExtProps, context: any) {
 		super(props, context);
 		this.state = {
 			moving: false,
@@ -115,8 +112,8 @@ class DeckListOverlay extends React.Component<
 	onPinned = (pinned: boolean) => this.props.onPinDeck(pinned);
 
 	componentDidUpdate(
-		prevProps: Readonly<DeckListOverlayProps & TwitchExtProps>,
-		prevState: Readonly<DeckListOverlayState>,
+		prevProps: Readonly<Props & TwitchExtProps>,
+		prevState: Readonly<State>,
 		prevContext: any,
 	): void {
 		if (prevProps.position !== this.props.position) {
@@ -129,7 +126,7 @@ class DeckListOverlay extends React.Component<
 		}
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		if (this.props.hidden) {
 			return null;
 		}

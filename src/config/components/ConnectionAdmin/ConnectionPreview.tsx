@@ -2,12 +2,6 @@ import * as React from "react";
 import styled from "styled-components";
 import { withProps } from "../../../utils/styled";
 
-interface HSReplayNetConnectionProps {
-	working?: boolean;
-	twitch: boolean | null;
-	tracker: boolean | null;
-}
-
 const Wrapper = styled.ol`
 	display: flex;
 	flex-direction: row;
@@ -56,11 +50,14 @@ const Connection = withProps<ConnectedProps>()(styled.li)`
 	color: ${props => getConnectionColor(props)};
 `;
 
-export default class HSReplayNetConnection extends React.Component<
-	HSReplayNetConnectionProps,
-	{}
-> {
-	renderConnection(connected: boolean | null) {
+interface Props {
+	working?: boolean;
+	twitch: boolean | null;
+	tracker: boolean | null;
+}
+
+export default class HSReplayNetConnection extends React.Component<Props> {
+	private renderConnection(connected: boolean | null): React.ReactNode {
 		if (connected) {
 			return "────────";
 		} else {
@@ -68,7 +65,7 @@ export default class HSReplayNetConnection extends React.Component<
 		}
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		return (
 			<Wrapper>
 				<Element connected={true}>Twitch</Element>

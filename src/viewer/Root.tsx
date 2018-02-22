@@ -14,9 +14,9 @@ import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import * as PropTypes from "prop-types";
 import { SingleCardDetailsPayload } from "../hsreplaynet";
 
-interface RootProps extends React.ClassAttributes<Root> {}
+interface Props {}
 
-interface RootState {
+interface State {
 	boardState: BoardStateData | null;
 	config: EBSConfiguration;
 	hasError: boolean;
@@ -27,15 +27,27 @@ interface RootState {
 	};
 }
 
-class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
+class Root extends React.Component<Props & TwitchExtProps, State> {
 	queue: AsyncQueue<Message>;
 	timeout: number | null;
+
+	constructor(props: Props, context: any) {
+		super(props, context);
+		this.state = {
+			boardState: null,
+			hasError: false,
+			config: {},
+			statistics: {},
+		};
+		this.queue = new AsyncQueue();
+		this.timeout = null;
+	}
 
 	static childContextTypes = {
 		fetchStatistics: PropTypes.func,
 	};
 
-	getChildContext() {
+	public getChildContext(): any {
 		return {
 			fetchStatistics: async (
 				dbfId: number | string,
@@ -82,23 +94,11 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 		};
 	}
 
-	constructor(props: RootProps, context?: any) {
-		super(props);
-		this.state = {
-			boardState: null,
-			hasError: false,
-			config: {},
-			statistics: {},
-		};
-		this.queue = new AsyncQueue();
-		this.timeout = null;
-	}
-
-	componentDidCatch(error: Error, info: React.ErrorInfo) {
+	public componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
 		this.setState({ hasError: true });
 	}
 
-	componentDidMount(): void {
+	public componentDidMount(): void {
 		// setup the asynchronous queue
 		this.queue.listen(this.handleMessage);
 
@@ -119,13 +119,16 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 		);
 	}
 
-	componentWillReceiveProps(props: RootProps & TwitchExtProps) {
+	public componentWillReceiveProps(
+		nextProps: Readonly<Props & TwitchExtProps>,
+		nextContext: any,
+	): void {
 		if (this.props.twitchExtContext) {
 			this.queue.delay = this.props.twitchExtContext.hlsLatencyBroadcaster;
 		}
 	}
 
-	componentWillUnmount(): void {
+	public componentWillUnmount(): void {
 		this.queue.unlisten(this.handleMessage);
 	}
 
@@ -187,7 +190,7 @@ class Root extends React.Component<RootProps & TwitchExtProps, RootState> {
 		}
 	};
 
-	render() {
+	public render(): React.ReactNode {
 		return (
 			<Overlay
 				boardState={this.state.boardState || null}

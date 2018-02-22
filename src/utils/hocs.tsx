@@ -16,7 +16,7 @@ export const makeHOC = <PInject extends {}>(
 			.join("")}HOC`;
 		static contextTypes = contextTypes;
 
-		render() {
+		public render(): React.ReactNode {
 			const contextVars: { [k: string]: string } = {};
 			for (const contextKey in contextTypes) {
 				contextVars[contextKey] = this.context[contextKey];

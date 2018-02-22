@@ -1,38 +1,36 @@
 import { makeHOC } from "./hocs";
 import * as PropTypes from "prop-types";
 import * as React from "react";
+import { ChildContextProvider } from "react";
 
 export interface TwitchExtProps {
 	twitchExtContext?: TwitchExtContext;
 }
 
-interface TwitchExtProviderProps
-	extends React.ClassAttributes<TwitchExtProvider> {}
+interface Props {}
 
-interface TwitchExtProviderState {
+interface State {
 	context: TwitchExtContext | null;
 }
 
-export class TwitchExtProvider extends React.Component<
-	TwitchExtProviderProps,
-	TwitchExtProviderState
-> {
+export class TwitchExtProvider extends React.Component<Props, State>
+	implements ChildContextProvider<TwitchExtProps> {
 	static childContextTypes = {
 		twitchExtContext: PropTypes.object,
 	};
 
-	constructor(props: TwitchExtProviderProps, context?: any) {
+	constructor(props: Props, context: any) {
 		super(props, context);
 		this.state = {
 			context: null,
 		};
 	}
 
-	getChildContext() {
+	public getChildContext(): any {
 		return { twitchExtContext: this.state.context };
 	}
 
-	componentDidMount(): void {
+	public componentDidMount(): void {
 		window.Twitch.ext.onContext(this.onContext);
 	}
 
@@ -48,7 +46,7 @@ export class TwitchExtProvider extends React.Component<
 		});
 	};
 
-	render() {
+	public render(): React.ReactNode {
 		return React.Children.only(this.props.children);
 	}
 }

@@ -4,7 +4,7 @@ import { Fieldset, Heading } from "../ConfigView/ConfigView";
 import HSReplayNetLivePreview from "./hsreplaynet-live-preview.png";
 import styled from "styled-components";
 
-interface Props extends React.ClassAttributes<OtherAdmin> {
+interface Props {
 	disabled: boolean;
 	settings: EBSConfiguration | null;
 	setSetting: (key: keyof EBSConfiguration, value: any) => any;
@@ -17,7 +17,7 @@ const InstructionImage = styled.img`
 `;
 
 export default class OtherAdmin extends React.Component<Props> {
-	render() {
+	public render(): React.ReactNode {
 		const promoteStream =
 			this.props.settings !== null
 				? this.props.settings.promote_on_hsreplaynet

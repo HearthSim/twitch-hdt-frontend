@@ -13,13 +13,13 @@ const EntityDiv = styled.div`
 	cursor: inherit;
 `;
 
-interface EntityProps extends React.ClassAttributes<Entity> {
+interface Props {
 	dbfId: number | null;
 	flipped?: boolean;
 	disabled?: boolean;
 }
 
-interface EntityState {
+interface State {
 	isHovering?: boolean;
 	showStatistics?: boolean;
 	x?: number | null;
@@ -27,14 +27,11 @@ interface EntityState {
 	width?: number | null;
 }
 
-class Entity extends React.Component<
-	EntityProps & CardsProps & PortalProps,
-	EntityState
-> {
+class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 	ref: HTMLDivElement | null = null;
 	statisticsTimeout: number | null = null;
 
-	constructor(props: EntityProps & CardsProps & PortalProps, context?: any) {
+	constructor(props: Props & CardsProps & PortalProps, context: any) {
 		super(props, context);
 		this.state = {
 			isHovering: false,
@@ -51,8 +48,8 @@ class Entity extends React.Component<
 	};
 
 	public componentDidUpdate(
-		prevProps: Readonly<EntityProps & CardsProps & PortalProps>,
-		prevState: Readonly<EntityState>,
+		prevProps: Readonly<Props & CardsProps & PortalProps>,
+		prevState: Readonly<State>,
 		prevContext: any,
 	): void {
 		if (
@@ -72,7 +69,7 @@ class Entity extends React.Component<
 		}
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		if (!this.props.dbfId) {
 			return null;
 		}

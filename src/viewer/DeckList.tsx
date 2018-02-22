@@ -13,26 +13,6 @@ import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 
 const isEqual = require("lodash.isequal"); // see https://github.com/Microsoft/TypeScript/issues/5073
 
-interface DeckListProps extends React.ClassAttributes<DeckList> {
-	cardList: BoardStateDeckCard[];
-	position: DecklistPosition;
-	name?: string;
-	hero?: number;
-	format?: FormatType;
-	showRarities?: boolean;
-	pinned?: boolean;
-	onPinned: (pinned: boolean) => void;
-	hidden?: boolean;
-	moving?: boolean;
-	onMoveStart?: (e: React.MouseEvent<HTMLElement>) => void;
-	onMoveEnd?: (e: React.MouseEvent<HTMLElement>) => void;
-}
-
-interface DeckListState {
-	scale?: number;
-	copied?: boolean;
-}
-
 function cardSorting(
 	a: CardData | null,
 	b: CardData | null,
@@ -191,17 +171,34 @@ export const Icon = withProps<PaddingProps>()(styled.img)`
 		drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.5));
 `;
 
+interface Props {
+	cardList: BoardStateDeckCard[];
+	position: DecklistPosition;
+	name?: string;
+	hero?: number;
+	format?: FormatType;
+	showRarities?: boolean;
+	pinned?: boolean;
+	onPinned: (pinned: boolean) => void;
+	hidden?: boolean;
+	moving?: boolean;
+	onMoveStart?: (e: React.MouseEvent<HTMLElement>) => void;
+	onMoveEnd?: (e: React.MouseEvent<HTMLElement>) => void;
+}
+
+interface State {
+	scale?: number;
+	copied?: boolean;
+}
+
 class DeckList extends React.Component<
-	DeckListProps & CardsProps & TwitchExtProps,
-	DeckListState
+	Props & CardsProps & TwitchExtProps,
+	State
 > {
 	copiedTimeout: number | null = null;
 	ref: HTMLDivElement | null = null;
 
-	constructor(
-		props: DeckListProps & CardsProps & TwitchExtProps,
-		context?: any,
-	) {
+	constructor(props: Props & CardsProps & TwitchExtProps, context: any) {
 		super(props, context);
 		this.state = {
 			scale: 1,
@@ -289,8 +286,8 @@ class DeckList extends React.Component<
 	}
 
 	shouldComponentUpdate(
-		nextProps: Readonly<DeckListProps & CardsProps & TwitchExtProps>,
-		nextState: Readonly<DeckListState>,
+		nextProps: Readonly<Props & CardsProps & TwitchExtProps>,
+		nextState: Readonly<State>,
 		nextContext: any,
 	): boolean {
 		if (
@@ -328,7 +325,7 @@ class DeckList extends React.Component<
 		e.stopPropagation();
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		let position = this.props.position;
 		if (
 			[DecklistPosition.TOP_LEFT, DecklistPosition.TOP_RIGHT].indexOf(
@@ -495,10 +492,11 @@ class DeckList extends React.Component<
 		);
 	}
 
-	componentDidUpdate(
-		prevProps: DeckListProps & CardsProps & TwitchExtProps,
-		prevState: DeckListState,
-	) {
+	public componentDidUpdate(
+		prevProps: Readonly<Props & CardsProps & TwitchExtProps>,
+		prevState: Readonly<State>,
+		prevContext: any,
+	): void {
 		if (
 			isEqual(prevProps.cardList, this.props.cardList) &&
 			!this.didPlayerLayoutChange(

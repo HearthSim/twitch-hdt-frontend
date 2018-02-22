@@ -99,21 +99,18 @@ const CardStatisticsDiv = styled.div`
 	}
 `;
 
-interface CardStatisticsProps extends React.ClassAttributes<Entity> {
+interface Props {
 	dbfId: number | null;
 	gameType: FormatType;
 	style?: React.CSSProperties;
 }
 
-interface CardStatisticsState {
+interface State {
 	statistics: SingleCardDetailsPayload | null;
 }
 
-class Entity extends React.Component<
-	CardStatisticsProps & CardsProps,
-	CardStatisticsState
-> {
-	constructor(props: CardStatisticsProps & CardsProps, context?: any) {
+class Entity extends React.Component<Props & CardsProps, State> {
+	constructor(props: Props & CardsProps, context: any) {
 		super(props, context);
 		this.state = {
 			statistics: null,
@@ -141,7 +138,7 @@ class Entity extends React.Component<
 		}
 	}
 
-	render() {
+	public render(): React.ReactNode {
 		if (!this.props.dbfId || this.state.statistics === null) {
 			return null;
 		}

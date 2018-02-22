@@ -45,7 +45,7 @@ const Centered = withProps<{ margin?: string }>()(styled.div)`
 	margin: ${props => (props.margin ? props.margin : "unset")};
 `;
 
-interface OverlayAdminProps extends React.ClassAttributes<OverlayAdmin> {
+interface Props {
 	disabled: boolean;
 	settings: EBSConfiguration | null;
 	previewSettings: (settings: EBSConfiguration) => any;
@@ -55,8 +55,8 @@ interface OverlayAdminProps extends React.ClassAttributes<OverlayAdmin> {
 	refreshStreamData: () => any;
 }
 
-export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
-	constructor(props: OverlayAdminProps, context: any) {
+export default class OverlayAdmin extends React.Component<Props> {
+	constructor(props: Props, context: any) {
 		super(props, context);
 		this.state = {
 			horizontalGameOffset: null,
@@ -106,7 +106,7 @@ export default class OverlayAdmin extends React.Component<OverlayAdminProps> {
 		this.props.refreshStreamData();
 	};
 
-	render() {
+	public render(): React.ReactNode {
 		let decklistPosition = DecklistPosition.TOP_RIGHT;
 		if (this.props.settings) {
 			decklistPosition =
