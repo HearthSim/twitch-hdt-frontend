@@ -1,8 +1,8 @@
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
 import { withProps } from "../utils/styled";
 import { BoardStateData, EBSConfiguration } from "../twitch-hdt";
-import * as PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import Entity from "./Entity";
 import { DecklistPosition, Feature, hasFeature } from "../utils/config";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";

@@ -1,11 +1,11 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { CardsProps, withCards } from "../utils/cards";
 import Card from "./Card";
 import { PortalProps, withPortal } from "../utils/portal";
 import CardStatistics from "./CardStatistics";
-import * as PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 const EntityDiv = styled.div`
 	width: 100%;

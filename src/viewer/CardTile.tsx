@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { CardTile as ComponentCardTile } from "react-hs-components";
 import { CardsProps, withCards } from "../utils/cards";
 import Entity from "./Entity";

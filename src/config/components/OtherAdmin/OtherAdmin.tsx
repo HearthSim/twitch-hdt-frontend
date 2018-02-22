@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { EBSConfiguration } from "../../../twitch-hdt";
 import { Fieldset, Heading } from "../ConfigView/ConfigView";
 import HSReplayNetLivePreview from "./hsreplaynet-live-preview.png";

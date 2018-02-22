@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Store, Provider } from "react-redux";
 import { State } from "../state";
 import ConfigView from "./ConfigView";

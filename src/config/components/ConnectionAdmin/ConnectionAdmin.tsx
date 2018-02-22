@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
 import ConnectionPreview from "./ConnectionPreview";
 import WindowsIcon from "./windows.svg";

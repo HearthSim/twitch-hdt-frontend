@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Overlay from "./Overlay";
 import {
 	BoardStateData,
@@ -11,7 +11,7 @@ import {
 } from "../twitch-hdt";
 import AsyncQueue from "./AsyncQueue";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
-import * as PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { SingleCardDetailsPayload } from "../hsreplaynet";
 
 interface Props {}

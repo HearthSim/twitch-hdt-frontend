@@ -1,6 +1,6 @@
 import { makeHOC } from "./hocs";
-import * as PropTypes from "prop-types";
-import * as React from "react";
+import PropTypes from "prop-types";
+import React from "react";
 import { ChildContextProvider } from "react";
 
 export interface TwitchExtProps {

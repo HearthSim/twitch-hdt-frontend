@@ -1,5 +1,5 @@
 import { makeHOC } from "./hocs";
-import * as PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 export interface PortalProps {
 	portal: HTMLDivElement;

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { encode } from "deckstrings";
 import { CardData } from "hearthstonejson-client";
 import { CardsProps, withCards } from "../utils/cards";

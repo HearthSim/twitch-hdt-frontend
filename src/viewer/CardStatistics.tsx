@@ -1,10 +1,10 @@
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
 import { CardsProps, isPlayableCard, withCards } from "../utils/cards";
 import { HSReplayNetIcon } from "./icons";
 import { Icon } from "./DeckList";
 import { FormatType } from "../twitch-hdt";
-import * as PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { SingleCardDetailsPayload } from "../hsreplaynet";
 
 const CardStatisticsDiv = styled.div`
