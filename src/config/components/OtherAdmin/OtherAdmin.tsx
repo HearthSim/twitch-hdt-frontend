@@ -12,7 +12,6 @@ interface Props extends React.ClassAttributes<OtherAdmin> {
 
 const InstructionImage = styled.img`
 	border: 1px solid gray;
-	margin: 1em 0 0 0;
 	display: block;
 	margin: 1em auto 1em auto;
 `;
