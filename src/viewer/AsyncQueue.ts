@@ -2,8 +2,8 @@ type Listener<T> = (data: T) => void;
 
 export default class AsyncQueue<T extends {}> {
 	protected _delay: number;
-	public queue: Array<{ message: T; time: number }>;
-	public listeners: Array<Listener<T>>;
+	public queue: { message: T; time: number }[];
+	public listeners: Listener<T>[];
 
 	constructor(frequency?: number) {
 		this.queue = [];

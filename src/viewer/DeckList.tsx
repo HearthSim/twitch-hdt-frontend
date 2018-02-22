@@ -211,7 +211,7 @@ class DeckList extends React.Component<
 	};
 
 	public getDeckstring(): string {
-		const initialCards: Array<[number, number]> = this.props.cardList
+		const initialCards: [number, number][] = this.props.cardList
 			.filter((card: BoardStateDeckCard) => {
 				const [dbfId, current, initial] = card;
 				return !!initial;
@@ -220,8 +220,8 @@ class DeckList extends React.Component<
 				const [dbfId, current, initial] = card;
 				return [dbfId, initial];
 			})
-			.reduce<Array<[number, number]>>(
-				(result: Array<[number, number]>, card: [number, number]) => {
+			.reduce<[number, number][]>(
+				(result: [number, number][], card: [number, number]) => {
 					result = result.slice(0);
 					for (let i = 0; i < result.length; i++) {
 						if (result[i][0] === card[0]) {
@@ -236,8 +236,8 @@ class DeckList extends React.Component<
 			);
 		const deckDescription = {
 			cards: initialCards,
-			heroes: [this.props.hero],
 			format: this.props.format,
+			heroes: [this.props.hero],
 		};
 
 		let deckstring = null;
@@ -336,7 +336,6 @@ class DeckList extends React.Component<
 		}
 
 		type Triplet = [number, number, number];
-		type Quad = [CardData, number, number, number];
 		type NullableQuad = [CardData | null, number, number, number];
 
 		// prepend CardData
@@ -350,7 +349,6 @@ class DeckList extends React.Component<
 				];
 			},
 		);
-		//.filter((x: NullableQuad) => !!x[0]) as Quad[];
 
 		// sort using CardData
 		unsortedCards.sort((a: NullableQuad, b: NullableQuad) => {

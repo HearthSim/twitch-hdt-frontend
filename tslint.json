@@ -8,8 +8,10 @@
     ],
     "jsRules": {},
     "rules": {
-        "import-name": false,
-        "interface-name": false
+        "array-type": [true, "array"], // prevent conflict with prefer-array-literal
+        "import-name": false, // mostly broken
+        "interface-name": [true, "never-prefix"], // React Props/State should not have a prefix
+        "object-shorthand-properties-first": false // not required, can be enabeld using object-literal-sort-keys
     },
     "rulesDirectory": []
 }
