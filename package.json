@@ -54,7 +54,7 @@
 		"resource-hints-webpack-plugin": "^0.0.1",
 		"styled-components": "^3.1.6",
 		"ts-loader": "^3.5.0",
-		"typescript": "^2.7.1",
+		"typescript": "^2.7.2",
 		"uglifyjs-webpack-plugin": "^1.1.8",
 		"webpack": "^3.10.0",
 		"webpack-sources": "^1.1.0",
