@@ -15,8 +15,12 @@
 	"scripts": {
 		"build": "cross-env NODE_ENV=production webpack",
 		"dev": "webpack-dev-server -d --hot",
-		"format": "prettier --write \"{src/**/*.ts{,x},*.js}\"",
-		"lint": "prettier --list-different \"{src/**/*.ts{,x},*.js}\""
+		"format": "yarn format:tslint; yarn format:prettier",
+		"format:prettier": "prettier --write \"{src/**/*.ts{,x},*.js}\"",
+		"format:tslint": "tslint --project . --fix",
+		"lint": "yarn lint:prettier; yarn lint:tslint",
+		"lint:prettier": "prettier --list-different \"{src/**/*.ts{,x},*.js}\"",
+		"lint:tslint": "tslint --project ."
 	},
 	"dependencies": {
 		"@types/lodash": "^4.14.102",
@@ -62,6 +66,10 @@
 	},
 	"devDependencies": {
 		"prettier": "^1.10.2",
+		"tslint": "^5.9.1",
+		"tslint-config-airbnb": "^5.7.0",
+		"tslint-config-prettier": "^1.8.0",
+		"tslint-react": "^3.5.1",
 		"webpack-dev-server": "^2.11.1"
 	},
 	"private": true
