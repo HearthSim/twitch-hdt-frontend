@@ -59,7 +59,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 									viewPortHeight - height - bottomMargin,
 								),
 								topMargin,
-							)
+						  )
 						: 0,
 					left: !flip ? x + elementWidth / 2 : "unset",
 					right: flip ? viewPortWidth - x + elementWidth / 2 : "unset",

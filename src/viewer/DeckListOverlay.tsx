@@ -103,7 +103,7 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 					? {
 							x: state.movePreviewOffset.x + state.viewerOffset.x,
 							y: state.movePreviewOffset.y + state.viewerOffset.y,
-						}
+					  }
 					: state.viewerOffset
 				: state.movePreviewOffset,
 		}));

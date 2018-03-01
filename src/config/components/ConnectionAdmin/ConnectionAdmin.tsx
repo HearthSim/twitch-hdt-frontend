@@ -209,13 +209,13 @@ export default class ConnectionAdmin extends React.Component<Props> {
 								this.props.connectionStatus === ConnectionStatus.ERROR
 									? null
 									: this.props.connectionStatus >
-										ConnectionStatus.ACCOUNT_NOT_LINKED
+									  ConnectionStatus.ACCOUNT_NOT_LINKED
 							}
 							tracker={
 								this.props.connectionStatus === ConnectionStatus.ERROR
 									? null
 									: this.props.connectionStatus >
-										ConnectionStatus.UPSTREAM_CLIENT_NOT_FOUND
+									  ConnectionStatus.UPSTREAM_CLIENT_NOT_FOUND
 							}
 						/>
 					</>
