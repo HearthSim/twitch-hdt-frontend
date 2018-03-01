@@ -166,6 +166,16 @@ interface TwitchExtContext {
 	language: string;
 
 	/**
+	 * Indicates how the stream is being played.
+	 */
+	playbackMode: "video" | "audio" | "remote" | "chat-only";
+
+	/**
+	 * The user’s theme setting on the Twitch website.
+	 */
+	theme: "light" | "dark";
+
+	/**
 	 * Resolution of the broadcast.
 	 */
 	videoResolution: string;
