@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { hot } from "react-hot-loader";
 import { SingleCardDetailsPayload } from "../hsreplaynet";
 import {
 	BoardStateData,
@@ -200,4 +201,4 @@ class Root extends React.Component<Props & TwitchExtProps, State> {
 	}
 }
 
-export default withTwitchExt(Root);
+export default hot(module)(withTwitchExt(Root));

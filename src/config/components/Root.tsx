@@ -1,4 +1,5 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 import { Provider, Store } from "react-redux";
 import { State } from "../state";
 import ConfigView from "./ConfigView";
@@ -15,4 +16,4 @@ const Root: React.SFC<RootProps> = props => {
 	);
 };
 
-export default Root;
+export default hot(module)(Root);
