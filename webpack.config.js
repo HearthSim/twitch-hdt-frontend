@@ -50,8 +50,8 @@ module.exports = (env, args) => {
 
 	return {
 		entry: {
-			viewer: path.resolve(__dirname, "src", "viewer"),
-			config: path.resolve(__dirname, "src", "config"),
+			viewer: ["babel-polyfill", path.resolve(__dirname, "src", "viewer")],
+			config: ["babel-polyfill", path.resolve(__dirname, "src", "config")],
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"],
