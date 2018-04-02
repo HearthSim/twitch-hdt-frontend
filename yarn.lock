@@ -2882,6 +2882,10 @@ html-minifier@^3.2.3:
     relateurl "0.2.x"
     uglify-js "3.3.x"
 
+html-webpack-include-sibling-chunks-plugin@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/html-webpack-include-sibling-chunks-plugin/-/html-webpack-include-sibling-chunks-plugin-0.1.0.tgz#c1f1026940ade6f58130cc3ef71408f8672e7a88"
+
 html-webpack-plugin@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/html-webpack-plugin/-/html-webpack-plugin-3.1.0.tgz#6e02baaedb1e906310917f03239c793a75af2885"
