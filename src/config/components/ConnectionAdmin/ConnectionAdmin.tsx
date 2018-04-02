@@ -124,7 +124,7 @@ export default class ConnectionAdmin extends React.Component<Props> {
 						<CenterParagraph>
 							<SuccessMessage>
 								Setup complete!<br />Return to the Extension Manager to enable
-								the Overlay:
+								the overlay:
 								<InstructionImage src={ActivateImage} />
 							</SuccessMessage>
 						</CenterParagraph>
