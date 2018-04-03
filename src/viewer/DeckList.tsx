@@ -4,42 +4,13 @@ import isEqual from "lodash.isequal";
 import React from "react";
 import styled from "styled-components";
 import { BoardStateDeckCard, FormatType } from "../twitch-hdt";
-import { CardsProps, withCards } from "../utils/cards";
+import { CardsProps, sort as cardSorting, withCards } from "../utils/cards";
 import { DecklistPosition } from "../utils/config";
 import { getCopiableDeck } from "../utils/hearthstone";
 import { withProps } from "../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import CardTile from "./CardTile";
 import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "./icons";
-
-function cardSorting(
-	a: CardData | null,
-	b: CardData | null,
-	direction = 1,
-): number {
-	if (a !== null && b !== null) {
-		if ((a.cost || 0) > ((b && b.cost) || 0)) {
-			return direction;
-		}
-		if ((a.cost || 0) < (b.cost || 0)) {
-			return -direction;
-		}
-		if ((a.name || "") > (b.name || "")) {
-			return direction;
-		}
-		if ((a.name || "") < (b.name || "")) {
-			return -direction;
-		}
-	} else {
-		if (a !== null && b === null) {
-			return direction;
-		}
-		if (a === null && b !== null) {
-			return -direction;
-		}
-	}
-	return 0;
-}
 
 interface PositionProps {
 	position: DecklistPosition;

@@ -1,11 +1,9 @@
-import HearthstoneJSON, {
-	CardData as HSJSONCard,
-} from "hearthstonejson-client";
+import HearthstoneJSON, { CardData } from "hearthstonejson-client";
 import PropTypes from "prop-types";
 import React from "react";
 import { makeHOC } from "./hocs";
 
-export type CardDefinition = HSJSONCard;
+export type CardDefinition = CardData;
 
 export interface CardsProps {
 	cards: Cards;
@@ -89,4 +87,33 @@ export function isPlayableCard(card: CardDefinition) {
 		return ["CORE", "HERO_SKINS"].indexOf(set) === -1;
 	}
 	return ["MINION", "SPELL", "WEAPON"].indexOf(type) !== -1;
+}
+
+export function sort(
+	a: CardData | null,
+	b: CardData | null,
+	direction = 1,
+): number {
+	if (a !== null && b !== null) {
+		if ((a.cost || 0) > ((b && b.cost) || 0)) {
+			return direction;
+		}
+		if ((a.cost || 0) < (b.cost || 0)) {
+			return -direction;
+		}
+		if ((a.name || "") > (b.name || "")) {
+			return direction;
+		}
+		if ((a.name || "") < (b.name || "")) {
+			return -direction;
+		}
+	} else {
+		if (a !== null && b === null) {
+			return direction;
+		}
+		if (a === null && b !== null) {
+			return -direction;
+		}
+	}
+	return 0;
 }
