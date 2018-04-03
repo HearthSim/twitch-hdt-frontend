@@ -164,9 +164,9 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 				>
 					<DeckList
 						cardList={deck && Array.isArray(deck.cards) ? deck.cards : []}
+						format={deck && deck.format ? deck.format : null}
+						hero={deck && deck.hero ? deck.hero : null}
 						name={deck && deck.name}
-						hero={deck && deck.hero}
-						format={deck && deck.format}
 						showRarities={false}
 						position={this.props.position}
 						pinned={this.props.pinDeck}

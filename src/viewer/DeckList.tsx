@@ -1,17 +1,16 @@
 import clipboard from "clipboard-polyfill";
-import { encode } from "deckstrings";
 import { CardData } from "hearthstonejson-client";
+import isEqual from "lodash.isequal";
 import React from "react";
 import styled from "styled-components";
 import { BoardStateDeckCard, FormatType } from "../twitch-hdt";
 import { CardsProps, withCards } from "../utils/cards";
 import { DecklistPosition } from "../utils/config";
+import { getCopiableDeck } from "../utils/hearthstone";
 import { withProps } from "../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import CardTile from "./CardTile";
 import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "./icons";
-
-const isEqual = require("lodash.isequal"); // see https://github.com/Microsoft/TypeScript/issues/5073
 
 function cardSorting(
 	a: CardData | null,
@@ -173,10 +172,10 @@ export const Icon = withProps<PaddingProps>()(styled.img)`
 
 interface Props {
 	cardList: BoardStateDeckCard[];
+	format: FormatType | null;
+	hero: number | null;
 	position: DecklistPosition;
 	name?: string;
-	hero?: number;
-	format?: FormatType;
 	showRarities?: boolean;
 	pinned?: boolean;
 	onPinned: (pinned: boolean) => void;
@@ -209,63 +208,6 @@ class DeckList extends React.Component<
 	public onResize = (e: UIEvent) => {
 		window.requestAnimationFrame(() => this.resize());
 	};
-
-	public getDeckstring(): string {
-		const initialCards: [number, number][] = this.props.cardList
-			.filter((card: BoardStateDeckCard) => {
-				const [dbfId, current, initial] = card;
-				return !!initial;
-			})
-			.map<[number, number]>((card: BoardStateDeckCard) => {
-				const [dbfId, current, initial] = card;
-				return [dbfId, initial];
-			})
-			.reduce<[number, number][]>(
-				(result: [number, number][], card: [number, number]) => {
-					result = result.slice(0);
-					for (let i = 0; i < result.length; i++) {
-						if (result[i][0] === card[0]) {
-							result[i][1] += card[1];
-							return result;
-						}
-					}
-					// new card, append
-					return result.concat([card]);
-				},
-				[],
-			);
-		const deckDescription = {
-			cards: initialCards,
-			format: this.props.format,
-			heroes: [this.props.hero],
-		};
-
-		let deckstring = null;
-		try {
-			deckstring = encode(deckDescription);
-		} catch (e) {
-			console.error(e);
-			return "";
-		}
-
-		if (deckstring === null) {
-			return "";
-		}
-
-		const isStandard = this.props.format === 2;
-
-		return [
-			...(this.props.name ? [`### ${this.props.name}`] : []),
-			...(this.props.format
-				? [`# Format: ${isStandard ? "Standard" : "Wild"}`]
-				: []),
-			...(isStandard ? ["# Year of the Mammoth"] : []),
-			"#",
-			deckstring,
-			"#",
-			"# To use this deck, copy it to your clipboard and create a new deck in Hearthstone",
-		].join("\n");
-	}
 
 	public clearTimeout() {
 		if (!this.copiedTimeout) {
@@ -398,7 +340,16 @@ class DeckList extends React.Component<
 							</h1>
 							<CopyButton
 								onClick={() => {
-									clipboard.writeText(this.getDeckstring()).then(() => {
+									if (this.props.format === null || this.props.hero === null) {
+										return;
+									}
+									const toCopy = getCopiableDeck(
+										this.props.cardList,
+										this.props.format,
+										[this.props.hero],
+										this.props.name,
+									);
+									clipboard.writeText(toCopy).then(() => {
 										this.setState({ copied: true }, () => {
 											this.clearTimeout();
 											this.copiedTimeout = window.setTimeout(() => {
