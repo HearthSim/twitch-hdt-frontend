@@ -5,12 +5,14 @@ import { makeHOC } from "./hocs";
 
 export interface TwitchExtProps {
 	twitchExtContext?: TwitchExtContext;
+	twitchExtVisibility?: boolean;
 }
 
 interface Props {}
 
 interface State {
 	context: TwitchExtContext | null;
+	visible: boolean | null;
 }
 
 export class TwitchExtProvider extends React.Component<Props, State>
@@ -23,6 +25,7 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		super(props, context);
 		this.state = {
 			context: null,
+			visible: true,
 		};
 	}
 
@@ -32,12 +35,17 @@ export class TwitchExtProvider extends React.Component<Props, State>
 
 	public componentDidMount(): void {
 		window.Twitch.ext.onContext(this.onContext);
+		window.Twitch.ext.onVisibilityChanged(this.onVisibilityChanged);
 	}
 
-	public onContext = (
+	public render(): React.ReactNode {
+		return React.Children.only(this.props.children);
+	}
+
+	private onContext = (
 		context: TwitchExtContext,
 		changed: (keyof TwitchExtContext)[],
-	) => {
+	): void => {
 		this.setState(prevState => {
 			const lastContext = prevState.context === null ? {} : prevState.context;
 			return Object.assign({}, prevState, {
@@ -46,9 +54,19 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		});
 	};
 
-	public render(): React.ReactNode {
-		return React.Children.only(this.props.children);
-	}
+	private onVisibilityChanged = (
+		isVisible: boolean,
+		context?: TwitchExtContext,
+	): void => {
+		this.setState(prevState => {
+			return Object.assign(
+				{},
+				prevState,
+				{ visible: isVisible },
+				isVisible ? { context } : {},
+			);
+		});
+	};
 }
 
 export const withTwitchExt = makeHOC<TwitchExtProps>({
