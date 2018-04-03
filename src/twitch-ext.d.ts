@@ -19,6 +19,11 @@ interface TwitchExt {
 	environment: "production";
 
 	/**
+	 * Helper methods for the Twitch Extension rig.
+	 */
+	rig: TwitchExtRig;
+
+	/**
 	 * This function binds the callback to the initial values and changes to the authorization data.
 	 *
 	 * @param authCallback This callback is fired each time the JWT is refreshed.
@@ -193,4 +198,18 @@ interface TwitchExtContext {
 	 * Resolution of the broadcast.
 	 */
 	videoResolution: string;
+}
+
+/**
+ * The developer rig object as available under window.Twitch.ext.rig.
+ *
+ * @see TwitchExt.rig
+ */
+interface TwitchExtRig {
+	/**
+	 * Print a message to the developer rig console.
+	 *
+	 * @param message The message to print.
+	 */
+	log(message: string): void;
 }
