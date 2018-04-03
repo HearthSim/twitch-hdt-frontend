@@ -193,10 +193,11 @@ class Root extends React.Component<Props & TwitchExtProps, State> {
 
 	public render(): React.ReactNode {
 		return (
-			<Overlay
-				boardState={this.state.boardState || null}
-				config={this.state.config}
-			/>
+			this.props.children &&
+			(this.props.children as any)({
+				boardState: this.state.boardState || null,
+				config: this.state.config,
+			})
 		);
 	}
 }
