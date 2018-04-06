@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { BoardStateData, EBSConfiguration } from "../twitch-hdt";
-import { DecklistPosition, Feature, hasFeature } from "../utils/config";
-import { withProps } from "../utils/styled";
-import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
+import { BoardStateData, EBSConfiguration } from "../../twitch-hdt";
+import { DecklistPosition, Feature, hasFeature } from "../../utils/config";
+import { withProps } from "../../utils/styled";
+import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
+import Entity from "../Entity";
 import DeckListOverlay from "./DeckListOverlay";
-import Entity from "./Entity";
 
 export interface PositionProps {
 	top?: string;

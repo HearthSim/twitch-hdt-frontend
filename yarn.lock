@@ -89,9 +89,11 @@
   version "16.0.40"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.40.tgz#caabc2296886f40b67f6fc80f0f3464476461df9"
 
-"@types/react@^16.3.0":
-  version "16.3.0"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.3.0.tgz#46e24f7178efe953b564030345f0284121afd79a"
+"@types/react@^16.3.5":
+  version "16.3.5"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.3.5.tgz#bd3b21285602ea7cadb4b9e0d9711d96fd5692cc"
+  dependencies:
+    csstype "^2.0.0"
 
 "@types/webpack-env@^1.13.5":
   version "1.13.5"
@@ -1757,6 +1759,10 @@ css-to-react-native@^2.0.3:
 css-what@2.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-2.1.0.tgz#9467d032c38cfaefb9f2d79501253062f87fa1bd"
+
+csstype@^2.0.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.1.1.tgz#37b01a7a9958ef0b88167ff6678deccd732e0ae2"
 
 currently-unhandled@^0.4.1:
   version "0.4.1"

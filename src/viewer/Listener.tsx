@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { hot } from "react-hot-loader";
 import { SingleCardDetailsPayload } from "../hsreplaynet";
 import {
 	BoardStateData,
@@ -13,7 +12,6 @@ import {
 } from "../twitch-hdt";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import AsyncQueue from "./AsyncQueue";
-import Overlay from "./Overlay";
 
 interface Props {}
 
@@ -28,7 +26,7 @@ interface State {
 	};
 }
 
-class Root extends React.Component<Props & TwitchExtProps, State> {
+class Listener extends React.Component<Props & TwitchExtProps, State> {
 	public queue: AsyncQueue<Message>;
 	public timeout: number | null;
 
@@ -202,4 +200,4 @@ class Root extends React.Component<Props & TwitchExtProps, State> {
 	}
 }
 
-export default hot(module)(withTwitchExt(Root));
+export default withTwitchExt(Listener);

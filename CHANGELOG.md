@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Add mobile support  
+  *Mobile viewers can view and copy the deck list on their device*
+
 ### Changed
 - Show "HSReplay.net" in deck list title when deck has no name
 

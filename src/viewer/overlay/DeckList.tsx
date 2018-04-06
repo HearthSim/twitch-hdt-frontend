@@ -3,14 +3,14 @@ import { CardData } from "hearthstonejson-client";
 import isEqual from "lodash.isequal";
 import React from "react";
 import styled from "styled-components";
-import { BoardStateDeckCard, FormatType } from "../twitch-hdt";
-import { CardsProps, sort as cardSorting, withCards } from "../utils/cards";
-import { DecklistPosition } from "../utils/config";
-import { getCopiableDeck } from "../utils/hearthstone";
-import { withProps } from "../utils/styled";
-import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
-import CardTile from "./CardTile";
-import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "./icons";
+import { BoardStateDeckCard, FormatType } from "../../twitch-hdt";
+import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";
+import { DecklistPosition } from "../../utils/config";
+import { getCopiableDeck } from "../../utils/hearthstone";
+import { withProps } from "../../utils/styled";
+import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
+import CardTile from "../CardTile";
+import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "../icons";
 
 interface PositionProps {
 	position: DecklistPosition;

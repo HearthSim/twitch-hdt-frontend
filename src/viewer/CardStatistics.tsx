@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { SingleCardDetailsPayload } from "../hsreplaynet";
 import { FormatType } from "../twitch-hdt";
 import { CardsProps, isPlayableCard, withCards } from "../utils/cards";
-import { Icon } from "./DeckList";
-import { HSReplayNetIcon } from "./icons";
+import { HSReplayNetIcon } from "./icons/index";
+import { Icon } from "./overlay/DeckList";
 
 const CardStatisticsDiv = styled.div`
 	color: white;

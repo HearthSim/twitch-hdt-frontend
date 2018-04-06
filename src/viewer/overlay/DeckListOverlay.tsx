@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { BoardStateDeck } from "../twitch-hdt";
-import { DecklistPosition } from "../utils/config";
-import { withProps } from "../utils/styled";
-import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
+import { BoardStateDeck } from "../../twitch-hdt";
+import { DecklistPosition } from "../../utils/config";
+import { withProps } from "../../utils/styled";
+import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import DeckList from "./DeckList";
 import { PositionProps } from "./Overlay";
 

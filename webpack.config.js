@@ -50,7 +50,14 @@ module.exports = (env, args) => {
 
 	return {
 		entry: {
-			viewer: ["babel-polyfill", path.resolve(__dirname, "src", "viewer")],
+			viewer: [
+				"babel-polyfill",
+				path.resolve(__dirname, "src", "viewer", "overlay"),
+			],
+			mobile: [
+				"babel-polyfill",
+				path.resolve(__dirname, "src", "viewer", "mobile"),
+			],
 			config: ["babel-polyfill", path.resolve(__dirname, "src", "config")],
 		},
 		resolve: {
@@ -201,6 +208,11 @@ module.exports = (env, args) => {
 			new HtmlWebpackPlugin({
 				filename: "config.html",
 				chunks: ["config"],
+				template: path.resolve(__dirname, "template.html"),
+			}),
+			new HtmlWebpackPlugin({
+				filename: "mobile.html",
+				chunks: ["mobile"],
 				template: path.resolve(__dirname, "template.html"),
 			}),
 			new HtmlWebpackIncludeSiblingChunksPlugin(),

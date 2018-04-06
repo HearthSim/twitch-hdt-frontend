@@ -30,6 +30,7 @@ interface State {
 class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 	public ref: HTMLDivElement | null = null;
 	public statisticsTimeout: number | null = null;
+	public touchTimeout: number | null = null;
 
 	constructor(props: Props & CardsProps & PortalProps, context: any) {
 		super(props, context);
@@ -57,6 +58,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 			this.statisticsTimeout !== null
 		) {
 			window.clearTimeout(this.statisticsTimeout);
+			this.statisticsTimeout = null;
 		}
 		if (!prevState.isHovering && this.state.isHovering) {
 			this.statisticsTimeout = window.setTimeout(() => {
@@ -67,6 +69,14 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 		if (prevState.isHovering && !this.state.isHovering) {
 			this.setState({ showStatistics: false });
 		}
+	}
+
+	public componentWillUnmount(): void {
+		if (this.statisticsTimeout !== null) {
+			window.clearTimeout(this.statisticsTimeout);
+			this.statisticsTimeout = null;
+		}
+		this.clearTouchTimeout();
 	}
 
 	public render(): React.ReactNode {
@@ -139,6 +149,20 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 						y: null,
 					})
 				}
+				onTouchStart={this.onTouchStart}
+				onTouchMove={() => {
+					this.clearTouchTimeout();
+					this.setState({
+						isHovering: false,
+					});
+				}}
+				onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => {
+					e.preventDefault();
+					this.clearTouchTimeout();
+					this.setState({
+						isHovering: false,
+					});
+				}}
 				innerRef={(ref: HTMLDivElement | null) => (this.ref = ref)}
 			>
 				{tooltip}
@@ -147,6 +171,23 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 			</EntityDiv>
 		);
 	}
+
+	private clearTouchTimeout() {
+		if (this.touchTimeout === null) {
+			return;
+		}
+		window.clearTimeout(this.touchTimeout);
+		this.touchTimeout = null;
+	}
+
+	private onTouchStart = (): void => {
+		this.clearTouchTimeout();
+		this.touchTimeout = window.setTimeout(() => {
+			this.setState({
+				isHovering: true,
+			});
+		}, 100);
+	};
 }
 
 export default withPortal(withCards(Entity));
