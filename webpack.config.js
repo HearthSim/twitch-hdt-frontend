@@ -31,7 +31,9 @@ module.exports = (env, args) => {
 					pkg.homepage,
 					"HearthSim, LLC. All Rights Reserved.",
 				].join("\n"),
-				include: ["viewer", "mobile", "config"].map(b => path.join(bundlePath, b)),
+				include: ["viewer", "mobile", "config"].map(b =>
+					path.join(bundlePath, b),
+				),
 			}),
 			new webpack.BannerPlugin({
 				banner: [
@@ -90,12 +92,12 @@ module.exports = (env, args) => {
 								],
 								plugins: [
 									[
-										"react-hot-loader/babel",
+										!isProduction ? "react-hot-loader/babel" : null,
 										"babel-plugin-styled-components",
 										{
 											displayName: !isProduction,
 										},
-									],
+									].filter(x => !!x),
 									"babel-plugin-transform-object-rest-spread",
 								],
 							},
