@@ -2,7 +2,6 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackIncludeSiblingChunksPlugin = require("html-webpack-include-sibling-chunks-plugin");
-const PreloadWebpackPlugin = require("preload-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const pkg = require(path.resolve(__dirname, "package"));
 
@@ -216,22 +215,6 @@ module.exports = (env, args) => {
 				template: path.resolve(__dirname, "template.html"),
 			}),
 			new HtmlWebpackIncludeSiblingChunksPlugin(),
-			new PreloadWebpackPlugin({
-				rel: "prefetch",
-				include: "allAssets",
-				fileWhitelist: [
-					/img\/minion\.png/,
-					/img\/spell.png/,
-					/img\/weapon\.png/,
-					/img\/hero\.png/,
-					/img\/hero_power\.png/,
-					/img\/gift\.png/,
-					/img\/pin\.svg/,
-					/img\/unpin\.svg/,
-					/img\/copy_deck\.svg/,
-				],
-				excludeHtmlNames: ["config.html"],
-			}),
 		].concat(plugins),
 	};
 };
