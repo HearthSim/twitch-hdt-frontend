@@ -39,7 +39,7 @@
 		"babel-preset-env": "^1.6.1",
 		"babel-preset-react": "^6.24.1",
 		"clean-webpack-plugin": "^0.1.19",
-		"clipboard-polyfill": "^2.4.6",
+		"clipboard-polyfill": "https://github.com/HearthSim/clipboard-polyfill",
 		"deckstrings": "^2.0.0",
 		"file-loader": "^1.1.11",
 		"hearthstonejson-client": "^0.8.1",

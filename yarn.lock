@@ -1461,9 +1461,9 @@ cli-width@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
 
-clipboard-polyfill@^2.4.6:
+"clipboard-polyfill@https://github.com/HearthSim/clipboard-polyfill":
   version "2.4.6"
-  resolved "https://registry.yarnpkg.com/clipboard-polyfill/-/clipboard-polyfill-2.4.6.tgz#9fcf2ad9e0a3a0e76c256182b159de0e679b2709"
+  resolved "https://github.com/HearthSim/clipboard-polyfill#0aa22edde67b2f2558132ccae7ea9fc42dd4afdd"
   dependencies:
     es6-promise "4.1.1"
 
