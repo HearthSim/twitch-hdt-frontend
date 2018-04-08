@@ -31,7 +31,7 @@ module.exports = (env, args) => {
 					pkg.homepage,
 					"HearthSim, LLC. All Rights Reserved.",
 				].join("\n"),
-				include: ["viewer", "config"].map(b => path.join(bundlePath, b)),
+				include: ["viewer", "mobile", "config"].map(b => path.join(bundlePath, b)),
 			}),
 			new webpack.BannerPlugin({
 				banner: [
