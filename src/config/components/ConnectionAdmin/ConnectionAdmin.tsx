@@ -41,6 +41,8 @@ const BigFriendlyButton = styled.button`
 	background-color: white;
 	border: solid 1px black;
 	width: 200px;
+	vertical-align: top;
+	line-height: 1.25em;
 
 	&:hover {
 		color: white;
