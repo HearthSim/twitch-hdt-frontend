@@ -10,7 +10,7 @@ import { getCopiableDeck } from "../../utils/hearthstone";
 import { withProps } from "../../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import CardTile from "../CardTile";
-import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "../icons";
+import { CloseIcon, CopyDeckIcon, HSReplayNetIcon } from "../icons";
 
 interface PositionProps {
 	position: DecklistPosition;
@@ -34,8 +34,6 @@ const Wrapper = withProps<PositionProps & OpacityProps>()(styled.div)`
 
 	opacity: ${(props: OpacityProps) =>
 		typeof props.opacity === "number" ? props.opacity : 1};
-	transition: opacity ${(props: OpacityProps) =>
-		(props.opacity || 0) > 0.5 ? `0.25s ease-out` : `1.5s ease-in`};
 `;
 
 const Header = styled.header`
@@ -101,9 +99,7 @@ const CopyButton = HeaderButton.extend`
 	cursor: copy;
 `;
 
-const HideButton = HeaderButton.extend``;
-
-const ShowButton = HeaderButton.extend``;
+const CloseButton = HeaderButton.extend``;
 
 const CardList = withProps<{ moving?: boolean; left: boolean }>()(styled.ul)`
 	margin: 0;
@@ -148,8 +144,7 @@ interface Props {
 	position: DecklistPosition;
 	name?: string;
 	showRarities?: boolean;
-	pinned?: boolean;
-	onPinned: (pinned: boolean) => void;
+	onClose: () => void;
 	hidden?: boolean;
 	moving?: boolean;
 	onMoveStart?: (e: React.MouseEvent<HTMLElement>) => void;
@@ -225,8 +220,7 @@ class DeckList extends React.Component<
 			nextProps.hero !== this.props.hero ||
 			nextProps.format !== this.props.format ||
 			nextProps.showRarities !== this.props.showRarities ||
-			nextProps.pinned !== this.props.pinned ||
-			nextProps.onPinned !== this.props.onPinned ||
+			nextProps.onClose !== this.props.onClose ||
 			nextProps.hidden !== this.props.hidden ||
 			nextProps.moving !== this.props.moving ||
 			nextProps.onMoveStart !== this.props.onMoveStart ||
@@ -281,7 +275,7 @@ class DeckList extends React.Component<
 		return (
 			<Wrapper
 				position={position}
-				opacity={this.props.hidden ? 0 : this.props.pinned ? 1 : 0.85}
+				opacity={this.props.hidden ? 0 : 1}
 				innerRef={ref => (this.ref = ref)}
 			>
 				<CardList
@@ -340,27 +334,15 @@ class DeckList extends React.Component<
 							>
 								<Icon src={CopyDeckIcon} />
 							</CopyButton>
-							{this.props.pinned ? (
-								<ShowButton
-									onClick={() => {
-										this.props.onPinned(false);
-									}}
-									onMouseDown={this.stopPropagation}
-									title="Automatically hide deck list"
-								>
-									<Icon src={PinIcon} />
-								</ShowButton>
-							) : (
-								<HideButton
-									onClick={() => {
-										this.props.onPinned(true);
-									}}
-									onMouseDown={this.stopPropagation}
-									title="Keep deck list visible"
-								>
-									<Icon src={UnpinIcon} />
-								</HideButton>
-							)}
+							<CloseButton
+								onClick={() => {
+									this.props.onClose();
+								}}
+								onMouseDown={this.stopPropagation}
+								title="Close deck list"
+							>
+								<Icon src={CloseIcon} />
+							</CloseButton>
 						</Header>
 					</li>
 					{cards

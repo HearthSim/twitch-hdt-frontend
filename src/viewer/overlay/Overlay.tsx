@@ -177,7 +177,7 @@ interface Props {
 
 interface State {
 	hovering?: boolean;
-	pinDeck?: boolean;
+	hideDecklist?: boolean;
 }
 
 class Overlay extends React.Component<Props & TwitchExtProps, State> {
@@ -194,7 +194,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		super(props, context);
 		this.state = {
 			hovering: true,
-			pinDeck: true,
+			hideDecklist: false,
 		};
 	}
 
@@ -323,16 +323,12 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 				}}
 			>
 				<Portal innerRef={(ref: any) => (this.portal = ref)} />
-				{hideDecklist ? null : (
+				{hideDecklist || !this.props.boardState ? null : (
 					<DeckListOverlay
 						deck={player.deck}
 						position={this.props.config.deck_position as DecklistPosition}
-						pinDeck={!!this.state.pinDeck}
-						onPinDeck={(pinDeck: boolean) => {
-							this.setState({ pinDeck });
-						}}
 						engaged={this.state.hovering}
-						hidden={!this.props.boardState}
+						onClose={this.onCloseDecklist}
 					/>
 				)}
 				{hideTooltips ? null : (
@@ -427,6 +423,8 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 			</Wrapper>
 		);
 	}
+
+	private onCloseDecklist = () => window.Twitch.ext.actions.minimize();
 }
 
 export default withTwitchExt(Overlay);

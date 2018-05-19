@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Added localized card names and art based on the viewer's language
 
+### Changed
+- Replaced the deck list's pin/unpin behaviour with a close button
+
 ### Fixed
 - Fixed deck list buttons being blocked by the Twitch player in windowed mode
 

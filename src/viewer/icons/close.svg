@@ -1,0 +1,5 @@
+<svg aria-labelledby="close-decklist-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<title id="close-decklist-icon">Close deck list</title>
+	<line x1="3" y1="3" x2="21" y2="21" stroke="white" stroke-width="3.5"/>
+	<line x1="21" y1="3" x2="3" y2="21" stroke="white" stroke-width="3.5"/>
+</svg>

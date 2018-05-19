@@ -37,10 +37,8 @@ interface Vector {
 interface Props {
 	deck?: BoardStateDeck;
 	position: DecklistPosition;
-	pinDeck: boolean;
-	onPinDeck: (pinDeck: boolean) => void;
 	engaged?: boolean;
-	hidden?: boolean;
+	onClose: () => void;
 }
 
 interface State {
@@ -109,8 +107,6 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 		}));
 	};
 
-	public onPinned = (pinned: boolean) => this.props.onPinDeck(pinned);
-
 	public componentDidUpdate(
 		prevProps: Readonly<Props & TwitchExtProps>,
 		prevState: Readonly<State>,
@@ -127,10 +123,6 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 	}
 
 	public render(): React.ReactNode {
-		if (this.props.hidden) {
-			return null;
-		}
-
 		const deck = this.props.deck;
 
 		return (
@@ -162,17 +154,17 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 						name={deck && deck.name}
 						showRarities={false}
 						position={this.props.position}
-						pinned={this.props.pinDeck}
-						onPinned={this.onPinned}
-						hidden={!this.props.pinDeck && !this.props.engaged}
 						moving={this.state.moving}
 						onMoveStart={this.onMoveStart}
 						onMoveEnd={this.onMoveEnd}
+						onClose={this.onClose}
 					/>
 				</DeckListBounds>
 			</Wrapper>
 		);
 	}
+
+	private onClose = () => this.props.onClose();
 }
 
 export default withTwitchExt(DeckListOverlay);
