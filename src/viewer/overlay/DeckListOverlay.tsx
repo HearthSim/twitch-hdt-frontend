@@ -140,13 +140,6 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 				onMouseUp={this.onMoveEnd}
 			>
 				<DeckListBounds
-					top={
-						this.props.twitchExtContext &&
-						(this.props.twitchExtContext.isFullScreen ||
-							this.props.twitchExtContext.isTheatreMode)
-							? "100px"
-							: "50px"
-					}
 					style={{
 						marginLeft: `${(this.state.viewerOffset
 							? this.state.viewerOffset.x
