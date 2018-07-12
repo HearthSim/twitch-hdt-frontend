@@ -7,7 +7,7 @@ import Root from "./Root";
 const rootElement = document.getElementById("root");
 ReactDOM.render(
 	<TwitchExtProvider>
-		<CardsProvider>
+		<CardsProvider locale="enUS">
 			<Root />
 		</CardsProvider>
 	</TwitchExtProvider>,

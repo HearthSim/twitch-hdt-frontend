@@ -21,20 +21,24 @@ export class EmptyCards implements Cards {
 
 export class HearthstoneJSONCards implements Cards {
 	public _cards: { [dbfId: number]: CardDefinition };
+	public _locale: string;
 
-	constructor() {
+	constructor(locale: string) {
 		this._cards = {};
+		this._locale = locale;
 	}
 
 	public fetch(): Promise<void> {
-		return new HearthstoneJSON().getLatest().then((c: CardDefinition[]) => {
-			c.map(card => {
-				if (card.dbfId) {
-					this._cards[card.dbfId] = card;
-				}
-				return null;
-			}).filter(x => x !== null);
-		});
+		return new HearthstoneJSON()
+			.getLatest(this._locale)
+			.then((c: CardDefinition[]) => {
+				c.map(card => {
+					if (card.dbfId) {
+						this._cards[card.dbfId] = card;
+					}
+					return null;
+				}).filter(x => x !== null);
+			});
 	}
 
 	public getByDbfId(dbfId: number): CardDefinition | null {
@@ -42,7 +46,9 @@ export class HearthstoneJSONCards implements Cards {
 	}
 }
 
-interface Props {}
+interface Props {
+	locale: string;
+}
 
 interface State {
 	cards?: Cards;
@@ -65,7 +71,7 @@ export class CardsProvider extends React.Component<Props, State> {
 	}
 
 	public componentDidMount(): void {
-		const cards = new HearthstoneJSONCards();
+		const cards = new HearthstoneJSONCards(this.props.locale);
 		cards.fetch().then(() => this.setState({ cards }));
 	}
 
