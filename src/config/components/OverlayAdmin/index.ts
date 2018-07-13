@@ -25,8 +25,9 @@ const mapDispatchToProps = (dispatch: Dispatch<State>) =>
 		dispatch,
 	);
 
-const OverlayAdmin = connect(mapStateToProps, mapDispatchToProps)(
-	OverlayAdminComponent,
-);
+const OverlayAdmin = connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(OverlayAdminComponent);
 
 export default OverlayAdmin;

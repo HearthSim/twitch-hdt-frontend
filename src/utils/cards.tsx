@@ -28,14 +28,12 @@ export class HearthstoneJSONCards implements Cards {
 
 	public fetch(): Promise<void> {
 		return new HearthstoneJSON().getLatest().then((c: CardDefinition[]) => {
-			c
-				.map(card => {
-					if (card.dbfId) {
-						this._cards[card.dbfId] = card;
-					}
-					return null;
-				})
-				.filter(x => x !== null);
+			c.map(card => {
+				if (card.dbfId) {
+					this._cards[card.dbfId] = card;
+				}
+				return null;
+			}).filter(x => x !== null);
 		});
 	}
 

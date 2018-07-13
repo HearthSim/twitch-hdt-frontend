@@ -21,8 +21,9 @@ const mapDispatchToProps = (dispatch: Dispatch<State>) =>
 		dispatch,
 	);
 
-const OtherAdmin = connect(mapStateToProps, mapDispatchToProps)(
-	OtherAdminComponent,
-);
+const OtherAdmin = connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(OtherAdminComponent);
 
 export default OtherAdmin;

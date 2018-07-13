@@ -64,11 +64,11 @@
 		"zip-webpack-plugin": "^3.0.0"
 	},
 	"devDependencies": {
-		"prettier": "^1.11.1",
-		"tslint": "^5.9.1",
-		"tslint-config-airbnb": "^5.8.0",
-		"tslint-config-prettier": "^1.10.0",
-		"tslint-react": "^3.5.1",
+		"prettier": "^1.13.7",
+		"tslint": "^5.10.0",
+		"tslint-config-airbnb": "^5.9.2",
+		"tslint-config-prettier": "^1.13.0",
+		"tslint-react": "^3.6.0",
 		"webpack-dev-server": "^3.1.1"
 	},
 	"private": true

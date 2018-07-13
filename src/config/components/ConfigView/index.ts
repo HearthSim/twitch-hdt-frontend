@@ -28,8 +28,9 @@ const mapDispatchToProps = (dispatch: Dispatch<State>) =>
 		dispatch,
 	);
 
-const ConfigView = connect(mapStateToProps, mapDispatchToProps)(
-	ConfigViewComponent,
-);
+const ConfigView = connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(ConfigViewComponent);
 
 export default ConfigView;

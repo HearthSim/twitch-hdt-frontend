@@ -20,7 +20,7 @@ const Stream = styled.div`
 	&:after {
 		display: block;
 		content: "";
-		padding-top: ${() => 100 / 16 * 9}%;
+		padding-top: ${() => (100 / 16) * 9}%;
 	}
 `;
 

@@ -20,8 +20,9 @@ const mapDispatchToProps = (dispatch: Dispatch<State>) =>
 		dispatch,
 	);
 
-const OverlayPreview = connect(mapStateToProps, mapDispatchToProps)(
-	OverlayPreviewComponent,
-);
+const OverlayPreview = connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(OverlayPreviewComponent);
 
 export default OverlayPreview;
