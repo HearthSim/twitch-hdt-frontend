@@ -26,7 +26,7 @@ interface State {
 	};
 }
 
-class Listener extends React.Component<Props & TwitchExtProps, State> {
+class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 	public queue: AsyncQueue<Message>;
 	public timeout: number | null;
 
@@ -200,4 +200,4 @@ class Listener extends React.Component<Props & TwitchExtProps, State> {
 	}
 }
 
-export default withTwitchExt(Listener);
+export default withTwitchExt(PubSubListener);
