@@ -53,17 +53,17 @@ const getSettings = () => async (
 	getState: () => State,
 ) => {
 	dispatch({
-		type: UPDATE_SETTINGS,
 		status: "pending",
+		type: UPDATE_SETTINGS,
 	});
 	try {
 		const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
-			method: "GET",
-			mode: "cors",
 			headers: new Headers({
 				Accept: "application/json",
 				...getEBSHeaders(getState()),
 			}),
+			method: "GET",
+			mode: "cors",
 		});
 		if (response.status !== 200) {
 			throw new Error("Invalid status code from EBS");
@@ -75,14 +75,14 @@ const getSettings = () => async (
 		let settings = await response.json();
 		settings = Object.assign({}, getState().config.defaults, settings);
 		dispatch({
-			type: UPDATE_SETTINGS,
-			status: "success",
 			settings,
+			status: "success",
+			type: UPDATE_SETTINGS,
 		});
 	} catch (e) {
 		dispatch({
-			type: UPDATE_SETTINGS,
 			status: "error",
+			type: UPDATE_SETTINGS,
 		});
 	}
 };
@@ -114,18 +114,18 @@ const commitSettings = () => async (
 	}
 	try {
 		dispatch({
-			type: UPDATE_SETTINGS,
 			status: "pending",
+			type: UPDATE_SETTINGS,
 		});
 		const proposedSettings = Object.assign({}, config.settings, config.preview);
 		const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
-			method: "PUT",
-			mode: "cors",
+			body: JSON.stringify(proposedSettings),
 			headers: new Headers({
 				"Content-Type": "application/json",
 				...getEBSHeaders(getState()),
 			}),
-			body: JSON.stringify(proposedSettings),
+			method: "PUT",
+			mode: "cors",
 		});
 		if (response.status !== 200) {
 			throw new Error("Invalid status code from EBS");
@@ -136,14 +136,14 @@ const commitSettings = () => async (
 		}
 		const settings = await response.json();
 		dispatch({
-			type: UPDATE_SETTINGS,
 			settings,
 			status: "success",
+			type: UPDATE_SETTINGS,
 		});
 	} catch (e) {
 		dispatch({
-			type: UPDATE_SETTINGS,
 			status: "error",
+			type: UPDATE_SETTINGS,
 		});
 	}
 };
@@ -157,12 +157,12 @@ const updateConnectionStatus = () => async (
 	});
 	try {
 		const response = await fetch("https://twitch-ebs.hearthsim.net/setup/", {
-			method: "POST",
-			mode: "cors",
 			headers: new Headers({
 				Accept: "application/json",
 				...getEBSHeaders(getState()),
 			}),
+			method: "POST",
+			mode: "cors",
 		});
 		switch (response.status) {
 			case 200:
@@ -219,12 +219,12 @@ const refreshStreamData = () => async (
 				state.twitch.authorized.channelId
 			}`,
 			{
-				method: "GET",
-				mode: "cors",
 				headers: new Headers({
 					Accept: "application/json",
 					...getTwitchAPIHeaders(getState()),
 				}),
+				method: "GET",
+				mode: "cors",
 			},
 		);
 		switch (response.status) {
@@ -233,14 +233,14 @@ const refreshStreamData = () => async (
 				const data = json.data;
 				if (!data.length) {
 					return dispatch({
-						type: SET_TWITCH_API_STREAM,
 						offline: true,
+						type: SET_TWITCH_API_STREAM,
 					});
 				}
 				const stream: TwitchApiStream = data[0];
 				return dispatch({
-					type: SET_TWITCH_API_STREAM,
 					stream,
+					type: SET_TWITCH_API_STREAM,
 				});
 			default:
 				throw new Error(`Unexpected status code ${response.status}`);
@@ -253,16 +253,16 @@ export const actionCreators = {
 	setConnectionStatus: (
 		status: ConnectionStatus,
 	): Actions[typeof SET_CONNECTION_STATUS] => ({
-		type: SET_CONNECTION_STATUS,
 		status,
+		type: SET_CONNECTION_STATUS,
 	}),
 	refreshStreamData,
 	getSettings,
 	setSetting,
 	setSettings,
 	previewSettings: (settings: EBSConfiguration) => ({
-		type: PREVIEW_SETTINGS,
 		settings,
+		type: PREVIEW_SETTINGS,
 	}),
 	commitSettings,
 	rollbackSettings: () => ({
@@ -271,13 +271,13 @@ export const actionCreators = {
 	setTwitchExtContext: (
 		context: TwitchExtContext,
 	): Actions[typeof SET_TWITCH_EXT_CONTEXT] => ({
-		type: SET_TWITCH_EXT_CONTEXT,
 		context,
+		type: SET_TWITCH_EXT_CONTEXT,
 	}),
 	setTwitchExtAuthorized: (
 		authorized: TwitchExtAuthorized,
 	): Actions[typeof SET_TWITCH_EXT_AUTHORIZED] => ({
-		type: SET_TWITCH_EXT_AUTHORIZED,
 		authorized,
+		type: SET_TWITCH_EXT_AUTHORIZED,
 	}),
 };

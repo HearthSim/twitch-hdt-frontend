@@ -28,6 +28,11 @@ interface State {
 }
 
 class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
+	public static contextTypes = {
+		gameType: PropTypes.number,
+		statisticsContainer: PropTypes.func,
+	};
+
 	public ref: HTMLDivElement | null = null;
 	public statisticsTimeout: number | null = null;
 	public touchTimeout: number | null = null;
@@ -37,16 +42,11 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 		this.state = {
 			isHovering: false,
 			showStatistics: false,
+			width: null,
 			x: null,
 			y: null,
-			width: null,
 		};
 	}
-
-	public static contextTypes = {
-		statisticsContainer: PropTypes.func,
-		gameType: PropTypes.number,
-	};
 
 	public componentDidUpdate(
 		prevProps: Readonly<Props & CardsProps & PortalProps>,
@@ -138,9 +138,9 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 
 					this.setState({
 						isHovering: true,
+						width,
 						x,
 						y,
-						width,
 					});
 				}}
 				onMouseLeave={() =>

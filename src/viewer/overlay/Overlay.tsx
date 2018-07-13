@@ -181,6 +181,12 @@ interface State {
 }
 
 class Overlay extends React.Component<Props & TwitchExtProps, State> {
+	public static childContextTypes = {
+		gameType: PropTypes.number.isRequired,
+		portal: PropTypes.object,
+		statisticsContainer: PropTypes.func,
+	};
+
 	public portal: HTMLDivElement | null = null;
 	public movementTimeout: number | null = null;
 
@@ -226,24 +232,24 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 	public renderSecrets(dbfIds: number[], hasQuest?: boolean): any {
 		const secretPositions = [
 			{
-				top: "0vh",
 				left: "0.2vh",
+				top: "0vh",
 			},
 			{
-				top: "3vh",
 				left: "-4.8vh",
-			},
-			{
 				top: "3vh",
+			},
+			{
 				left: "4.8vh",
+				top: "3vh",
 			},
 			{
-				top: "8.5vh",
 				left: "-7.9vh",
+				top: "8.5vh",
 			},
 			{
-				top: "8.5vh",
 				left: "7.9vh",
+				top: "8.5vh",
 			},
 		];
 		return dbfIds
@@ -264,25 +270,19 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 			.filter(s => s !== null);
 	}
 
-	public static childContextTypes = {
-		portal: PropTypes.object,
-		statisticsContainer: PropTypes.func,
-		gameType: PropTypes.number.isRequired,
-	};
-
 	public getChildContext() {
 		return {
-			portal: this.portal,
-			statisticsContainer:
-				this.props.config.deck_position === DecklistPosition.TOP_LEFT
-					? RightStatistics
-					: LeftStatistics,
 			gameType:
 				this.props.boardState &&
 				this.props.boardState.player &&
 				this.props.boardState.player.deck
 					? this.props.boardState.player.deck.format
 					: 2, // default to RANKED_STANDARD
+			portal: this.portal,
+			statisticsContainer:
+				this.props.config.deck_position === DecklistPosition.TOP_LEFT
+					? RightStatistics
+					: LeftStatistics,
 		};
 	}
 

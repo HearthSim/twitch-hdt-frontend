@@ -54,9 +54,9 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 	constructor(props: Props & TwitchExtProps, context: any) {
 		super(props, context);
 		this.state = {
-			moving: false,
-			moveStartPosition: null,
 			movePreviewOffset: null,
+			moveStartPosition: null,
+			moving: false,
 			viewerOffset: null,
 		};
 	}
@@ -65,8 +65,8 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 		e.stopPropagation();
 		const { clientX, clientY } = e;
 		this.setState({
-			moving: true,
 			moveStartPosition: { x: clientX, y: clientY },
+			moving: true,
 		});
 	};
 
@@ -96,8 +96,8 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 			return;
 		}
 		this.setState(state => ({
-			moving: false,
 			movePreviewOffset: null,
+			moving: false,
 			viewerOffset: state.viewerOffset
 				? state.movePreviewOffset
 					? {
@@ -118,9 +118,9 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 	): void {
 		if (prevProps.position !== this.props.position) {
 			this.setState({
-				moving: false,
-				moveStartPosition: null,
 				movePreviewOffset: null,
+				moveStartPosition: null,
+				moving: false,
 				viewerOffset: null,
 			});
 		}

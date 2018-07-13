@@ -1,17 +1,19 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended",
-        "tslint-react",
-        "tslint-config-airbnb",
-        "tslint-config-prettier"
-    ],
-    "jsRules": {},
-    "rules": {
-        "array-type": [true, "array"], // prevent conflict with prefer-array-literal
-        "import-name": false, // mostly broken
-        "interface-name": [true, "never-prefix"], // React Props/State should not have a prefix
-        "object-shorthand-properties-first": false // not required, can be enabeld using object-literal-sort-keys
-    },
-    "rulesDirectory": []
+	"defaultSeverity": "error",
+	"extends": [
+		"tslint:recommended",
+		"tslint-react",
+		"tslint-config-airbnb",
+		"tslint-config-prettier"
+	],
+	"jsRules": {},
+	"rules": {
+		"array-type": [true, "array"], // prevent conflict with prefer-array-literal
+		"import-name": false, // mostly broken
+		"interface-name": [true, "never-prefix"], // React Props/State should not have a prefix
+		"no-empty-interface": false,
+		"object-shorthand-properties-first": false, // not required, can be enabeld using object-literal-sort-keys
+		"variable-name": false
+	},
+	"rulesDirectory": []
 }

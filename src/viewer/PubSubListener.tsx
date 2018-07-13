@@ -27,6 +27,10 @@ interface State {
 }
 
 class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
+	public static childContextTypes = {
+		fetchStatistics: PropTypes.func,
+	};
+
 	public queue: AsyncQueue<Message>;
 	public timeout: number | null;
 
@@ -34,17 +38,13 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 		super(props, context);
 		this.state = {
 			boardState: null,
-			hasError: false,
 			config: {},
+			hasError: false,
 			statistics: {},
 		};
 		this.queue = new AsyncQueue();
 		this.timeout = null;
 	}
-
-	public static childContextTypes = {
-		fetchStatistics: PropTypes.func,
-	};
 
 	public getChildContext(): any {
 		return {
@@ -67,10 +67,10 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 					"&",
 				)}`;
 				const response = await fetch(url, {
-					mode: "cors",
 					headers: new Headers({
 						"X-Twitch-Extension-Version": APPLICATION_VERSION,
 					}),
+					mode: "cors",
 				});
 				if (response.status !== 200) {
 					throw new Error(`Unexpected status code "${response.status}"`);

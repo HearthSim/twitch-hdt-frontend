@@ -57,14 +57,6 @@ interface Props {
 }
 
 export default class HSReplayNetConnection extends React.Component<Props> {
-	private renderConnection(connected: boolean | null): React.ReactNode {
-		if (connected) {
-			return "────────";
-		} else {
-			return "───┘┌───";
-		}
-	}
-
 	public render(): React.ReactNode {
 		return (
 			<Wrapper>
@@ -95,5 +87,9 @@ export default class HSReplayNetConnection extends React.Component<Props> {
 				</Element>
 			</Wrapper>
 		);
+	}
+
+	private renderConnection(connected: boolean | null): React.ReactNode {
+		return connected ? "────────" : "───┘┌───";
 	}
 }

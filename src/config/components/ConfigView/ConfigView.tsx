@@ -107,18 +107,18 @@ export default class ConfigView extends React.Component<Props> {
 						<p>This might take a few moments.</p>
 					</MessageWrapper>
 				);
-			} else {
-				return (
-					<MessageWrapper>
-						<p>Unable to reach extension backend service</p>
-						<p>
-							Please check your browser extensions, or if this persists, contact
-							us at{" "}
-							<a href="mailto:support@hearthsim.net">support@hearthsim.net</a>.
-						</p>
-					</MessageWrapper>
-				);
 			}
+
+			return (
+				<MessageWrapper>
+					<p>Unable to reach extension backend service</p>
+					<p>
+						Please check your browser extensions, or if this persists, contact
+						us at{" "}
+						<a href="mailto:support@hearthsim.net">support@hearthsim.net</a>.
+					</p>
+				</MessageWrapper>
+			);
 		}
 
 		const setupComplete =

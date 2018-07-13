@@ -22,19 +22,19 @@ export interface State {
 }
 
 export const initialState: State = {
-	hasInitialized: false,
 	completingSetup: false,
-	connection: { status: ConnectionStatus.UNKNOWN },
 	config: {
-		settings: null,
-		preview: null,
-		readonly: false,
 		defaults: {
 			deck_position: "topright",
-			hidden: "0",
 			game_offset_horizontal: "0",
+			hidden: "0",
 		},
+		preview: null,
+		readonly: false,
+		settings: null,
 	},
+	connection: { status: ConnectionStatus.UNKNOWN },
+	hasInitialized: false,
 	twitch: { context: null, authorized: null, stream: null },
 };
 
@@ -47,9 +47,9 @@ export const getEBSHeaders = (state: State): { [header: string]: string } => {
 	}
 	return {
 		Authorization: `Bearer ${authorized.token}`,
-		"X-Twitch-User-Id": authorized.channelId,
 		"X-Twitch-Client-Id": authorized.clientId,
 		"X-Twitch-Extension-Version": APPLICATION_VERSION,
+		"X-Twitch-User-Id": authorized.channelId,
 	};
 };
 

@@ -101,6 +101,54 @@ const InstructionImage = styled.img`
 `;
 
 export default class ConnectionAdmin extends React.Component<Props> {
+	public render(): React.ReactNode {
+		return (
+			<Fieldset>
+				<Heading>Connection</Heading>
+				<p>Download and connect Hearthstone Deck Tracker.</p>
+				<CenterParagraph>
+					<DownloadLink
+						href={"https://hsdecktracker.net/download/"}
+						target={"_blank"}
+					>
+						<Icon src={WindowsIcon} />
+						Download HDT
+					</DownloadLink>
+				</CenterParagraph>
+				<CenterParagraph>
+					After installing:<br />
+					<TrackerInstructions>
+						Options (Advanced) → Streaming → Twitch Extension
+					</TrackerInstructions>
+				</CenterParagraph>
+				{this.props.connectionStatus !== ConnectionStatus.READY ? (
+					<>
+						<p>
+							Make sure you've completed the Twitch Extension setup in
+							Hearthstone Deck Tracker.
+						</p>
+						<ConnectionPreview
+							working={this.props.working}
+							twitch={
+								this.props.connectionStatus === ConnectionStatus.ERROR
+									? null
+									: this.props.connectionStatus >
+									  ConnectionStatus.ACCOUNT_NOT_LINKED
+							}
+							tracker={
+								this.props.connectionStatus === ConnectionStatus.ERROR
+									? null
+									: this.props.connectionStatus >
+									  ConnectionStatus.UPSTREAM_CLIENT_NOT_FOUND
+							}
+						/>
+					</>
+				) : null}
+				{this.getMessage()}
+			</Fieldset>
+		);
+	}
+
 	private getMessage(): React.ReactNode {
 		if (this.props.working) {
 			return <CenterParagraph>Testing connection…</CenterParagraph>;
@@ -176,54 +224,6 @@ export default class ConnectionAdmin extends React.Component<Props> {
 				<p>{message}</p>
 				{buttons.length ? <p>{buttons}</p> : null}
 			</CenterDiv>
-		);
-	}
-
-	public render(): React.ReactNode {
-		return (
-			<Fieldset>
-				<Heading>Connection</Heading>
-				<p>Download and connect Hearthstone Deck Tracker.</p>
-				<CenterParagraph>
-					<DownloadLink
-						href={"https://hsdecktracker.net/download/"}
-						target={"_blank"}
-					>
-						<Icon src={WindowsIcon} />
-						Download HDT
-					</DownloadLink>
-				</CenterParagraph>
-				<CenterParagraph>
-					After installing:<br />
-					<TrackerInstructions>
-						Options (Advanced) → Streaming → Twitch Extension
-					</TrackerInstructions>
-				</CenterParagraph>
-				{this.props.connectionStatus !== ConnectionStatus.READY ? (
-					<>
-						<p>
-							Make sure you've completed the Twitch Extension setup in
-							Hearthstone Deck Tracker.
-						</p>
-						<ConnectionPreview
-							working={this.props.working}
-							twitch={
-								this.props.connectionStatus === ConnectionStatus.ERROR
-									? null
-									: this.props.connectionStatus >
-									  ConnectionStatus.ACCOUNT_NOT_LINKED
-							}
-							tracker={
-								this.props.connectionStatus === ConnectionStatus.ERROR
-									? null
-									: this.props.connectionStatus >
-									  ConnectionStatus.UPSTREAM_CLIENT_NOT_FOUND
-							}
-						/>
-					</>
-				) : null}
-				{this.getMessage()}
-			</Fieldset>
 		);
 	}
 }
