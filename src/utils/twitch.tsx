@@ -6,7 +6,20 @@ import { makeHOC } from "./hocs";
 export interface TwitchExtProps {
 	twitchExtContext?: TwitchExtContext;
 	twitchExtVisibility?: boolean;
+	twitchExtClientQueryParams?: TwitchExtClientQueryParams;
 }
+
+export interface TwitchExtConsumerArgs {
+	context: TwitchExtContext | null;
+	visible: boolean | null;
+	query: Partial<TwitchExtClientQueryParams>;
+}
+
+const { Provider, Consumer } = React.createContext<TwitchExtConsumerArgs>({
+	context: null,
+	visible: null,
+	query: {},
+});
 
 interface Props {}
 
@@ -19,6 +32,8 @@ export class TwitchExtProvider extends React.Component<Props, State>
 	implements ChildContextProvider<TwitchExtProps> {
 	public static childContextTypes = {
 		twitchExtContext: PropTypes.object,
+		twitchExtVisibility: PropTypes.object,
+		twitchExtClientQueryParams: PropTypes.object,
 	};
 
 	constructor(props: Props, context: any) {
@@ -29,8 +44,20 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		};
 	}
 
+	public getClientQueryParams(): Partial<TwitchExtClientQueryParams> {
+		const { search } = window.location;
+		return search.split("&").reduce((obj, param) => {
+			const [key, value] = param.split("=", 2);
+			return Object.assign({}, obj, { [key]: value });
+		}, {});
+	}
+
 	public getChildContext(): any {
-		return { twitchExtContext: this.state.context };
+		return {
+			twitchExtContext: this.state.context,
+			twitchExtVisibility: this.state.visible,
+			twitchExtClientQueryParams: this.getClientQueryParams(),
+		};
 	}
 
 	public componentDidMount(): void {
@@ -39,7 +66,17 @@ export class TwitchExtProvider extends React.Component<Props, State>
 	}
 
 	public render(): React.ReactNode {
-		return React.Children.only(this.props.children);
+		return (
+			<Provider
+				value={{
+					context: this.state.context,
+					visible: this.state.visible,
+					query: this.getClientQueryParams(),
+				}}
+			>
+				{this.props.children}
+			</Provider>
+		);
 	}
 
 	private onContext = (
@@ -68,6 +105,8 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		});
 	};
 }
+
+export { Consumer as TwitchExtConsumer };
 
 export const withTwitchExt = makeHOC<TwitchExtProps>({
 	twitchExtContext: PropTypes.object,

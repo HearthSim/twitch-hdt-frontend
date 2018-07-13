@@ -234,3 +234,47 @@ interface TwitchExtRig {
 	 */
 	log(message: string): void;
 }
+
+/**
+ * The extension window receives the following query parameters, which indicate
+ * information about the extension environment that isn’t subject to change over
+ * the frame’s life cycle.
+ *
+ * @see https://dev.twitch.tv/docs/extensions/reference/#client-query-parameters
+ */
+interface TwitchExtClientQueryParams {
+	/**
+	 * The type of the anchor in which the extension is activated.
+	 */
+	anchor: "component" | "panel" | "video_overlay";
+
+	/**
+	 * The user’s language setting.
+	 *
+	 * @example en
+	 */
+	language: string;
+
+	/**
+	 * The extension’s mode.
+	 */
+	mode: "config" | "dashboard" | "viewer";
+
+	/**
+	 * The platform on which the Twitch client is running.
+	 */
+	platform: "mobile" | "web";
+
+	/**
+	 * The release state of the extension.
+	 */
+	state:
+		| "testing"
+		| "hosted_test"
+		| "approved"
+		| "released"
+		| "ready_for_review"
+		| "in_review"
+		| "pending_action"
+		| "uploading";
+}
