@@ -1,15 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { CardsProvider } from "../../utils/cards";
-import { TwitchExtProvider } from "../../utils/twitch";
+import {
+	CardsProvider,
+	getHearthstoneLocaleFromTwitchLocale,
+} from "../../utils/cards";
+import {
+	TwitchExtConsumer,
+	TwitchExtConsumerArgs,
+	TwitchExtProvider,
+} from "../../utils/twitch";
 import Root from "./Root";
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
 	<TwitchExtProvider>
-		<CardsProvider locale="enUS">
-			<Root />
-		</CardsProvider>
+		<TwitchExtConsumer>
+			{({ query }: TwitchExtConsumerArgs) => (
+				<CardsProvider
+					locale={getHearthstoneLocaleFromTwitchLocale(query.language || "en")}
+				>
+					<Root />
+				</CardsProvider>
+			)}
+		</TwitchExtConsumer>
 	</TwitchExtProvider>,
 	rootElement,
 );

@@ -121,3 +121,37 @@ export function sort(
 	}
 	return 0;
 }
+
+export function getHearthstoneLocaleFromTwitchLocale(
+	twitchLocale: string,
+): string {
+	switch (twitchLocale) {
+		case "de":
+			return "deDE";
+		case "es":
+			return "esES";
+		case "es-mx":
+			return "esMX";
+		case "fr":
+			return "frFR";
+		case "it":
+			return "itIT";
+		case "ja":
+			return "jaJP";
+		case "ko":
+			return "koKO";
+		case "pl":
+			return "plPL";
+		case "pt":
+		case "pt-br":
+			return "ptBR";
+		case "ru":
+			return "ruRU";
+		case "th":
+			return "thTH";
+		case "en":
+		case "en-gb":
+		default:
+			return "enUS";
+	}
+}
