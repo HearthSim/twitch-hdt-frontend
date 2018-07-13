@@ -4656,6 +4656,10 @@ react-hot-loader@^4.3.3:
   version "0.2.1"
   resolved "https://libs.hearthsim.net/react-hs-components-v0.2.1.tgz#d7f30bc2ad39be320f22376a94e9fee0abf5ca9c"
 
+"react-hs-components@https://libs.hearthsim.net/react-hs-components-v0.3.0.tgz":
+  version "0.3.0"
+  resolved "https://libs.hearthsim.net/react-hs-components-v0.3.0.tgz#993773bce362b840ec50ff3b9c965f4d6377e532"
+
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"

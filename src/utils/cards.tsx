@@ -1,6 +1,7 @@
 import HearthstoneJSON, { CardData } from "hearthstonejson-client";
 import PropTypes from "prop-types";
 import React from "react";
+import { HearthstoneLocale } from "react-hs-components/dist/components/Card";
 import { makeHOC } from "./hocs";
 
 export type CardDefinition = CardData;
@@ -124,7 +125,7 @@ export function sort(
 
 export function getHearthstoneLocaleFromTwitchLocale(
 	twitchLocale: string,
-): string {
+): HearthstoneLocale {
 	switch (twitchLocale) {
 		case "de":
 			return "deDE";
@@ -139,7 +140,7 @@ export function getHearthstoneLocaleFromTwitchLocale(
 		case "ja":
 			return "jaJP";
 		case "ko":
-			return "koKO";
+			return "koKR";
 		case "pl":
 			return "plPL";
 		case "pt":
