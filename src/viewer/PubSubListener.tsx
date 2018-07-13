@@ -195,9 +195,14 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 			(this.props.children as any)({
 				boardState: this.state.boardState || null,
 				config: this.state.config,
-			})
+			} as PubSubListenerArgs)
 		);
 	}
+}
+
+export interface PubSubListenerArgs {
+	boardState: BoardStateData | null;
+	config: EBSConfiguration;
 }
 
 export default withTwitchExt(PubSubListener);
