@@ -5,12 +5,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added localized card names and art based on the viewer's language
+
 ### Fixed
 - Fixed deck list buttons being blocked by the Twitch player in windowed mode
 
 ## [0.3.0] - 2018-04-10
 ### Added
-- Add mobile support  
+- Added mobile support  
   *Mobile viewers can view and copy the deck list on their device*
 
 ### Changed
