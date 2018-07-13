@@ -45,7 +45,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 
 	public static contextTypes = {
 		statisticsContainer: PropTypes.func,
-		gameType: PropTypes.number.isRequired,
+		gameType: PropTypes.number,
 	};
 
 	public componentDidUpdate(
@@ -108,6 +108,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 			if (
 				card.collectible &&
 				this.context.statisticsContainer &&
+				this.context.gameType &&
 				this.state.showStatistics
 			) {
 				const Container = this.context.statisticsContainer;
