@@ -53,9 +53,20 @@ interface TwitchExt {
 	onError(errorCallback: (errorValue: any) => void): void;
 
 	/**
+	 * This function registers a callback that gets called whenever an extension changes position in the player. This
+	 * occurs only for video-component extensions. This also is triggered as the extension loads.
+	 *
+	 * @param callback This callback is called whenever an extension changes position in the player.
+	 * @see {@link https://dev.twitch.tv/docs/extensions/reference/#onpositionchangedcallback}
+	 */
+	onPositionChanged(
+		callback: (position: { x: number; y: number }) => void,
+	): void;
+
+	/**
 	 * This function registers a callback that gets called whenever an extension is hidden/re-shown. (This occurs only
-	 * for mobile extensions.) When an extension is not visible in the mobile app, it does not receive onContext updates
-	 * and must perform only minimal work in the background.
+	 * for mobile or component extensions.) When an extension is not visible in the mobile app, it does not receive
+	 * onContext updates and must perform only minimal work in the background.
 	 *
 	 * @param callback This callback is called whenever an extension is hidden/re-shown.
 	 * @see {@link https://dev.twitch.tv/docs/extensions/reference/#onvisibilitychangedcallback}
@@ -135,11 +146,6 @@ interface TwitchExtAuthorized {
  */
 interface TwitchExtContext {
 	/**
-	 * The mode the extension is currently run in.
-	 */
-	mode: "viewer" | "dashboard" | "config";
-
-	/**
 	 * Bitrate of the broadcast.
 	 */
 	bitrate: number;
@@ -170,6 +176,11 @@ interface TwitchExtContext {
 	isFullScreen: boolean;
 
 	/**
+	 * If true, the viewer has muted the stream.
+	 */
+	isMuted: boolean;
+
+	/**
 	 * If true, the viewer has paused the stream.
 	 */
 	isPaused: boolean;
@@ -185,6 +196,11 @@ interface TwitchExtContext {
 	language: string;
 
 	/**
+	 * The mode the extension is currently run in.
+	 */
+	mode: "viewer" | "dashboard" | "config";
+
+	/**
 	 * Indicates how the stream is being played.
 	 */
 	playbackMode: "video" | "audio" | "remote" | "chat-only";
@@ -198,6 +214,11 @@ interface TwitchExtContext {
 	 * Resolution of the broadcast.
 	 */
 	videoResolution: string;
+
+	/**
+	 * Currently selected player volume. Valid values: between 0 and 1.
+	 */
+	volume: number;
 }
 
 /**
