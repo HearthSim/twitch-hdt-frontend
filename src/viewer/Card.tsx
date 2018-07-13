@@ -3,7 +3,11 @@ import { Card as ComponentCard } from "react-hs-components";
 import { CardsProps, withCards } from "../utils/cards";
 import { TwitchExtProps, withTwitchExt } from "../utils/twitch";
 import { getPlaceholder } from "./placeholders";
-import { Consumer, TooltipBehaviour } from "./utils/tooltips";
+import {
+	TooltipBehaviour,
+	TooltipConsumer,
+	TooltipConsumerArgs,
+} from "./utils/tooltips";
 
 interface Props {
 	dbfId: number;
@@ -16,14 +20,14 @@ interface Props {
 class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 	public render(): React.ReactNode {
 		return (
-			<Consumer>
-				{(method: TooltipBehaviour): React.ReactNode => {
+			<TooltipConsumer>
+				{({ behaviour }: TooltipConsumerArgs): React.ReactNode => {
 					const card = this.props.cards.getByDbfId(this.props.dbfId);
 					if (!card || !card.id) {
 						return <div>Invalid card</div>;
 					}
 
-					switch (method) {
+					switch (behaviour) {
 						case TooltipBehaviour.FULLSCREEN:
 							return (
 								<ComponentCard
@@ -98,7 +102,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 							);
 					}
 				}}
-			</Consumer>
+			</TooltipConsumer>
 		);
 	}
 }

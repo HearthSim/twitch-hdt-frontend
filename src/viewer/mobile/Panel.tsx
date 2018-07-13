@@ -5,7 +5,7 @@ import { BoardStateData, EBSConfiguration } from "../../twitch-hdt";
 import { withProps } from "../../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import { HSReplayNetIcon } from "../icons";
-import { Provider, TooltipBehaviour } from "../utils/tooltips";
+import { TooltipBehaviour, TooltipProvider } from "../utils/tooltips";
 import CardList from "./CardList";
 import CopyDeckButton from "./CopyDeckButton";
 import Scroller from "./Scroller";
@@ -223,7 +223,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 		const title = deck.name || "HSReplay.net";
 
 		return (
-			<Provider value={TooltipBehaviour.FULLSCREEN}>
+			<TooltipProvider value={{ behaviour: TooltipBehaviour.FULLSCREEN }}>
 				<PanelDiv>
 					<Portal innerRef={(ref: any) => (this.portal = ref)} />
 					<Header>
@@ -237,7 +237,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 						<CardList cardList={deck.cards} />
 					</Scroller>
 				</PanelDiv>
-			</Provider>
+			</TooltipProvider>
 		);
 	}
 

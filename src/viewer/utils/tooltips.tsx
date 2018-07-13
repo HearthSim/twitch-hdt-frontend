@@ -5,6 +5,13 @@ export const enum TooltipBehaviour {
 	ATTACHED,
 }
 
-export const { Provider, Consumer } = (React as any).createContext(
-	TooltipBehaviour.ATTACHED,
-);
+export interface TooltipConsumerArgs {
+	behaviour: TooltipBehaviour;
+}
+
+export const {
+	Provider: TooltipProvider,
+	Consumer: TooltipConsumer,
+} = React.createContext<TooltipConsumerArgs>({
+	behaviour: TooltipBehaviour.ATTACHED,
+});
