@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Fixed
 - Fixed full card art on mobile not respecting the viewer's language
+- Replace outdated "activate overlay" image in broadcaster settings
 
 ## [0.4.0] - 2018-07-18
 ### Added
