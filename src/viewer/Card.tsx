@@ -38,6 +38,10 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 								return <div>Invalid card</div>;
 							}
 
+							const locale = getHearthstoneLocaleFromTwitchLocale(
+								query.language || "en",
+							);
+
 							switch (behaviour) {
 								case TooltipBehaviour.FULLSCREEN:
 									return (
@@ -54,6 +58,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 												touchAction: "none",
 											}}
 											resolution={512}
+											locale={locale}
 											placeholder={getPlaceholder(card.type || "")}
 										/>
 									);
@@ -109,9 +114,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 												pointerEvents: "none",
 											}}
 											resolution={512}
-											locale={getHearthstoneLocaleFromTwitchLocale(
-												query.language || "en",
-											)}
+											locale={locale}
 											placeholder={getPlaceholder(card.type || "")}
 										/>
 									);
