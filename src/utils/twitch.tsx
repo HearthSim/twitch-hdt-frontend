@@ -31,7 +31,7 @@ export class TwitchExtProvider extends React.Component<Props, State>
 	implements ChildContextProvider<TwitchExtProps> {
 	public static childContextTypes = {
 		twitchExtContext: PropTypes.object,
-		twitchExtVisibility: PropTypes.object,
+		twitchExtVisibility: PropTypes.bool,
 		twitchExtClientQueryParams: PropTypes.object,
 	};
 
