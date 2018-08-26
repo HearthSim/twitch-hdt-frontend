@@ -87,6 +87,10 @@
   dependencies:
     csstype "^2.2.0"
 
+"@types/twitch-ext@^1.14.0":
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/@types/twitch-ext/-/twitch-ext-1.14.0.tgz#c19174a1fe1df42d2afff86691e470609b9a09c0"
+
 "@types/webpack-env@^1.13.5":
   version "1.13.5"
   resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.13.5.tgz#ca854e9fbdbcdf45d7376882875f28e2c60593f8"

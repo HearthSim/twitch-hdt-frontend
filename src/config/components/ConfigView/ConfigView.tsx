@@ -14,7 +14,7 @@ interface Props {
 	working: boolean;
 	settings: EBSConfiguration | null;
 	setSetting: (key: keyof EBSConfiguration, value: string) => any;
-	setTwitchExtContext: (context: TwitchExtContext) => any;
+	setTwitchExtContext: (context: Partial<TwitchExtContext>) => any;
 	setTwitchExtAuthorized: (authorized: TwitchExtAuthorized) => any;
 }
 
@@ -86,7 +86,7 @@ export const ErrorMessage = styled.span`
 
 export default class ConfigView extends React.Component<Props> {
 	public componentDidMount(): void {
-		window.Twitch.ext.onContext((context: TwitchExtContext) =>
+		window.Twitch.ext.onContext((context: Partial<TwitchExtContext>) =>
 			this.props.setTwitchExtContext(context),
 		);
 		window.Twitch.ext.onAuthorized((auth: TwitchExtAuthorized) => {

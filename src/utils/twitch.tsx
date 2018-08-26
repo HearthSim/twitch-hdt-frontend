@@ -78,10 +78,7 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		);
 	}
 
-	private onContext = (
-		context: TwitchExtContext,
-		changed: (keyof TwitchExtContext)[],
-	): void => {
+	private onContext = (context: Partial<TwitchExtContext>): void => {
 		this.setState(prevState => {
 			const lastContext = prevState.context === null ? {} : prevState.context;
 			return Object.assign({}, prevState, {

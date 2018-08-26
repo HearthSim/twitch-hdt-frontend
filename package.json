@@ -30,6 +30,7 @@
 		"@types/react-dom": "^16.0.6",
 		"@types/react-hot-loader": "^4.1.0",
 		"@types/react-redux": "^5.0.15",
+		"@types/twitch-ext": "^1.14.0",
 		"@types/webpack-env": "^1.13.5",
 		"babel-core": "^6.26.0",
 		"babel-loader": "^7.1.4",
