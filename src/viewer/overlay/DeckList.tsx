@@ -30,7 +30,7 @@ const Wrapper = withProps<PositionProps & OpacityProps>()(styled.div)`
 	left: ${props =>
 		props.position === DecklistPosition.TOP_LEFT ? "0.75vh" : "unset"};
 	right: ${props =>
-		props.position === DecklistPosition.TOP_RIGHT ? "0.75vh" : "unset"};
+		props.position === DecklistPosition.TOP_RIGHT ? "75px" : "unset"};
 
 	opacity: ${(props: OpacityProps) =>
 		typeof props.opacity === "number" ? props.opacity : 1};
