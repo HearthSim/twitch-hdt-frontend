@@ -245,7 +245,7 @@ class DeckList extends React.Component<
 				position,
 			) === -1
 		) {
-			position = DecklistPosition.TOP_RIGHT;
+			position = DecklistPosition.TOP_LEFT;
 		}
 
 		type Triplet = [number, number, number];
