@@ -3,14 +3,12 @@ import React, { ChildContextProvider } from "react";
 import { makeHOC } from "./hocs";
 
 interface TwitchExtBetaClientQueryParams extends TwitchExtClientQueryParams {
-
 	/**
 	 * True when you are using old extension component design.
 	 *
 	 * @see https://discuss.dev.twitch.tv/t/updating-your-component-extension-twitch-client-beta/21549
 	 */
-    legacyComponentDesign: any;
-
+	legacyComponentDesign: any;
 }
 
 export interface TwitchExtProps {

@@ -36,8 +36,11 @@ const Wrapper = withProps<PositionProps & OpacityProps>()(styled.div)`
 	left: ${props =>
 		props.position === DecklistPosition.TOP_LEFT ? "0.75vh" : "unset"};
 	right: ${props =>
-		props.position === DecklistPosition.TOP_RIGHT ? 
-			(props.usingNewExtComponentDesign ? "75px" : "0.75vh") : "unset"};
+		props.position === DecklistPosition.TOP_RIGHT
+			? props.usingNewExtComponentDesign
+				? "75px"
+				: "0.75vh"
+			: "unset"};
 
 	opacity: ${(props: OpacityProps) =>
 		typeof props.opacity === "number" ? props.opacity : 1};
@@ -290,7 +293,9 @@ class DeckList extends React.Component<
 				{({ query }: TwitchExtConsumerArgs) => (
 					<Wrapper
 						position={position}
-						usingNewExtComponentDesign={query.legacyComponentDesign === undefined}
+						usingNewExtComponentDesign={
+							query.legacyComponentDesign === undefined
+						}
 						opacity={this.props.hidden ? 0 : this.props.pinned ? 1 : 0.85}
 						innerRef={ref => (this.ref = ref)}
 					>
@@ -323,7 +328,10 @@ class DeckList extends React.Component<
 									</h1>
 									<CopyButton
 										onClick={() => {
-											if (this.props.format === null || this.props.hero === null) {
+											if (
+												this.props.format === null ||
+												this.props.hero === null
+											) {
 												return;
 											}
 											const toCopy = getCopiableDeck(
