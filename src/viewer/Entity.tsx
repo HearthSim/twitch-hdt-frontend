@@ -85,6 +85,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 		}
 		const card = this.props.cards.getByDbfId(this.props.dbfId);
 
+		let gaEventTimeout: NodeJS.Timer;
 		let tooltip = null;
 		let statistics = null;
 		if (
@@ -142,14 +143,20 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 						x,
 						y,
 					});
+
+					gaEventTimeout = setTimeout(() => {
+						ga("send", "event", "Hover", this.props.dbfId);
+						clearTimeout(gaEventTimeout);
+					}, 500);
 				}}
-				onMouseLeave={() =>
+				onMouseLeave={() => {
 					this.setState({
 						isHovering: false,
 						x: null,
 						y: null,
-					})
-				}
+					});
+					clearTimeout(gaEventTimeout);
+				}}
 				onTouchStart={this.onTouchStart}
 				onTouchMove={() => {
 					this.clearTouchTimeout();
