@@ -8,12 +8,18 @@ import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";
 import { DecklistPosition } from "../../utils/config";
 import { getCopiableDeck } from "../../utils/hearthstone";
 import { withProps } from "../../utils/styled";
-import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
+import {
+	TwitchExtConsumer,
+	TwitchExtConsumerArgs,
+	TwitchExtProps,
+	withTwitchExt,
+} from "../../utils/twitch";
 import CardTile from "../CardTile";
 import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "../icons";
 
 interface PositionProps {
 	position: DecklistPosition;
+	legacyComponentDesign?: boolean;
 }
 
 interface OpacityProps {
@@ -30,7 +36,11 @@ const Wrapper = withProps<PositionProps & OpacityProps>()(styled.div)`
 	left: ${props =>
 		props.position === DecklistPosition.TOP_LEFT ? "0.75vh" : "unset"};
 	right: ${props =>
-		props.position === DecklistPosition.TOP_RIGHT ? "0.75vh" : "unset"};
+		props.position === DecklistPosition.TOP_RIGHT
+			? props.legacyComponentDesign
+				? "0.75vh"
+				: "75px"
+			: "unset"};
 
 	opacity: ${(props: OpacityProps) =>
 		typeof props.opacity === "number" ? props.opacity : 1};
@@ -245,7 +255,7 @@ class DeckList extends React.Component<
 				position,
 			) === -1
 		) {
-			position = DecklistPosition.TOP_RIGHT;
+			position = DecklistPosition.TOP_LEFT;
 		}
 
 		type Triplet = [number, number, number];
@@ -279,108 +289,116 @@ class DeckList extends React.Component<
 			typeof this.props.name === "string" && this.props.name.trim().length > 0;
 
 		return (
-			<Wrapper
-				position={position}
-				opacity={this.props.hidden ? 0 : this.props.pinned ? 1 : 0.85}
-				innerRef={ref => (this.ref = ref)}
-			>
-				<CardList
-					style={{
-						transform: `scale(${this.state.scale || 1})`,
-					}}
-					onMouseDown={e => {
-						this.props.onMoveStart && this.props.onMoveStart(e);
-					}}
-					onMouseUp={e => {
-						this.props.onMoveEnd && this.props.onMoveEnd(e);
-					}}
-					moving={this.props.moving}
-					left={this.props.position === "topleft"}
-				>
-					<li>
-						<Header>
-							<Icon
-								src={HSReplayNetIcon}
-								padding="4px"
-								title="Powered by HSReplay.net"
-							/>
-							<h1 title={useDeckName ? this.props.name : "Unnamed Deck"}>
-								{this.state.copied
-									? "Copied!"
-									: useDeckName
-										? this.props.name
-										: "HSReplay.net"}
-							</h1>
-							<CopyButton
-								onClick={() => {
-									if (this.props.format === null || this.props.hero === null) {
-										return;
-									}
-									const toCopy = getCopiableDeck(
-										this.props.cardList,
-										this.props.format,
-										[this.props.hero],
-										this.props.name,
-									);
-									clipboard.writeText(toCopy).then(() => {
-										this.setState({ copied: true }, () => {
-											this.clearTimeout();
-											this.copiedTimeout = window.setTimeout(() => {
-												this.setState({ copied: false });
-											}, 3000);
-										});
-									});
-									const target = document.activeElement as HTMLElement;
-									if (target && typeof target.blur === "function") {
-										target.blur();
-									}
-								}}
-								onMouseDown={this.stopPropagation}
-								title="Copy deck to clipboard"
-							>
-								<Icon src={CopyDeckIcon} />
-							</CopyButton>
-							{this.props.pinned ? (
-								<ShowButton
-									onClick={() => {
-										this.props.onPinned(false);
-									}}
-									onMouseDown={this.stopPropagation}
-									title="Automatically hide deck list"
-								>
-									<Icon src={PinIcon} />
-								</ShowButton>
-							) : (
-								<HideButton
-									onClick={() => {
-										this.props.onPinned(true);
-									}}
-									onMouseDown={this.stopPropagation}
-									title="Keep deck list visible"
-								>
-									<Icon src={UnpinIcon} />
-								</HideButton>
-							)}
-						</Header>
-					</li>
-					{cards
-						.map((card: Triplet, index: number) => {
-							const [dbfId, current, initial] = card;
-							return (
-								<li key={index}>
-									<CardTile
-										dbfId={dbfId}
-										count={current}
-										showRarity={this.props.showRarities}
-										gift={initial === 0}
-										tooltipDisabled={this.props.hidden || this.props.moving}
+			<TwitchExtConsumer>
+				{({ query }: TwitchExtConsumerArgs) => (
+					<Wrapper
+						position={position}
+						legacyComponentDesign={query.legacyComponentDesign !== undefined}
+						opacity={this.props.hidden ? 0 : this.props.pinned ? 1 : 0.85}
+						innerRef={ref => (this.ref = ref)}
+					>
+						<CardList
+							style={{
+								transform: `scale(${this.state.scale || 1})`,
+							}}
+							onMouseDown={e => {
+								this.props.onMoveStart && this.props.onMoveStart(e);
+							}}
+							onMouseUp={e => {
+								this.props.onMoveEnd && this.props.onMoveEnd(e);
+							}}
+							moving={this.props.moving}
+							left={this.props.position === "topleft"}
+						>
+							<li>
+								<Header>
+									<Icon
+										src={HSReplayNetIcon}
+										padding="4px"
+										title="Powered by HSReplay.net"
 									/>
-								</li>
-							);
-						})
-						.filter(x => !!x)}
-				</CardList>
-			</Wrapper>
+									<h1 title={useDeckName ? this.props.name : "Unnamed Deck"}>
+										{this.state.copied
+											? "Copied!"
+											: useDeckName
+												? this.props.name
+												: "HSReplay.net"}
+									</h1>
+									<CopyButton
+										onClick={() => {
+											if (
+												this.props.format === null ||
+												this.props.hero === null
+											) {
+												return;
+											}
+											const toCopy = getCopiableDeck(
+												this.props.cardList,
+												this.props.format,
+												[this.props.hero],
+												this.props.name,
+											);
+											clipboard.writeText(toCopy).then(() => {
+												this.setState({ copied: true }, () => {
+													this.clearTimeout();
+													this.copiedTimeout = window.setTimeout(() => {
+														this.setState({ copied: false });
+													}, 3000);
+												});
+											});
+											const target = document.activeElement as HTMLElement;
+											if (target && typeof target.blur === "function") {
+												target.blur();
+											}
+										}}
+										onMouseDown={this.stopPropagation}
+										title="Copy deck to clipboard"
+									>
+										<Icon src={CopyDeckIcon} />
+									</CopyButton>
+									{this.props.pinned ? (
+										<ShowButton
+											onClick={() => {
+												this.props.onPinned(false);
+											}}
+											onMouseDown={this.stopPropagation}
+											title="Automatically hide deck list"
+										>
+											<Icon src={PinIcon} />
+										</ShowButton>
+									) : (
+										<HideButton
+											onClick={() => {
+												this.props.onPinned(true);
+											}}
+											onMouseDown={this.stopPropagation}
+											title="Keep deck list visible"
+										>
+											<Icon src={UnpinIcon} />
+										</HideButton>
+									)}
+								</Header>
+							</li>
+							{cards
+								.map((card: Triplet, index: number) => {
+									const [dbfId, current, initial] = card;
+									return (
+										<li key={index}>
+											<CardTile
+												dbfId={dbfId}
+												count={current}
+												showRarity={this.props.showRarities}
+												gift={initial === 0}
+												tooltipDisabled={this.props.hidden || this.props.moving}
+											/>
+										</li>
+									);
+								})
+								.filter(x => !!x)}
+						</CardList>
+					</Wrapper>
+				)}
+			</TwitchExtConsumer>
 		);
 	}
 

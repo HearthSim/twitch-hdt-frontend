@@ -113,7 +113,7 @@ export default class OverlayAdmin extends React.Component<Props> {
 	};
 
 	public render(): React.ReactNode {
-		let decklistPosition = DecklistPosition.TOP_RIGHT;
+		let decklistPosition = DecklistPosition.TOP_LEFT;
 		if (this.props.settings) {
 			decklistPosition =
 				(this.props.settings.deck_position as DecklistPosition) ||
@@ -235,7 +235,7 @@ export default class OverlayAdmin extends React.Component<Props> {
 													decklistPosition === DecklistPosition.TOP_RIGHT
 												}
 												disabled={!decklistEnabled || this.props.disabled}
-												value={DecklistPosition.TOP_RIGHT}
+												value={DecklistPosition.TOP_LEFT}
 												onChange={this.changeDecklistPosition}
 											/>{" "}
 											Top Right
