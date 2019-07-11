@@ -11,8 +11,9 @@ import {
 } from "../../utils/twitch";
 import Root from "./Root";
 
-ga.create("UA-81509238-9");
-ga.getAll().forEach(tracker => tracker.set("anonymizeIp", true));
+ga("create", "UA-81509238-9", "auto");
+ga("set", "anonymizeIp", true);
+ga("send", "pageview", "overlay");
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(

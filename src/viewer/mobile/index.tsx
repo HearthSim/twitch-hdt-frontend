@@ -11,6 +11,10 @@ import {
 } from "../../utils/twitch";
 import Root from "./Root";
 
+ga("create", "UA-81509238-9", "auto");
+ga("set", "anonymizeIp", true);
+ga("send", "pageview", "mobile");
+
 const rootElement = document.getElementById("root");
 ReactDOM.render(
 	<TwitchExtProvider>

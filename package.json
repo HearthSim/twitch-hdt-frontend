@@ -23,7 +23,6 @@
 		"lint:tslint": "tslint --project ."
 	},
 	"dependencies": {
-		"@types/google.analytics": "^0.0.40",
 		"@types/lodash": "^4.14.106",
 		"@types/lodash.isequal": "^4.5.2",
 		"@types/prop-types": "^15.5.3",

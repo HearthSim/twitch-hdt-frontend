@@ -21,7 +21,7 @@ interface Props {
 
 interface State {
 	isHovering?: boolean;
-	showStatistics?: boolean;
+	isMeaningfulHover?: boolean;
 	x?: number | null;
 	y?: number | null;
 	width?: number | null;
@@ -41,7 +41,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 		super(props, context);
 		this.state = {
 			isHovering: false,
-			showStatistics: false,
+			isMeaningfulHover: false,
 			width: null,
 			x: null,
 			y: null,
@@ -63,11 +63,22 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 		if (!prevState.isHovering && this.state.isHovering) {
 			this.statisticsTimeout = window.setTimeout(() => {
 				this.statisticsTimeout = null;
-				this.setState({ showStatistics: true });
+				this.setState({ isMeaningfulHover: true });
 			}, 500);
 		}
 		if (prevState.isHovering && !this.state.isHovering) {
-			this.setState({ showStatistics: false });
+			this.setState({ isMeaningfulHover: false });
+		}
+		if (
+			this.state.isHovering &&
+			!prevState.isMeaningfulHover &&
+			this.state.isMeaningfulHover
+		) {
+			if (this.props.dbfId) {
+				ga("send", "event", "Hover", "Card", this.props.dbfId.toString());
+			} else {
+				ga("send", "event", "Hover", "Card");
+			}
 		}
 	}
 
@@ -85,7 +96,6 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 		}
 		const card = this.props.cards.getByDbfId(this.props.dbfId);
 
-		let gaEventTimeout: NodeJS.Timer;
 		let tooltip = null;
 		let statistics = null;
 		if (
@@ -110,7 +120,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 				card.collectible &&
 				this.context.statisticsContainer &&
 				this.context.gameType &&
-				this.state.showStatistics
+				this.state.isMeaningfulHover
 			) {
 				const Container = this.context.statisticsContainer;
 				statistics = ReactDOM.createPortal(
@@ -143,11 +153,6 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 						x,
 						y,
 					});
-
-					gaEventTimeout = setTimeout(() => {
-						ga("send", "event", "Hover", this.props.dbfId);
-						clearTimeout(gaEventTimeout);
-					}, 500);
 				}}
 				onMouseLeave={() => {
 					this.setState({
@@ -155,7 +160,6 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 						x: null,
 						y: null,
 					});
-					clearTimeout(gaEventTimeout);
 				}}
 				onTouchStart={this.onTouchStart}
 				onTouchMove={() => {
