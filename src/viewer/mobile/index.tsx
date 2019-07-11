@@ -4,6 +4,7 @@ import {
 	CardsProvider,
 	getHearthstoneLocaleFromTwitchLocale,
 } from "../../utils/cards";
+import "../../utils/gaInit";
 import {
 	TwitchExtConsumer,
 	TwitchExtConsumerArgs,

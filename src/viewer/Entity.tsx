@@ -75,7 +75,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 			this.state.isMeaningfulHover
 		) {
 			if (this.props.dbfId) {
-				ga("send", "event", "Hover", "Card", this.props.dbfId.toString());
+				ga("send", "event", "Hover", "Card", String(this.props.dbfId));
 			} else {
 				ga("send", "event", "Hover", "Card");
 			}
