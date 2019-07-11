@@ -361,7 +361,7 @@ class DeckList extends React.Component<
 										<ShowButton
 											onClick={() => {
 												this.props.onPinned(false);
-										        ga("send", "event", "Click", "Hide Deck");
+												ga("send", "event", "Click", "Hide Deck");
 											}}
 											onMouseDown={this.stopPropagation}
 											title="Automatically hide deck list"
@@ -372,7 +372,7 @@ class DeckList extends React.Component<
 										<HideButton
 											onClick={() => {
 												this.props.onPinned(true);
-										        ga("send", "event", "Click", "Show Deck");
+												ga("send", "event", "Click", "Show Deck");
 											}}
 											onMouseDown={this.stopPropagation}
 											title="Keep deck list visible"
