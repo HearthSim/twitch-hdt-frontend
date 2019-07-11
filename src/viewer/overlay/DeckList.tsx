@@ -19,7 +19,7 @@ import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "../icons";
 
 interface PositionProps {
 	position: DecklistPosition;
-	usingNewExtComponentDesign: boolean;
+	legacyComponentDesign?: boolean;
 }
 
 interface OpacityProps {
@@ -37,9 +37,9 @@ const Wrapper = withProps<PositionProps & OpacityProps>()(styled.div)`
 		props.position === DecklistPosition.TOP_LEFT ? "0.75vh" : "unset"};
 	right: ${props =>
 		props.position === DecklistPosition.TOP_RIGHT
-			? props.usingNewExtComponentDesign
-				? "75px"
-				: "0.75vh"
+			? props.legacyComponentDesign
+				? "0.75vh"
+				: "75px"
 			: "unset"};
 
 	opacity: ${(props: OpacityProps) =>
@@ -293,9 +293,7 @@ class DeckList extends React.Component<
 				{({ query }: TwitchExtConsumerArgs) => (
 					<Wrapper
 						position={position}
-						usingNewExtComponentDesign={
-							query.legacyComponentDesign === undefined
-						}
+						legacyComponentDesign={query.legacyComponentDesign !== undefined}
 						opacity={this.props.hidden ? 0 : this.props.pinned ? 1 : 0.85}
 						innerRef={ref => (this.ref = ref)}
 					>
