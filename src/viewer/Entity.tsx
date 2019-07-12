@@ -21,7 +21,7 @@ interface Props {
 
 interface State {
 	isHovering?: boolean;
-	showStatistics?: boolean;
+	isMeaningfulHover?: boolean;
 	x?: number | null;
 	y?: number | null;
 	width?: number | null;
@@ -41,7 +41,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 		super(props, context);
 		this.state = {
 			isHovering: false,
-			showStatistics: false,
+			isMeaningfulHover: false,
 			width: null,
 			x: null,
 			y: null,
@@ -63,11 +63,22 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 		if (!prevState.isHovering && this.state.isHovering) {
 			this.statisticsTimeout = window.setTimeout(() => {
 				this.statisticsTimeout = null;
-				this.setState({ showStatistics: true });
+				this.setState({ isMeaningfulHover: true });
 			}, 500);
 		}
 		if (prevState.isHovering && !this.state.isHovering) {
-			this.setState({ showStatistics: false });
+			this.setState({ isMeaningfulHover: false });
+		}
+		if (
+			this.state.isHovering &&
+			!prevState.isMeaningfulHover &&
+			this.state.isMeaningfulHover
+		) {
+			if (this.props.dbfId) {
+				ga("send", "event", "Overlay", "Hover Card", String(this.props.dbfId));
+			} else {
+				ga("send", "event", "Overlay", "Hover Card");
+			}
 		}
 	}
 
@@ -109,7 +120,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 				card.collectible &&
 				this.context.statisticsContainer &&
 				this.context.gameType &&
-				this.state.showStatistics
+				this.state.isMeaningfulHover
 			) {
 				const Container = this.context.statisticsContainer;
 				statistics = ReactDOM.createPortal(
@@ -143,13 +154,13 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 						y,
 					});
 				}}
-				onMouseLeave={() =>
+				onMouseLeave={() => {
 					this.setState({
 						isHovering: false,
 						x: null,
 						y: null,
-					})
-				}
+					});
+				}}
 				onTouchStart={this.onTouchStart}
 				onTouchMove={() => {
 					this.clearTouchTimeout();

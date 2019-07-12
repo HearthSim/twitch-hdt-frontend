@@ -264,6 +264,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 
 	private onCopy = () => {
 		this.setState({ copied: true });
+		ga("send", "event", "Deck", "Copy", "Mobile");
 	};
 }
 

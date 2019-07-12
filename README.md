@@ -31,6 +31,20 @@ Follow the [setup guide](https://hsdecktracker.net/twitch/setup/) to add the ext
 - (Re)format code: `yarn format`
 - Lint code: `yarn lint`
 
+## Testing
+
+- Clone [twitch-hdt-simulator](https://github.com/HearthSim/twitch-hdt-simulator)
+- Clone [twitch-hdt-test-data](https://github.com/HearthSim/twitch-hdt-test-data)
+- Create an twitch extension in your account with types: `Video - FullScreen, Mobile`
+- Make sure that Testing Base URI is `https://localhost:8080/` in Assets-Hosting tab
+- Make sure that Video - Fullscreen Viewer Path is `viewer.html` in Assets-Hosting tab
+- Enable the extension using the Test Extension on your channel option in Status tab
+- In a live stream, request a fake board state using twitch-hdt-simulator/index.js using:
+    - -f as `..\twitch-hdt-test-data\pubsub\v2\hdt-payload-dump-4.json`
+    - --channel as your [userId](https://dev.twitch.tv/docs/v5/reference/users/#get-users)
+    - --extension as the extension client id
+    - --secret as the extension base64 secret
+
 ## Related projects
 
 - [Hearthstone Deck Tracker](https://github.com/hearthsim/Hearthstone-Deck-Tracker): Tracks Hearthstone games and emits messages

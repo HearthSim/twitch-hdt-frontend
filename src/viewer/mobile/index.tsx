@@ -4,12 +4,17 @@ import {
 	CardsProvider,
 	getHearthstoneLocaleFromTwitchLocale,
 } from "../../utils/cards";
+import "../../utils/gaInit";
 import {
 	TwitchExtConsumer,
 	TwitchExtConsumerArgs,
 	TwitchExtProvider,
 } from "../../utils/twitch";
 import Root from "./Root";
+
+ga("create", "UA-81509238-9", "auto");
+ga("set", "anonymizeIp", true);
+ga("send", "pageview", "/mobile.html");
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
