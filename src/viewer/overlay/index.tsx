@@ -14,7 +14,7 @@ import Root from "./Root";
 
 ga("create", "UA-81509238-9", "auto");
 ga("set", "anonymizeIp", true);
-ga("send", "pageview", "overlay");
+ga("send", "pageview", "/overlay.html");
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(

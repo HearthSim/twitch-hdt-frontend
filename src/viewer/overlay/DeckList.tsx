@@ -350,7 +350,7 @@ class DeckList extends React.Component<
 											if (target && typeof target.blur === "function") {
 												target.blur();
 											}
-											ga("send", "event", "Click", "Copy Deck", "Overlay");
+											ga("send", "event", "Deck", "Copy", "Overlay");
 										}}
 										onMouseDown={this.stopPropagation}
 										title="Copy deck to clipboard"
@@ -361,7 +361,7 @@ class DeckList extends React.Component<
 										<ShowButton
 											onClick={() => {
 												this.props.onPinned(false);
-												ga("send", "event", "Click", "Hide Deck");
+												ga("send", "event", "Deck", "Hide");
 											}}
 											onMouseDown={this.stopPropagation}
 											title="Automatically hide deck list"
@@ -372,7 +372,7 @@ class DeckList extends React.Component<
 										<HideButton
 											onClick={() => {
 												this.props.onPinned(true);
-												ga("send", "event", "Click", "Show Deck");
+												ga("send", "event", "Deck", "Show");
 											}}
 											onMouseDown={this.stopPropagation}
 											title="Keep deck list visible"

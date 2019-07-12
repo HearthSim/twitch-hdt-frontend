@@ -6,7 +6,7 @@ import store from "./store";
 
 ga("create", "UA-81509238-9", "auto");
 ga("set", "anonymizeIp", true);
-ga("send", "pageview", "config");
+ga("send", "pageview", "/config.html");
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(<Root store={store} />, rootElement);
