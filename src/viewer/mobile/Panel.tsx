@@ -16,7 +16,6 @@ interface Props {
 }
 
 interface State {
-	copied: boolean;
 	timedOut: boolean;
 	hadBoardState: boolean;
 }
@@ -173,7 +172,6 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 	constructor(props: Props & TwitchExtProps, context: any) {
 		super(props, context);
 		this.state = {
-			copied: false,
 			hadBoardState: !!props.boardState,
 			timedOut: false,
 		};
@@ -230,9 +228,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 					<Header>
 						<HeaderIcon src={HSReplayNetIcon} />
 						<h1>{title}</h1>
-						<CopyDeckButton onCopy={this.onCopy} player={player}>
-							{this.state.copied ? "Copied!" : "Copy Deck"}
-						</CopyDeckButton>
+						<CopyDeckButton onCopy={this.onCopy} player={player} />
 					</Header>
 					<Scroller>
 						<CardList cardList={deck.cards} />
@@ -264,7 +260,6 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 	}
 
 	private onCopy = () => {
-		this.setState({ copied: true });
 		ga("send", "event", "Deck", "Copy", "Mobile");
 	};
 }
