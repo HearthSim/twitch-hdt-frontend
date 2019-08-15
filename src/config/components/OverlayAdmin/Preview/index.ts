@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
-import { actionCreators } from "../../../actions";
+import { actionCreators, ActionTypes } from "../../../actions";
 import { State } from "../../../state";
 import OverlayPreviewComponent from "./OverlayPreview";
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state: State) => ({
 	isLive: state.twitch.stream === null ? null : !!state.twitch.stream,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<State>) =>
+const mapDispatchToProps = (dispatch: Dispatch<ActionTypes>) =>
 	bindActionCreators(
 		{
 			refreshStreamData: actionCreators.refreshStreamData,

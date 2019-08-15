@@ -215,7 +215,8 @@ export default class OverlayAdmin extends React.Component<Props> {
 								<li>
 									<p>
 										Show your viewers the cards remaining in your deck and allow
-										them to copy it to their clipboard.<br />
+										them to copy it to their clipboard.
+										<br />
 									</p>
 									<Row width={"200px"}>
 										<label>

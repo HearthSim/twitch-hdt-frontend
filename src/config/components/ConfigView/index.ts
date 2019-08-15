@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
-import { actionCreators } from "../../actions";
+import { actionCreators, ActionTypes } from "../../actions";
 import { ConnectionStatus } from "../../enums";
 import { State } from "../../state";
 import ConfigViewComponent from "./ConfigView";
@@ -16,7 +16,7 @@ const mapStateToProps = (state: State) => ({
 	hasInitialized: state.hasInitialized,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<State>) =>
+const mapDispatchToProps = (dispatch: Dispatch<ActionTypes>) =>
 	bindActionCreators(
 		{
 			refreshConnectionStatus: actionCreators.updateConnectionStatus,

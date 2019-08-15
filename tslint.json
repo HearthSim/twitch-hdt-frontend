@@ -12,7 +12,9 @@
 		"import-name": false, // mostly broken
 		"interface-name": [true, "never-prefix"], // React Props/State should not have a prefix
 		"no-empty-interface": false,
-		"object-shorthand-properties-first": false, // not required, can be enabeld using object-literal-sort-keys
+		"member-ordering": false,
+		"object-shorthand-properties-first": false,
+		"object-literal-sort-keys": false,
 		"variable-name": false
 	},
 	"rulesDirectory": []

@@ -321,8 +321,8 @@ class DeckList extends React.Component<
 										{this.state.copied
 											? "Copied!"
 											: useDeckName
-												? this.props.name
-												: "HSReplay.net"}
+											? this.props.name
+											: "HSReplay.net"}
 									</h1>
 									<CopyButton
 										onClick={() => {

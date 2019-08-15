@@ -116,7 +116,8 @@ export default class ConnectionAdmin extends React.Component<Props> {
 					</DownloadLink>
 				</CenterParagraph>
 				<CenterParagraph>
-					After installing:<br />
+					After installing:
+					<br />
 					<TrackerInstructions>
 						Options (Advanced) → Streaming → Twitch Extension
 					</TrackerInstructions>
@@ -173,8 +174,9 @@ export default class ConnectionAdmin extends React.Component<Props> {
 					<div>
 						<CenterParagraph>
 							<SuccessMessage>
-								Setup complete!<br />Return to the Extension Manager to enable
-								the overlay:
+								Setup complete!
+								<br />
+								Return to the Extension Manager to enable the overlay:
 								<InstructionImage src={ActivateImage} />
 							</SuccessMessage>
 						</CenterParagraph>

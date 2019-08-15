@@ -1,4 +1,5 @@
-import { Dispatch } from "redux";
+import { Action } from "redux";
+import { ThunkAction } from "redux-thunk";
 import { TwitchApiStream } from "../twitch-api";
 import { EBSConfiguration } from "../twitch-hdt";
 import { ConnectionStatus } from "./enums";
@@ -48,9 +49,11 @@ export interface Actions {
 	};
 }
 
-const getSettings = () => async (
-	dispatch: Dispatch<State>,
-	getState: () => State,
+export type ActionTypes = Actions[keyof Actions];
+
+const getSettings = (): ThunkAction<void, State, null, Action<any>> => async (
+	dispatch,
+	getState,
 ) => {
 	dispatch({
 		status: "pending",
@@ -87,15 +90,15 @@ const getSettings = () => async (
 	}
 };
 
-const setSetting = (setting: keyof EBSConfiguration, value: any) => async (
-	dispatch: Dispatch<State>,
-	getState: () => State,
-) => dispatch(setSettings({ [setting]: value }));
+const setSetting = (
+	setting: keyof EBSConfiguration,
+	value: any,
+): ThunkAction<void, State, null, Action> => async (dispatch, getState) =>
+	dispatch(setSettings({ [setting]: value }));
 
-const setSettings = (settings: EBSConfiguration) => async (
-	dispatch: Dispatch<State>,
-	getState: () => State,
-) => {
+const setSettings = (
+	settings: EBSConfiguration,
+): ThunkAction<void, State, null, Action> => async (dispatch, getState) => {
 	const config = getState().config;
 	if (!settings || !config.settings || config.readonly) {
 		return;
@@ -104,9 +107,9 @@ const setSettings = (settings: EBSConfiguration) => async (
 	dispatch(actionCreators.commitSettings());
 };
 
-const commitSettings = () => async (
-	dispatch: Dispatch<State>,
-	getState: () => State,
+const commitSettings = (): ThunkAction<void, State, null, Action> => async (
+	dispatch,
+	getState,
 ) => {
 	const config = getState().config;
 	if (!config.settings || !config.preview || config.readonly) {
@@ -148,10 +151,12 @@ const commitSettings = () => async (
 	}
 };
 
-const updateConnectionStatus = () => async (
-	dispatch: Dispatch<State>,
-	getState: () => State,
-) => {
+const updateConnectionStatus = (): ThunkAction<
+	void,
+	State,
+	null,
+	Action
+> => async (dispatch, getState) => {
 	dispatch({
 		type: UPDATING_CONNECTION_STATUS,
 	});
@@ -205,9 +210,9 @@ const updateConnectionStatus = () => async (
 	}
 };
 
-const refreshStreamData = () => async (
-	dispatch: Dispatch<State>,
-	getState: () => State,
+const refreshStreamData = (): ThunkAction<void, State, null, Action> => async (
+	dispatch,
+	getState,
 ) => {
 	const state: State = getState();
 	if (!state.twitch.authorized) {
@@ -215,9 +220,7 @@ const refreshStreamData = () => async (
 	}
 	try {
 		const response = await fetch(
-			`https://api.twitch.tv/helix/streams?user_id=${
-				state.twitch.authorized.channelId
-			}`,
+			`https://api.twitch.tv/helix/streams?user_id=${state.twitch.authorized.channelId}`,
 			{
 				headers: new Headers({
 					Accept: "application/json",

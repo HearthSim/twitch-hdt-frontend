@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackIncludeSiblingChunksPlugin = require("html-webpack-include-sibling-chunks-plugin");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const pkg = require(path.resolve(__dirname, "package"));
 
 module.exports = (env, args) => {
@@ -164,16 +164,11 @@ module.exports = (env, args) => {
 		},
 		optimization: {
 			minimizer: [
-				new UglifyJSPlugin({
-					uglifyOptions: {
-						compress: {
-							drop_console: true,
-							pure_funcs: ["onUnhandled"],
-						},
+				new TerserPlugin({
+					terserOptions: {
+						drop_console: true,
+						pure_funcs: ["onUnhandled"],
 						mangle: false,
-						output: {
-							comments: /^\**!/,
-						},
 					},
 				}),
 			],

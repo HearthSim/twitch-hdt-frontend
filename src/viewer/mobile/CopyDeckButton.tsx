@@ -1,4 +1,4 @@
-import clipboard from "clipboard-polyfill";
+import * as clipboard from "clipboard-polyfill";
 import React from "react";
 import { BoardStatePlayer } from "../../twitch-hdt";
 import { CardsProps, withCards } from "../../utils/cards";

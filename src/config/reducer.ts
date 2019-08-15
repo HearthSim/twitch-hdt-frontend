@@ -1,6 +1,6 @@
 import { Reducer } from "redux";
 import {
-	Actions,
+	ActionTypes,
 	PREVIEW_SETTINGS,
 	ROLLBACK_SETTINGS,
 	SET_CONNECTION_STATUS,
@@ -11,9 +11,12 @@ import {
 	UPDATING_CONNECTION_STATUS,
 } from "./actions";
 import { ConnectionStatus } from "./enums";
-import { State } from "./state";
+import { initialState, State } from "./state";
 
-const rootReducer: Reducer<State> = (state, action: Actions[keyof Actions]) => {
+const rootReducer: Reducer<State> = (
+	state = initialState,
+	action: ActionTypes,
+) => {
 	switch (action.type) {
 		case UPDATING_CONNECTION_STATUS:
 			return Object.assign({}, state, { completingSetup: true });

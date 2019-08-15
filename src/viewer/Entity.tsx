@@ -128,7 +128,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 						<CardStatistics
 							dbfId={this.props.dbfId}
 							gameType={this.context.gameType}
-						/>,
+						/>
 					</Container>,
 					this.props.portal,
 				);

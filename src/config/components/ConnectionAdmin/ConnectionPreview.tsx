@@ -72,8 +72,8 @@ export default class HSReplayNetConnection extends React.Component<Props> {
 						this.props.working
 							? null
 							: this.props.twitch
-								? this.props.tracker
-								: null
+							? this.props.tracker
+							: null
 					}
 				>
 					{this.renderConnection(this.props.tracker)}
