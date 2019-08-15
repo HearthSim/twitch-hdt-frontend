@@ -28,6 +28,7 @@ const PanelDiv = styled.div`
 	width: 100%;
 	position: relative;
 	overflow: hidden;
+	user-select: none;
 `;
 
 const Portal = styled.div`
