@@ -44,7 +44,7 @@
 		"clipboard-polyfill": "^2.8.6",
 		"deckstrings": "^2.0.0",
 		"file-loader": "^2.0.0",
-		"hearthstonejson-client": "^0.8.1",
+		"hearthstonejson-client": "^1.1.0",
 		"html-webpack-include-sibling-chunks-plugin": "0.1.0",
 		"html-webpack-plugin": "^3.1.0",
 		"license-webpack-plugin": "^1.3.1",
