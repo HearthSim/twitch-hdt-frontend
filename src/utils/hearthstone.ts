@@ -53,7 +53,7 @@ export const getCopiableDeck = (
 	return [
 		...(name ? [`### ${name}`] : []),
 		...(format ? [`# Format: ${isStandard ? "Standard" : "Wild"}`] : []),
-		...(isStandard ? ["# Year of the Raven"] : []),
+		...(isStandard ? ["# Year of the Phoenix"] : []),
 		"#",
 		deckstring,
 		"#",
