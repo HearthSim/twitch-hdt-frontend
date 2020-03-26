@@ -2749,10 +2749,10 @@ he@1.2.x:
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
-hearthstonejson-client@^0.8.1:
-  version "0.8.5"
-  resolved "https://registry.yarnpkg.com/hearthstonejson-client/-/hearthstonejson-client-0.8.5.tgz#e3283c948fe865f128c4053c37e707268bf5b480"
-  integrity sha512-4dytioJV+45ix32M4ZS2u4GO8IBsktwfjJ8T6Pnz5aUEZBAC0ua6r+7EziPY952SMv80jhQXtzS30fqRtBWfXQ==
+hearthstonejson-client@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/hearthstonejson-client/-/hearthstonejson-client-1.4.0.tgz#6fc629e35d35ff3a8149bc1e0ef72d757fe55240"
+  integrity sha512-lt8OGzU1Bhy1HME+e5hLjAmEuWgztfrKkCyFd2MBeTyA+Bze5Tf/Vn/JaIxxvdt4dmlw14F+Ez/X23ro1P62kQ==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
