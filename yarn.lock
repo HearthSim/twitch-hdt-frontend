@@ -4391,9 +4391,9 @@ react-hot-loader@^4.3.3:
     shallowequal "^1.1.0"
     source-map "^0.7.3"
 
-"react-hs-components@https://libs.hearthsim.net/react-hs-components-v0.3.0.tgz":
-  version "0.3.0"
-  resolved "https://libs.hearthsim.net/react-hs-components-v0.3.0.tgz#993773bce362b840ec50ff3b9c965f4d6377e532"
+"react-hs-components@https://libs.hearthsim.net/react-hs-components-v0.4.0.tgz":
+  version "0.4.0"
+  resolved "https://libs.hearthsim.net/react-hs-components-v0.4.0.tgz#c81af51098a7ccec7743b91fd029bdd94464a183"
 
 react-is@^16.3.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.9.0"
