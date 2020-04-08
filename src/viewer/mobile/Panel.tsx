@@ -1,7 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { BoardStateData, EBSConfiguration } from "../../twitch-hdt";
+import {
+	BnetGameType,
+	BoardStateData,
+	EBSConfiguration,
+} from "../../twitch-hdt";
 import { withProps } from "../../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import { HSReplayNetIcon } from "../icons";
@@ -198,14 +202,24 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 	}
 
 	public render(): React.ReactNode {
-		const player = this.props.boardState && this.props.boardState.player;
+		const { boardState } = this.props;
+
+		const player = boardState && boardState.player;
 		const deck = player && player.deck;
 		const isDark = this.props.twitchExtContext
 			? this.props.twitchExtContext.theme === "dark"
 			: false;
+		const isBattlegrounds =
+			boardState && boardState.game_type === BnetGameType.BGT_BATTLEGROUNDS;
+		const emptyDeck = deck && deck.cards && !deck.cards.length;
 
-		if (!player || !deck || !deck.cards) {
-			if (this.state.hadBoardState || this.state.timedOut) {
+		if (!player || !deck || !deck.cards || emptyDeck || isBattlegrounds) {
+			if (
+				this.state.hadBoardState ||
+				this.state.timedOut ||
+				emptyDeck ||
+				isBattlegrounds
+			) {
 				return (
 					<Message dark={isDark}>
 						<h1>No deck available</h1>
