@@ -101,7 +101,7 @@ const CardStatisticsDiv = styled.div`
 
 interface Props {
 	dbfId: number | null;
-	gameType: FormatType;
+	formatType: FormatType;
 	style?: React.CSSProperties;
 }
 
@@ -130,7 +130,7 @@ class Entity extends React.Component<Props & CardsProps, State> {
 			this.setState({
 				statistics: await this.context.fetchStatistics(
 					this.props.dbfId,
-					this.props.gameType,
+					this.props.formatType,
 				),
 			});
 		} catch (e) {

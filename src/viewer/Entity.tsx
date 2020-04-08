@@ -29,7 +29,7 @@ interface State {
 
 class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 	public static contextTypes = {
-		gameType: PropTypes.number,
+		formatType: PropTypes.number,
 		statisticsContainer: PropTypes.func,
 	};
 
@@ -119,7 +119,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 			if (
 				card.collectible &&
 				this.context.statisticsContainer &&
-				this.context.gameType &&
+				this.context.formatType &&
 				this.state.isMeaningfulHover
 			) {
 				const Container = this.context.statisticsContainer;
@@ -127,7 +127,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 					<Container>
 						<CardStatistics
 							dbfId={this.props.dbfId}
-							gameType={this.context.gameType}
+							formatType={this.context.formatType}
 						/>
 					</Container>,
 					this.props.portal,

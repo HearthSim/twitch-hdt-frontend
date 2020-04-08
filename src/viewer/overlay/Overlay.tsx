@@ -186,7 +186,7 @@ interface State {
 
 class Overlay extends React.Component<Props & TwitchExtProps, State> {
 	public static childContextTypes = {
-		gameType: PropTypes.number.isRequired,
+		formatType: PropTypes.number.isRequired,
 		portal: PropTypes.object,
 		statisticsContainer: PropTypes.func,
 	};
@@ -276,7 +276,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 
 	public getChildContext() {
 		return {
-			gameType:
+			formatType:
 				this.props.boardState &&
 				this.props.boardState.player &&
 				this.props.boardState.player.deck
