@@ -186,6 +186,7 @@ interface State {
 
 class Overlay extends React.Component<Props & TwitchExtProps, State> {
 	public static childContextTypes = {
+		gameType: PropTypes.number.isRequired,
 		formatType: PropTypes.number.isRequired,
 		portal: PropTypes.object,
 		statisticsContainer: PropTypes.func,
@@ -282,6 +283,10 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 				this.props.boardState.player.deck
 					? this.props.boardState.player.deck.format
 					: 2, // default to RANKED_STANDARD
+			gameType:
+				this.props.boardState && this.props.boardState.game_type
+					? this.props.boardState.game_type
+					: BnetGameType.BGT_UNKNOWN,
 			portal: this.portal,
 			statisticsContainer:
 				this.props.config.deck_position === DecklistPosition.TOP_LEFT

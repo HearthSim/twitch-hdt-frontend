@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
+import { BnetGameType } from "../twitch-hdt";
 import { CardsProps, withCards } from "../utils/cards";
 import { PortalProps, withPortal } from "../utils/portal";
 import Card from "./Card";
@@ -30,6 +31,7 @@ interface State {
 class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 	public static contextTypes = {
 		formatType: PropTypes.number,
+		gameType: PropTypes.number,
 		statisticsContainer: PropTypes.func,
 	};
 
@@ -112,6 +114,9 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 					y={this.state.y || 0}
 					width={this.state.width || 0}
 					flipped={this.props.flipped}
+					battlegrounds={
+						this.context.gameType === BnetGameType.BGT_BATTLEGROUNDS
+					}
 				/>,
 				this.props.portal,
 			);
@@ -120,6 +125,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 				card.collectible &&
 				this.context.statisticsContainer &&
 				this.context.formatType &&
+				this.context.gameType !== BnetGameType.BGT_BATTLEGROUNDS &&
 				this.state.isMeaningfulHover
 			) {
 				const Container = this.context.statisticsContainer;

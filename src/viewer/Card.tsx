@@ -24,6 +24,7 @@ interface Props {
 	y?: number;
 	width?: number;
 	flipped?: boolean;
+	battlegrounds?: boolean;
 }
 
 class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
@@ -36,6 +37,23 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 							const card = this.props.cards.getByDbfId(this.props.dbfId);
 							if (!card || !card.id) {
 								return <div>Invalid card</div>;
+							}
+
+							let triple = false;
+							if (this.props.battlegrounds) {
+								if (
+									card.battlegroundsNormalDbfId &&
+									(!card.battlegroundsPremiumDbfId ||
+										card.battlegroundsPremiumDbfId === card.dbfId)
+								) {
+									// This is a heuristic to determine whether to show a triple card. This is important
+									// for cases where the golden DBF id has no non-golden render, because that just uses
+									// the normalDbfId. In future we should actually just receive the triple value from HDT.
+									triple = true;
+								}
+								if (!card || !card.id) {
+									return <div>Invalid card</div>;
+								}
 							}
 
 							const locale = getHearthstoneLocaleFromTwitchLocale(
@@ -116,6 +134,8 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 											resolution={512}
 											locale={locale}
 											placeholder={getPlaceholder(card.type || "")}
+											battlegrounds={this.props.battlegrounds}
+											triple={triple}
 										/>
 									);
 							}
