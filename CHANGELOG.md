@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added support for Hearthstone Battlegrounds
+- Added Google Analytics
+- Added a text-based fallback for the copy deck button
+
+## Changed
+- Updated for Hearthstone's Year of the Phoenix
+- Updated hearthstonejson library to use native browser cache over localStorage
+- Updated deck list position for new Twitch player layout
+
+## Fixed
+- Fixed passives and buffs having a mana cost of zero in the deck list
+- Fixed deck list showing up when playing with an empty deck
 
 ## [0.4.1] - 2018-07-19
 ### Fixed
