@@ -115,7 +115,8 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 					width={this.state.width || 0}
 					flipped={this.props.flipped}
 					battlegrounds={
-						this.context.gameType === BnetGameType.BGT_BATTLEGROUNDS
+						this.context.gameType === BnetGameType.BGT_BATTLEGROUNDS &&
+						(!card || card.type !== "HERO")
 					}
 				/>,
 				this.props.portal,
