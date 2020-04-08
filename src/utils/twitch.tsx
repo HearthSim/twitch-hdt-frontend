@@ -2,25 +2,16 @@ import PropTypes from "prop-types";
 import React, { ChildContextProvider } from "react";
 import { makeHOC } from "./hocs";
 
-interface TwitchExtLegacyClientQueryParams extends TwitchExtClientQueryParams {
-	/**
-	 * True when you are using old extension component design.
-	 *
-	 * @see https://discuss.dev.twitch.tv/t/updating-your-component-extension-twitch-client-beta/21549
-	 */
-	legacyComponentDesign: any;
-}
-
 export interface TwitchExtProps {
 	twitchExtContext?: TwitchExtContext;
 	twitchExtVisibility?: boolean;
-	twitchExtClientQueryParams?: TwitchExtLegacyClientQueryParams;
+	twitchExtClientQueryParams?: TwitchExtClientQueryParams;
 }
 
 export interface TwitchExtConsumerArgs {
 	context: TwitchExtContext | null;
 	visible: boolean | null;
-	query: Partial<TwitchExtLegacyClientQueryParams>;
+	query: Partial<TwitchExtClientQueryParams>;
 }
 
 const { Provider, Consumer } = React.createContext<TwitchExtConsumerArgs>({
@@ -52,7 +43,7 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		};
 	}
 
-	public getClientQueryParams(): Partial<TwitchExtLegacyClientQueryParams> {
+	public getClientQueryParams(): Partial<TwitchExtClientQueryParams> {
 		const { search } = window.location;
 		return search.split("&").reduce((obj, param) => {
 			const [key, value] = param.split("=", 2);
