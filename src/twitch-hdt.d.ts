@@ -28,6 +28,11 @@ export interface BoardStateData {
 	 * Describes the opposing side in the top half of the screen.
 	 */
 	opponent?: BoardStatePlayer;
+
+	/**
+	 * Contains the game type of the current game.
+	 */
+	game_type?: BnetGameType;
 }
 
 export interface BoardStatePlayer {
@@ -107,6 +112,12 @@ export interface BoardStateDeck {
 export const enum FormatType {
 	FT_WILD = 1,
 	FT_STANDARD = 2,
+}
+
+export const enum BnetGameType {
+	BGT_UNKNOWN = 0,
+	BGT_RANKED_STANDARD = 2,
+	BGT_BATTLEGROUNDS = 50,
 }
 
 export interface GameStartMessage extends BaseMessage {

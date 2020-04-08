@@ -1,7 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import { BoardStateData, EBSConfiguration } from "../../twitch-hdt";
+import {
+	BnetGameType,
+	BoardStateData,
+	EBSConfiguration,
+} from "../../twitch-hdt";
 import { DecklistPosition, Feature, hasFeature } from "../../utils/config";
 import { withProps } from "../../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
@@ -287,14 +291,16 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 	}
 
 	public render(): React.ReactNode {
-		const player =
-			this.props.boardState && this.props.boardState.player
-				? this.props.boardState.player
-				: {};
+		const { boardState } = this.props;
+
+		const player = boardState && boardState.player ? boardState.player : {};
 		const opponent =
-			this.props.boardState && this.props.boardState.opponent
-				? this.props.boardState.opponent
-				: {};
+			boardState && boardState.opponent ? boardState.opponent : {};
+
+		const gameType =
+			boardState && boardState.game_type
+				? boardState.game_type
+				: BnetGameType.BGT_UNKNOWN;
 
 		const isHidden = (feature: Feature) =>
 			hasFeature(
@@ -304,8 +310,16 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 				feature,
 			);
 
-		const hideDecklist = isHidden(Feature.DECKLIST);
-		const hideTooltips = !this.props.boardState || isHidden(Feature.TOOLTIPS);
+		const isEmptyDeck =
+			player.deck &&
+			Array.isArray(player.deck.cards) &&
+			!player.deck.cards.length;
+
+		const hideDecklist =
+			isEmptyDeck ||
+			gameType === BnetGameType.BGT_BATTLEGROUNDS ||
+			isHidden(Feature.DECKLIST);
+		const hideTooltips = !boardState || isHidden(Feature.TOOLTIPS);
 
 		return (
 			<Wrapper
@@ -332,7 +346,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 							this.setState({ pinDeck });
 						}}
 						engaged={this.state.hovering}
-						hidden={!this.props.boardState}
+						hidden={!boardState}
 					/>
 				)}
 				{hideTooltips ? null : (
