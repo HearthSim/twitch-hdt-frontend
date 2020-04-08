@@ -33,6 +33,7 @@ class CardTile extends React.Component<Props & CardsProps> {
 					showRarity={this.props.showRarity}
 					fontFamily={"sans-serif"}
 					fontWeight={"bold"}
+					hideStats={(card && (card.hideStats || card.hideCost)) || undefined}
 				/>
 			</Entity>
 		);
