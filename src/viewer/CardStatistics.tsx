@@ -109,7 +109,7 @@ interface State {
 	statistics: SingleCardDetailsPayload | null;
 }
 
-class Entity extends React.Component<Props & CardsProps, State> {
+class CardStatistics extends React.Component<Props & CardsProps, State> {
 	constructor(props: Props & CardsProps, context: any) {
 		super(props, context);
 		this.state = {
@@ -210,4 +210,4 @@ class Entity extends React.Component<Props & CardsProps, State> {
 	}
 }
 
-export default withCards(Entity);
+export default withCards(CardStatistics);
