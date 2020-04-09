@@ -87,17 +87,12 @@ interface OverlayPreviewProps {
 	isLive: boolean | null;
 	thumbnailUrl: string | null;
 	hideTooltips?: boolean;
-	refreshStreamData: () => any;
 }
 
 export default class OverlayPreview extends React.Component<
 	OverlayPreviewProps
 > {
 	private ref: HTMLDivElement | null = null;
-
-	public componentDidMount(): void {
-		this.props.refreshStreamData();
-	}
 
 	public render(): React.ReactNode {
 		let thumbnailUrl = this.props.thumbnailUrl;

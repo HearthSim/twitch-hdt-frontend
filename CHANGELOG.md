@@ -10,11 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added Google Analytics
 - Added a text-based fallback for the copy deck button
 
-## Changed
+### Changed
 - Updated for Hearthstone's Year of the Phoenix
 - Updated hearthstonejson library to use native browser cache over localStorage
 - Updated deck list position for new Twitch player layout
 - Updated card stats position for new Twitch player layout
+
+### Removed
+- Removed Stream preview due to deprecation of unauthenticated API requests
 
 ## Fixed
 - Fixed passives and buffs having a mana cost of zero in the deck list

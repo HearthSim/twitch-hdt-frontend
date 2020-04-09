@@ -13,12 +13,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<ActionTypes>) =>
-	bindActionCreators(
-		{
-			refreshStreamData: actionCreators.refreshStreamData,
-		},
-		dispatch,
-	);
+	bindActionCreators({}, dispatch);
 
 const OverlayPreview = connect(
 	mapStateToProps,

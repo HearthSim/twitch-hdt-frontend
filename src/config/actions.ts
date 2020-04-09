@@ -210,47 +210,6 @@ const updateConnectionStatus = (): ThunkAction<
 	}
 };
 
-const refreshStreamData = (): ThunkAction<void, State, null, Action> => async (
-	dispatch,
-	getState,
-) => {
-	const state: State = getState();
-	if (!state.twitch.authorized) {
-		return;
-	}
-	try {
-		const response = await fetch(
-			`https://api.twitch.tv/helix/streams?user_id=${state.twitch.authorized.channelId}`,
-			{
-				headers: new Headers({
-					Accept: "application/json",
-					...getTwitchAPIHeaders(getState()),
-				}),
-				method: "GET",
-				mode: "cors",
-			},
-		);
-		switch (response.status) {
-			case 200:
-				const json = await response.json();
-				const data = json.data;
-				if (!data.length) {
-					return dispatch({
-						offline: true,
-						type: SET_TWITCH_API_STREAM,
-					});
-				}
-				const stream: TwitchApiStream = data[0];
-				return dispatch({
-					stream,
-					type: SET_TWITCH_API_STREAM,
-				});
-			default:
-				throw new Error(`Unexpected status code ${response.status}`);
-		}
-	} catch (e) {}
-};
-
 export const actionCreators = {
 	updateConnectionStatus,
 	setConnectionStatus: (
@@ -259,7 +218,6 @@ export const actionCreators = {
 		status,
 		type: SET_CONNECTION_STATUS,
 	}),
-	refreshStreamData,
 	getSettings,
 	setSetting,
 	setSettings,

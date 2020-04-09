@@ -52,7 +52,6 @@ interface Props {
 	commitSettings: () => any;
 	setSetting: (key: keyof EBSConfiguration, value: string) => any;
 	isLive: boolean;
-	refreshStreamData: () => any;
 }
 
 export default class OverlayAdmin extends React.Component<Props> {
@@ -107,11 +106,6 @@ export default class OverlayAdmin extends React.Component<Props> {
 		this.props.setSetting("game_offset_horizontal", "" + 0);
 	};
 
-	public refreshLive = (event: React.MouseEvent<HTMLElement>) => {
-		event.preventDefault();
-		this.props.refreshStreamData();
-	};
-
 	public render(): React.ReactNode {
 		let decklistPosition = DecklistPosition.TOP_LEFT;
 		if (this.props.settings) {
@@ -135,12 +129,6 @@ export default class OverlayAdmin extends React.Component<Props> {
 				<Heading>Overlay</Heading>
 				<p>Customize your interactive overlay on Twitch.</p>
 				<StreamPreview hideTooltips={hideTooltips} />
-				{!this.props.isLive ? (
-					<p>
-						<em>Go live for a preview of your stream.</em>{" "}
-						<button onClick={this.refreshLive}>Refresh now</button>
-					</p>
-				) : null}
 				<Row>
 					<div>
 						<VerticalList>
