@@ -150,17 +150,17 @@ const Deck = withProps<PositionProps>()(OverlayElement.extend)`
 const Statistics = styled.div`
 	position: absolute;
 	bottom: 0;
-	margin-bottom: 40px;
+	margin-bottom: 5rem;
 	width: 24vh;
 	font-size: 2vh;
 `;
 
 const LeftStatistics = Statistics.extend`
-	left: 1vh;
+	left: 3vh;
 `;
 
 const RightStatistics = Statistics.extend`
-	right: 1vh;
+	right: 7vh;
 `;
 
 const Offset = styled.div`
