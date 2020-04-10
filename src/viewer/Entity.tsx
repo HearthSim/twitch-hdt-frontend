@@ -32,7 +32,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 	public static contextTypes = {
 		formatType: PropTypes.number,
 		gameType: PropTypes.number,
-		statisticsContainer: PropTypes.func,
+		statisticsContainer: PropTypes.object,
 	};
 
 	public ref: HTMLDivElement | null = null;

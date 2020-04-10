@@ -187,7 +187,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		gameType: PropTypes.number.isRequired,
 		formatType: PropTypes.number.isRequired,
 		portal: PropTypes.object,
-		statisticsContainer: PropTypes.func,
+		statisticsContainer: PropTypes.object,
 	};
 
 	public portal: HTMLDivElement | null = null;

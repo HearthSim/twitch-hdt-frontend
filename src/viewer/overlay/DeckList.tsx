@@ -36,11 +36,9 @@ const Wrapper = styled.div<PositionProps & OpacityProps>`
 	right: ${props =>
 		props.position === DecklistPosition.TOP_RIGHT ? "75px" : "unset"};
 
-	opacity: ${(props: OpacityProps) =>
-		typeof props.opacity === "number" ? props.opacity : 1};
+	opacity: ${props => (typeof props.opacity === "number" ? props.opacity : 1)};
 	transition: opacity
-		${(props: OpacityProps) =>
-			(props.opacity || 0) > 0.5 ? `0.25s ease-out` : `1.5s ease-in`};
+		${props => ((props.opacity || 0) > 0.5 ? `0.25s ease-out` : `1.5s ease-in`)};
 `;
 
 const Header = styled.header`

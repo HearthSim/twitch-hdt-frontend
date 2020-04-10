@@ -77,8 +77,6 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 		if (!this.state.moveStartPosition) {
 			return;
 		}
-		const target = e.target as HTMLElement;
-		const { top, left } = target.getBoundingClientRect();
 		const offsetX = clientX - this.state.moveStartPosition.x;
 		const offsetY = clientY - this.state.moveStartPosition.y;
 		this.setState({

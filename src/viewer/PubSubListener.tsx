@@ -118,9 +118,10 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 		);
 	}
 
-	public componentWillReceiveProps(
-		nextProps: Readonly<Props & TwitchExtProps>,
-		nextContext: any,
+	public componentDidUpdate(
+		prevProps: Readonly<Props & TwitchExtProps>,
+		prevState: Readonly<State>,
+		snapshot?: any,
 	): void {
 		if (this.props.twitchExtContext) {
 			this.queue.delay = this.props.twitchExtContext.hlsLatencyBroadcaster;

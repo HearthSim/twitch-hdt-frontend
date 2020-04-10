@@ -52,14 +52,14 @@ module.exports = (env, args) => {
 	return {
 		entry: {
 			viewer: [
-				"babel-polyfill",
+				"@babel/polyfill",
 				path.resolve(__dirname, "src", "viewer", "overlay"),
 			],
 			mobile: [
-				"babel-polyfill",
+				"@babel/polyfill",
 				path.resolve(__dirname, "src", "viewer", "mobile"),
 			],
-			config: ["babel-polyfill", path.resolve(__dirname, "src", "config")],
+			config: ["@babel/polyfill", path.resolve(__dirname, "src", "config")],
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"],
@@ -74,9 +74,9 @@ module.exports = (env, args) => {
 							loader: "babel-loader",
 							options: {
 								presets: [
-									"react",
+									"@babel/preset-react",
 									[
-										"env",
+										"@babel/preset-env",
 										{
 											targets: {
 												browsers: [
@@ -91,19 +91,21 @@ module.exports = (env, args) => {
 									],
 								],
 								plugins: [
+									!isProduction ? "react-hot-loader/babel" : null,
 									[
-										!isProduction ? "react-hot-loader/babel" : null,
 										"babel-plugin-styled-components",
 										{
+											ssr: false,
 											displayName: !isProduction,
 										},
-									].filter(x => !!x),
-									"babel-plugin-transform-object-rest-spread",
-								],
+									],
+									//"@babel/plugin-proposal-class-properties",
+									//"babel-plugin-transform-object-rest-spread",
+								].filter(x => x !== null),
 							},
 						},
 						{
-							loader: "ts-loader",
+							loader: "awesome-typescript-loader",
 						},
 					],
 				},
@@ -116,7 +118,7 @@ module.exports = (env, args) => {
 							options: {
 								presets: [
 									[
-										"env",
+										"@babel/preset-env",
 										{
 											targets: {
 												browsers: [
