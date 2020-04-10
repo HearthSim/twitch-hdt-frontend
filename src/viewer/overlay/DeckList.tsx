@@ -104,7 +104,7 @@ const CopyButton = styled(HeaderButton)`
 	cursor: copy;
 `;
 
-const CardList = styled.ul<{ moving?: boolean; left: boolean }>`
+const CardList = styled.ul<{ moving?: boolean; position: DecklistPosition }>`
 	margin: 0;
 	list-style-type: none;
 	padding-left: 0;
@@ -115,7 +115,8 @@ const CardList = styled.ul<{ moving?: boolean; left: boolean }>`
 	cursor: ${props => (props.moving ? "grabbing" : "grab")};
 
 	// scaling
-	transform-origin: ${props => (props.left ? "top left" : "top right")};
+	transform-origin: ${props =>
+		props.position === DecklistPosition.TOP_LEFT ? "top left" : "top right"};
 `;
 
 const CopyDeckButton = styled.button`
@@ -296,7 +297,7 @@ class DeckList extends React.Component<
 								this.props.onMoveEnd && this.props.onMoveEnd(e);
 							}}
 							moving={this.props.moving}
-							left={this.props.position === "topleft"}
+							position={this.props.position}
 						>
 							<li>
 								<Header>

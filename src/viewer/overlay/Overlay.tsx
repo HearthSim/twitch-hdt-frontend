@@ -343,7 +343,11 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 				{hideDecklist ? null : (
 					<DeckListOverlay
 						deck={player.deck}
-						position={this.props.config.deck_position as DecklistPosition}
+						position={
+							this.props.config.deck_position === DecklistPosition.TOP_RIGHT
+								? DecklistPosition.TOP_RIGHT
+								: DecklistPosition.TOP_LEFT
+						}
 						pinDeck={!!this.state.pinDeck}
 						onPinDeck={(pinDeck: boolean) => {
 							this.setState({ pinDeck });
