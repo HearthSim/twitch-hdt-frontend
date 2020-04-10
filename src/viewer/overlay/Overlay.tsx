@@ -287,9 +287,9 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 					: BnetGameType.BGT_UNKNOWN,
 			portal: this.portal,
 			statisticsContainer:
-				this.props.config.deck_position === DecklistPosition.TOP_LEFT
-					? RightStatistics
-					: LeftStatistics,
+				this.props.config.deck_position === DecklistPosition.TOP_RIGHT
+					? LeftStatistics
+					: RightStatistics,
 		};
 	}
 
