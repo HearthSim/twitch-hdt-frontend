@@ -285,6 +285,9 @@ class DeckList extends React.Component<
 						transform: `scale(${this.state.scale || 1})`,
 					}}
 					onMouseDown={e => {
+						if (e.button !== 0) {
+							return;
+						}
 						this.props.onMoveStart && this.props.onMoveStart(e);
 					}}
 					onMouseUp={e => {
@@ -308,7 +311,11 @@ class DeckList extends React.Component<
 									: "HSReplay.net"}
 							</h1>
 							<CopyButton
-								onClick={() => {
+								onClick={e => {
+									if (e.button !== 0) {
+										return;
+									}
+									e.preventDefault();
 									if (this.props.format === null || this.props.hero === null) {
 										return;
 									}
@@ -339,8 +346,16 @@ class DeckList extends React.Component<
 							</CopyButton>
 							{this.props.pinned ? (
 								<HeaderButton
-									onClick={() => {
+									onClick={e => {
+										if (e.button !== 0) {
+											return;
+										}
+										e.preventDefault();
 										this.props.onPinned(false);
+										const target = document.activeElement as HTMLElement;
+										if (target && typeof target.blur === "function") {
+											target.blur();
+										}
 										ga("send", "event", "Deck", "Hide");
 									}}
 									onMouseDown={this.stopPropagation}
@@ -350,8 +365,16 @@ class DeckList extends React.Component<
 								</HeaderButton>
 							) : (
 								<HeaderButton
-									onClick={() => {
+									onClick={e => {
+										if (e.button !== 0) {
+											return;
+										}
+										e.preventDefault();
 										this.props.onPinned(true);
+										const target = document.activeElement as HTMLElement;
+										if (target && typeof target.blur === "function") {
+											target.blur();
+										}
 										ga("send", "event", "Deck", "Show");
 									}}
 									onMouseDown={this.stopPropagation}
