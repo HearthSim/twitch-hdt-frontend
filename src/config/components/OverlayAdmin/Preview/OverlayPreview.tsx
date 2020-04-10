@@ -6,7 +6,6 @@ import {
 	Feature,
 	hasFeature,
 } from "../../../../utils/config";
-import { withProps } from "../../../../utils/styled";
 
 const Stream = styled.div`
 	position: relative;
@@ -28,9 +27,7 @@ const OverlayElement = styled.div`
 	background-color: #315376;
 `;
 
-const DeckList = withProps<{ position: DecklistPosition }>()(
-	OverlayElement.extend,
-)`
+const DeckList = styled(OverlayElement)<{ position: DecklistPosition }>`
 	${props =>
 		props.position === DecklistPosition.TOP_LEFT ? "left" : "right"}: 5%;
 	top: 10%;
@@ -46,7 +43,7 @@ const BoardWrapper = styled.div`
 	display: flex;
 `;
 
-const Centered = withProps<{ top?: string; bottom?: string }>()(styled.div)`
+const Centered = styled.div<{ top?: string; bottom?: string }>`
 	position: absolute;
 	display: flex;
 	width: 100%;
@@ -57,7 +54,7 @@ const Centered = withProps<{ top?: string; bottom?: string }>()(styled.div)`
 	text-align: center;
 `;
 
-const Minion = OverlayElement.extend`
+const Minion = styled(OverlayElement)`
 	flex-grow: 0;
 	width: 6.5%;
 	height: 100%;
@@ -65,7 +62,7 @@ const Minion = OverlayElement.extend`
 	clip-path: ellipse(50% 50% at 50% 50%);
 `;
 
-const Hero = OverlayElement.extend`
+const Hero = styled(OverlayElement)`
 	width: 7.5%;
 	height: 100%;
 	clip-path: polygon(
@@ -112,7 +109,7 @@ export default class OverlayPreview extends React.Component<
 						thumbnailUrl !== null ? `url(${thumbnailUrl})` : undefined,
 					backgroundSize: "100%",
 				}}
-				innerRef={ref => (this.ref = ref)}
+				ref={ref => (this.ref = ref)}
 			>
 				{this.props.settings &&
 				!hasFeature(+(this.props.settings.hidden || 0), Feature.DECKLIST) ? (

@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { withProps } from "../../../utils/styled";
 
 const Wrapper = styled.ol`
 	display: flex;
@@ -34,7 +33,7 @@ const getConnectionColor = (props: ConnectedProps) => {
 	return props.connected ? "black" : "red";
 };
 
-const Element = withProps<ConnectedProps>()(styled.li)`
+const Element = styled.li<ConnectedProps>`
 	font-weight: normal;
 	padding: 10px 16px;
 	border: 1px solid black;
@@ -45,7 +44,7 @@ const Element = withProps<ConnectedProps>()(styled.li)`
 		props.connected === null ? getElementColor(props) : "unset"};
 `;
 
-const Connection = withProps<ConnectedProps>()(styled.li)`
+const Connection = styled.li<ConnectedProps>`
 	font-family: monospace;
 	color: ${props => getConnectionColor(props)};
 `;

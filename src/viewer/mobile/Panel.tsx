@@ -6,7 +6,6 @@ import {
 	BoardStateData,
 	EBSConfiguration,
 } from "../../twitch-hdt";
-import { withProps } from "../../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import { HSReplayNetIcon } from "../icons";
 import { TooltipBehaviour, TooltipProvider } from "../utils/tooltips";
@@ -51,7 +50,7 @@ export interface ThemeProps {
 	dark: boolean;
 }
 
-const Message = withProps<ThemeProps>()(styled.div)`
+const Message = styled.div<ThemeProps>`
 	width: 100%;
 	height: 100%;
 	display: flex;
@@ -59,20 +58,22 @@ const Message = withProps<ThemeProps>()(styled.div)`
 	justify-content: center;
 	align-items: center;
 	color: ${(props: ThemeProps) => (props.dark ? "white" : "black")};
-	background-color: ${(props: ThemeProps) => (props.dark ? "#141528" : "white")};
+	background-color: ${(props: ThemeProps) =>
+		props.dark ? "#141528" : "white"};
 
 	> {
 		h1 {
 			font-size: 1.5em;
 		}
-	
-		p, h1 {
+
+		p,
+		h1 {
 			margin: 0.2em;
 		}
 	}
 `;
 
-const MessageFooter = withProps<ThemeProps>()(styled.footer)`
+const MessageFooter = styled.footer<ThemeProps>`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -81,12 +82,12 @@ const MessageFooter = withProps<ThemeProps>()(styled.footer)`
 	right: 0;
 	font-weight: bold;
 	margin: 0.5em;
-	
+
 	img {
 		height: 25px;
 		margin-right: 0.4em;
 		filter: ${(props: ThemeProps) =>
-			!props.dark ? "invert(100%)" : "invert(0%)"}; 
+			!props.dark ? "invert(100%)" : "invert(0%)"};
 	}
 `;
 
@@ -238,7 +239,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 		return (
 			<TooltipProvider value={{ behaviour: TooltipBehaviour.FULLSCREEN }}>
 				<PanelDiv>
-					<Portal innerRef={(ref: any) => (this.portal = ref)} />
+					<Portal ref={ref => (this.portal = ref)} />
 					<Header>
 						<HeaderIcon src={HSReplayNetIcon} />
 						<h1>{title}</h1>

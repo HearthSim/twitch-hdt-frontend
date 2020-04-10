@@ -61,7 +61,7 @@ const BigFriendlyButton = styled.button`
 	}
 `;
 
-const RefreshButton = BigFriendlyButton.extend`
+const RefreshButton = styled(BigFriendlyButton)`
 	width: auto;
 	min-width: 100px;
 	font-weight: normal;
@@ -73,7 +73,7 @@ const RefreshButton = BigFriendlyButton.extend`
 	}
 `;
 
-const ActionButton = (BigFriendlyButton.withComponent("a") as any).extend`
+const ActionButton = styled(BigFriendlyButton.withComponent("a"))`
 	text-align: center;
 	text-decoration: none;
 	color: black;
@@ -81,7 +81,7 @@ const ActionButton = (BigFriendlyButton.withComponent("a") as any).extend`
 	min-width: 200px;
 `;
 
-const DownloadLink = (BigFriendlyButton.withComponent("a") as any).extend`
+const DownloadLink = styled(BigFriendlyButton.withComponent("a"))`
 	margin-top: 1.5em;
 	text-align: center;
 	text-decoration: none;

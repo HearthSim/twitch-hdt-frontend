@@ -7,7 +7,6 @@ import { BoardStateDeckCard, FormatType } from "../../twitch-hdt";
 import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";
 import { DecklistPosition } from "../../utils/config";
 import { getCopiableDeck } from "../../utils/hearthstone";
-import { withProps } from "../../utils/styled";
 import {
 	TwitchExtConsumer,
 	TwitchExtConsumerArgs,
@@ -29,7 +28,7 @@ interface PaddingProps {
 	padding?: string;
 }
 
-const Wrapper = withProps<PositionProps & OpacityProps>()(styled.div)`
+const Wrapper = styled.div<PositionProps & OpacityProps>`
 	width: 240px;
 	position: absolute;
 	left: ${props =>
@@ -39,8 +38,9 @@ const Wrapper = withProps<PositionProps & OpacityProps>()(styled.div)`
 
 	opacity: ${(props: OpacityProps) =>
 		typeof props.opacity === "number" ? props.opacity : 1};
-	transition: opacity ${(props: OpacityProps) =>
-		(props.opacity || 0) > 0.5 ? `0.25s ease-out` : `1.5s ease-in`};
+	transition: opacity
+		${(props: OpacityProps) =>
+			(props.opacity || 0) > 0.5 ? `0.25s ease-out` : `1.5s ease-in`};
 `;
 
 const Header = styled.header`
@@ -101,16 +101,12 @@ const HeaderButton = styled.button`
 	}
 `;
 
-const CopyButton = HeaderButton.extend`
+const CopyButton = styled(HeaderButton)`
 	font-size: 1.1em;
 	cursor: copy;
 `;
 
-const HideButton = HeaderButton.extend``;
-
-const ShowButton = HeaderButton.extend``;
-
-const CardList = withProps<{ moving?: boolean; left: boolean }>()(styled.ul)`
+const CardList = styled.ul<{ moving?: boolean; left: boolean }>`
 	margin: 0;
 	list-style-type: none;
 	padding-left: 0;
@@ -137,7 +133,7 @@ const CopyDeckButton = styled.button`
 	}
 `;
 
-export const Icon = withProps<PaddingProps>()(styled.img)`
+export const Icon = styled.img<PaddingProps>`
 	height: 100%;
 	padding: ${props => (props.padding ? props.padding : "7px 0")};
 	filter: drop-shadow(-1px -1px 0 rgba(0, 0, 0, 0.5))
@@ -289,7 +285,7 @@ class DeckList extends React.Component<
 					<Wrapper
 						position={position}
 						opacity={this.props.hidden ? 0 : this.props.pinned ? 1 : 0.85}
-						innerRef={ref => (this.ref = ref)}
+						ref={ref => (this.ref = ref)}
 					>
 						<CardList
 							style={{
@@ -352,7 +348,7 @@ class DeckList extends React.Component<
 										<Icon src={CopyDeckIcon} />
 									</CopyButton>
 									{this.props.pinned ? (
-										<ShowButton
+										<HeaderButton
 											onClick={() => {
 												this.props.onPinned(false);
 												ga("send", "event", "Deck", "Hide");
@@ -361,9 +357,9 @@ class DeckList extends React.Component<
 											title="Automatically hide deck list"
 										>
 											<Icon src={PinIcon} />
-										</ShowButton>
+										</HeaderButton>
 									) : (
-										<HideButton
+										<HeaderButton
 											onClick={() => {
 												this.props.onPinned(true);
 												ga("send", "event", "Deck", "Show");
@@ -372,7 +368,7 @@ class DeckList extends React.Component<
 											title="Keep deck list visible"
 										>
 											<Icon src={UnpinIcon} />
-										</HideButton>
+										</HeaderButton>
 									)}
 								</Header>
 							</li>

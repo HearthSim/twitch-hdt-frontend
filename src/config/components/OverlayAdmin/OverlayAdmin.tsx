@@ -7,7 +7,6 @@ import {
 	hasFeature,
 	setFeature,
 } from "../../../utils/config";
-import { withProps } from "../../../utils/styled";
 import { Fieldset, Heading } from "../ConfigView/ConfigView";
 import StreamPreview from "./Preview";
 
@@ -20,9 +19,10 @@ const VerticalList = styled.ul`
 	}
 `;
 
-const Row = withProps<any>()(styled.div)`
+const Row = styled.div<{ width?: string }>`
 	display: flex;
-	width: ${props => (typeof props.width !== "undefined" ? props.width : "100%")};
+	width: ${props =>
+		typeof props.width !== "undefined" ? props.width : "100%"};
 	flex-direction: row;
 
 	& > * {
@@ -38,7 +38,7 @@ const ThinInput = styled.input`
 	width: 4em;
 `;
 
-const Centered = withProps<{ margin?: string }>()(styled.div)`
+const Centered = styled.div<{ margin?: string }>`
 	width: 100%;
 	display: flex;
 	justify-content: center;

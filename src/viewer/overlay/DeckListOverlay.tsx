@@ -2,12 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { BoardStateDeck } from "../../twitch-hdt";
 import { DecklistPosition } from "../../utils/config";
-import { withProps } from "../../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import DeckList from "./DeckList";
 import { PositionProps } from "./Overlay";
 
-const Wrapper = withProps<{ active?: boolean }>()(styled.div)`
+const Wrapper = styled.div<{ active?: boolean }>`
 	z-index: 100;
 	position: absolute;
 	height: 100vh;
@@ -16,7 +15,7 @@ const Wrapper = withProps<{ active?: boolean }>()(styled.div)`
 	pointer-events: ${props => (props.active ? "all" : "none")};
 `;
 
-const DeckListBounds = withProps<PositionProps>()(styled.div)`
+const DeckListBounds = styled.div<PositionProps>`
 	position: absolute;
 	top: ${props => props.top || "100px"};
 	width: 100vw;

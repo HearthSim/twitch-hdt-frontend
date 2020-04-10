@@ -182,7 +182,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 						isHovering: false,
 					});
 				}}
-				innerRef={(ref: HTMLDivElement | null) => (this.ref = ref)}
+				ref={(ref: HTMLDivElement | null) => (this.ref = ref)}
 			>
 				{tooltip}
 				{statistics}

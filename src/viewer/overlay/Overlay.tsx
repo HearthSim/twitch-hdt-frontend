@@ -7,7 +7,6 @@ import {
 	EBSConfiguration,
 } from "../../twitch-hdt";
 import { DecklistPosition, Feature, hasFeature } from "../../utils/config";
-import { withProps } from "../../utils/styled";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import Entity from "../Entity";
 import DeckListOverlay from "./DeckListOverlay";
@@ -40,27 +39,26 @@ const Portal = styled.div`
 	}
 `;
 
-const OverlayElement = styled.div`
+const OverlayElement = styled.div<PositionProps>`
 	position: absolute;
 	-webkit-backface-visibility: hidden; // aliasing
 `;
 
-const Center = withProps<PositionProps>()(OverlayElement.extend)`
-	top: ${(props: any) => props.top || "unset"};
-	bottom: ${(props: any) => props.bottom || "unset"};
-	height: ${(props: any) => props.height || "unset"};
-	margin-left: ${(props: any) => props.left || "unset"};
+const Center = styled(OverlayElement)`
+	top: ${props => props.top || "unset"};
+	bottom: ${props => props.bottom || "unset"};
+	margin-left: ${props => props.left || "unset"};
 	width: 100vw;
 	text-align: center;
 	display: flex;
 	justify-content: center;
 `;
 
-const Board = withProps<PositionProps>()(Center.extend)`
+const Board = styled(Center)`
 	width: 100vw;
 	height: 15vh;
-	top: ${(props: any) => props.top || "unset"};
-	bottom: ${(props: any) => props.bottom || "unset"};
+	top: ${props => props.top || "unset"};
+	bottom: ${props => props.bottom || "unset"};
 	display: flex;
 
 	justify-content: center;
@@ -91,9 +89,9 @@ const Hero = styled.div`
 	z-index: 50;
 `;
 
-const Secret = withProps<PositionProps>()(OverlayElement.extend)`
-	top: ${(props: any) => props.top || "unset"};
-	margin-left: ${(props: any) => props.left || "unset"};
+const Secret = styled(OverlayElement)`
+	top: ${props => props.top || "unset"};
+	margin-left: ${props => props.left || "unset"};
 
 	height: 4.4vh;
 	width: 4.4vh;
@@ -104,10 +102,10 @@ const Secret = withProps<PositionProps>()(OverlayElement.extend)`
 	z-index: 51;
 `;
 
-const Quest = withProps<PositionProps>()(OverlayElement.extend)`
-	top: ${(props: any) => props.top || "unset"};
-	bottom: ${(props: any) => props.bottom || "unset"};
-	margin-left: ${(props: any) => props.left || "unset"};
+const Quest = styled(OverlayElement)`
+	top: ${props => props.top || "unset"};
+	bottom: ${props => props.bottom || "unset"};
+	margin-left: ${props => props.left || "unset"};
 
 	height: 5.1vh;
 	width: 4vh;
@@ -118,30 +116,30 @@ const Quest = withProps<PositionProps>()(OverlayElement.extend)`
 	z-index: 51;
 `;
 
-const HeroPower = withProps<PositionProps>()(OverlayElement.extend)`
-	top: ${(props: any) => props.top || "unset"};
-	right: ${(props: any) => props.right || "unset"};
-	bottom: ${(props: any) => props.bottom || "unset"};
+const HeroPower = styled(OverlayElement)`
+	top: ${props => props.top || "unset"};
+	right: ${props => props.right || "unset"};
+	bottom: ${props => props.bottom || "unset"};
 
 	height: 13.5vh;
 	width: 13.5vh;
 	clip-path: circle(50% at 50% 50%);
 `;
 
-const Weapon = withProps<PositionProps>()(OverlayElement.extend)`
-	top: ${(props: any) => props.top || "unset"};
-	left: ${(props: any) => props.left || "unset"};
-	bottom: ${(props: any) => props.bottom || "unset"};
+const Weapon = styled(OverlayElement)`
+	top: ${props => props.top || "unset"};
+	left: ${props => props.left || "unset"};
+	bottom: ${props => props.bottom || "unset"};
 
 	height: 13vh;
 	width: 13vh;
 	clip-path: circle(50% at 50% 50%);
 `;
 
-const Deck = withProps<PositionProps>()(OverlayElement.extend)`
-	top: ${(props: any) => props.top || "unset"};
-	right: ${(props: any) => props.right || "unset"};
-	bottom: ${(props: any) => props.bottom || "unset"};
+const Deck = styled(OverlayElement)`
+	top: ${props => props.top || "unset"};
+	right: ${props => props.right || "unset"};
+	bottom: ${props => props.bottom || "unset"};
 	width: 6vh;
 	height: 15vh;
 	transform: rotate(-1deg);
@@ -155,11 +153,11 @@ const Statistics = styled.div`
 	font-size: 2vh;
 `;
 
-const LeftStatistics = Statistics.extend`
+const LeftStatistics = styled(Statistics)`
 	left: 3vh;
 `;
 
-const RightStatistics = Statistics.extend`
+const RightStatistics = styled(Statistics)`
 	right: 7vh;
 `;
 
@@ -341,7 +339,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 					this.setState({ hovering: false });
 				}}
 			>
-				<Portal innerRef={(ref: any) => (this.portal = ref)} />
+				<Portal ref={ref => (this.portal = ref)} />
 				{hideDecklist ? null : (
 					<DeckListOverlay
 						deck={player.deck}

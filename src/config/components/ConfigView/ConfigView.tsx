@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 	justify-content: center;
 `;
 
-const MessageWrapper = Wrapper.extend`
+const MessageWrapper = styled(Wrapper)`
 	font-size: 1.5em;
 	text-align: center;
 	align-items: center;
