@@ -14,6 +14,7 @@ const mapStateToProps = (state: State) => ({
 		? Object.assign({}, state.config.settings, state.config.preview)
 		: null,
 	hasInitialized: state.hasInitialized,
+	twitchExtContext: state.twitch.context,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<ActionTypes>) =>

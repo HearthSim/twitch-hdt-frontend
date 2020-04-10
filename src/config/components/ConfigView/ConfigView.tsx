@@ -1,6 +1,7 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { EBSConfiguration } from "../../../twitch-hdt";
+import { darkTheme, lightTheme } from "../../../utils/theming";
 import { ConnectionStatus } from "../../enums";
 import ConnectionAdmin from "../ConnectionAdmin/ConnectionAdmin";
 import OtherAdmin from "../OtherAdmin";
@@ -14,31 +15,40 @@ interface Props {
 	working: boolean;
 	settings: EBSConfiguration | null;
 	setSetting: (key: keyof EBSConfiguration, value: string) => any;
+	twitchExtContext: TwitchExtContext | null;
 	setTwitchExtContext: (context: Partial<TwitchExtContext>) => any;
 	setTwitchExtAuthorized: (authorized: TwitchExtAuthorized) => any;
 }
 
 const Wrapper = styled.div`
 	font-family: "Helvetica Neue", helvetica, sans-serif;
-	width: 100%;
-	min-width: 500px;
-	min-height: 100vh;
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
 	align-items: flex-start;
 	justify-content: center;
+	color: ${props => props.theme.textColor};
 `;
 
 const MessageWrapper = styled(Wrapper)`
-	font-size: 1.5em;
+	margin: auto auto;
+	height: 100%;
+	font-size: 1.25em;
 	text-align: center;
 	align-items: center;
 	flex-direction: column;
+	color: ${props => props.theme.textColor};
+	width: 100%;
+
+	overflow: hidden;
 
 	p {
 		margin: 0.5em;
 		width: 100%;
+
+		&:first-child {
+			margin-top: 0;
+		}
 	}
 `;
 
@@ -47,8 +57,8 @@ export const Fieldset = styled.fieldset`
 	padding: 25px;
 	margin: 10px 10px 0 10px;
 	width: 500px;
-	background-color: #fbfbfb;
-	border: solid 1px gray;
+	//background-color: #fbfbfb;
+	//border: solid 1px gray;
 	z-index: 1;
 `;
 
@@ -99,25 +109,32 @@ export default class ConfigView extends React.Component<Props> {
 	}
 
 	public render(): React.ReactNode {
-		if (!this.props.hasInitialized) {
-			if (this.props.working) {
-				return (
-					<MessageWrapper>
-						<p>Loading setup…</p>
-						<p>This might take a few moments.</p>
-					</MessageWrapper>
-				);
-			}
+		const theme =
+			this.props.twitchExtContext &&
+			this.props.twitchExtContext.theme === "dark"
+				? darkTheme
+				: lightTheme;
 
+		if (!this.props.hasInitialized) {
 			return (
-				<MessageWrapper>
-					<p>Unable to reach extension backend service</p>
-					<p>
-						Please check your browser extensions, or if this persists, contact
-						us at{" "}
-						<a href="mailto:support@hearthsim.net">support@hearthsim.net</a>.
-					</p>
-				</MessageWrapper>
+				<ThemeProvider theme={theme}>
+					{this.props.working ? (
+						<MessageWrapper>
+							<p>Loading setup…</p>
+							<p>This might take a few moments.</p>
+						</MessageWrapper>
+					) : (
+						<MessageWrapper>
+							<p>Unable to reach extension backend service</p>
+							<p>
+								Please check your browser extensions, or if this persists,
+								contact us at{" "}
+								<a href="mailto:support@hearthsim.net">support@hearthsim.net</a>
+								.
+							</p>
+						</MessageWrapper>
+					)}
+				</ThemeProvider>
 			);
 		}
 
@@ -125,27 +142,29 @@ export default class ConfigView extends React.Component<Props> {
 			this.props.connectionStatus === ConnectionStatus.READY;
 
 		return (
-			<Wrapper>
-				<ConnectionAdmin
-					working={this.props.working}
-					connectionStatus={this.props.connectionStatus}
-					refreshConnectionStatus={this.props.refreshConnectionStatus}
-				/>
-				<OverlayAdmin>
-					{!setupComplete ? (
-						<FieldsetShield>
-							<span>Connection setup required</span>
-						</FieldsetShield>
-					) : null}
-				</OverlayAdmin>
-				<OtherAdmin>
-					{!setupComplete ? (
-						<FieldsetShield>
-							<span>Connection setup required</span>
-						</FieldsetShield>
-					) : null}
-				</OtherAdmin>
-			</Wrapper>
+			<ThemeProvider theme={theme}>
+				<Wrapper>
+					<ConnectionAdmin
+						working={this.props.working}
+						connectionStatus={this.props.connectionStatus}
+						refreshConnectionStatus={this.props.refreshConnectionStatus}
+					/>
+					<OverlayAdmin>
+						{!setupComplete ? (
+							<FieldsetShield>
+								<span>Connection setup required</span>
+							</FieldsetShield>
+						) : null}
+					</OverlayAdmin>
+					<OtherAdmin>
+						{!setupComplete ? (
+							<FieldsetShield>
+								<span>Connection setup required</span>
+							</FieldsetShield>
+						) : null}
+					</OtherAdmin>
+				</Wrapper>
+			</ThemeProvider>
 		);
 	}
 }

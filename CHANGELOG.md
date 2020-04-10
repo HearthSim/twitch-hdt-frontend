@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Updated hearthstonejson library to use native browser cache over localStorage
 - Updated deck list position for new Twitch player layout
 - Updated card stats position for new Twitch player layout
+- Updated Extension Configuration for dark theme
 
 ### Removed
 - Removed Stream preview due to deprecation of unauthenticated API requests

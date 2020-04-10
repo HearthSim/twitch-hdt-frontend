@@ -9,8 +9,8 @@ import {
 
 const Stream = styled.div`
 	position: relative;
-	background-color: #ddd;
-	border: 1px solid gray;
+	background-color: none;
+	border: 1px solid ${props => props.theme.textColor};
 	width: 100%;
 	height: auto;
 	z-index: 5;
@@ -24,12 +24,12 @@ const Stream = styled.div`
 `;
 
 const OverlayElement = styled.div`
-	background-color: #315376;
+	background-color: ${props => props.theme.accent};
 `;
 
 const DeckList = styled(OverlayElement)<{ position: DecklistPosition }>`
 	${props =>
-		props.position === DecklistPosition.TOP_LEFT ? "left" : "right"}: 5%;
+		props.position === DecklistPosition.TOP_LEFT ? "left: 2%" : "right: 5%"};
 	top: 10%;
 	width: 15%;
 	height: 60%;

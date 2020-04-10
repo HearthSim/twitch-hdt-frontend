@@ -35,7 +35,7 @@ const FullWidthInput = styled.input`
 `;
 
 const ThinInput = styled.input`
-	width: 4em;
+	width: 6em;
 `;
 
 const Centered = styled.div<{ margin?: string }>`
@@ -43,6 +43,12 @@ const Centered = styled.div<{ margin?: string }>`
 	display: flex;
 	justify-content: center;
 	margin: ${props => (props.margin ? props.margin : "unset")};
+`;
+
+const Label = styled.label`
+	display: block;
+	font-weight: bold;
+	line-height: 1em;
 `;
 
 interface Props {
@@ -127,7 +133,7 @@ export default class OverlayAdmin extends React.Component<Props> {
 			<Fieldset>
 				{this.props.children}
 				<Heading>Overlay</Heading>
-				<p>Customize your interactive overlay on Twitch.</p>
+				<p>Customize how the interactive overlay appears on your stream.</p>
 				<StreamPreview hideTooltips={hideTooltips} />
 				<Row>
 					<div>
@@ -136,76 +142,24 @@ export default class OverlayAdmin extends React.Component<Props> {
 								<label>
 									<input
 										type="checkbox"
-										checked={tooltipsEnabled}
-										disabled={this.props.disabled}
-										onChange={this.setFeature(Feature.TOOLTIPS)}
-									/>{" "}
-									Enable Tooltips{!tooltipsEnabled ? "…" : null}
-								</label>
-							</li>
-							{tooltipsEnabled ? (
-								<li
-									style={{
-										display: !hideTooltips ? "none" : undefined,
-									}}
-								>
-									<p>
-										Allows viewers to hover over Minions, Heroes, Hero Powers,
-										Weapons, Secrets, Quests and view the full card.
-									</p>
-									<label>
-										Horizontal Offset:
-										<FullWidthInput
-											type="range"
-											value={horizontalGameOffset || 0}
-											onChange={this.setHorizontalGameOffset}
-											onBlur={this.commitHorizontalGameOffset}
-											onMouseUp={this.commitHorizontalGameOffset}
-											disabled={this.props.disabled}
-											step="0.1"
-											min="-50"
-											max="50"
-										/>
-									</label>
-									<Centered margin={"4px 0"}>
-										<ThinInput
-											type="number"
-											value={horizontalGameOffset || 0}
-											onChange={this.setHorizontalGameOffset}
-											onBlur={this.commitHorizontalGameOffset}
-											disabled={this.props.disabled}
-											step="0.1"
-											min="-50"
-											max="50"
-										/>
-										<button
-											type="reset"
-											onClick={this.resetHorizontalGameOffset}
-											disabled={this.props.disabled}
-										>
-											Center
-										</button>
-									</Centered>
-								</li>
-							) : null}
-							<li>
-								<label>
-									<input
-										type="checkbox"
 										checked={decklistEnabled}
 										disabled={this.props.disabled}
 										onChange={this.setFeature(Feature.DECKLIST)}
 									/>{" "}
-									Enable Decklist{!decklistEnabled ? "…" : null}
+									Deck List
 								</label>
 							</li>
 							{decklistEnabled ? (
 								<li>
-									<p>
-										Show your viewers the cards remaining in your deck and allow
-										them to copy it to their clipboard.
+									<p style={{ fontStyle: "italic" }}>
+										Viewers can see the cards remaining in your deck and copy
+										the deck code. They can move or hide the deck for
+										themselves.
 										<br />
 									</p>
+									<Label as="span" style={{ marginBottom: "4px" }}>
+										Default Position:
+									</Label>
 									<Row width={"200px"}>
 										<label>
 											<input
@@ -224,17 +178,71 @@ export default class OverlayAdmin extends React.Component<Props> {
 													decklistPosition === DecklistPosition.TOP_RIGHT
 												}
 												disabled={!decklistEnabled || this.props.disabled}
-												value={DecklistPosition.TOP_LEFT}
+												value={DecklistPosition.TOP_RIGHT}
 												onChange={this.changeDecklistPosition}
 											/>{" "}
 											Top Right
 										</label>
 									</Row>
-									<p>
-										<em>
-											Viewers can hide and move the decklist for themselves.
-										</em>
+								</li>
+							) : null}
+							<li>
+								<label>
+									<input
+										type="checkbox"
+										checked={tooltipsEnabled}
+										disabled={this.props.disabled}
+										onChange={this.setFeature(Feature.TOOLTIPS)}
+									/>{" "}
+									Interactive Tooltips
+								</label>
+							</li>
+							{tooltipsEnabled ? (
+								<li
+									style={{
+										display: !hideTooltips ? "none" : undefined,
+									}}
+								>
+									<p style={{ fontStyle: "italic" }}>
+										Viewers can hover over Minions, Heroes, Hero Powers,
+										Weapons, Secrets, Quests to view the full card.
 									</p>
+									<Label>
+										Horizontal Offset:
+										<FullWidthInput
+											type="range"
+											value={horizontalGameOffset || 0}
+											onChange={this.setHorizontalGameOffset}
+											onBlur={this.commitHorizontalGameOffset}
+											onMouseUp={this.commitHorizontalGameOffset}
+											disabled={this.props.disabled}
+											step="0.1"
+											min="-50"
+											max="50"
+										/>
+									</Label>
+									<Centered margin={"4px 0"}>
+										<ThinInput
+											type="number"
+											value={horizontalGameOffset || 0}
+											onChange={this.setHorizontalGameOffset}
+											onBlur={this.commitHorizontalGameOffset}
+											disabled={this.props.disabled}
+											step="0.1"
+											min="-50"
+											max="50"
+										/>
+										<button
+											type="reset"
+											onClick={this.resetHorizontalGameOffset}
+											disabled={this.props.disabled}
+											style={{
+												marginLeft: "4px",
+											}}
+										>
+											Reset
+										</button>
+									</Centered>
 								</li>
 							) : null}
 						</VerticalList>
