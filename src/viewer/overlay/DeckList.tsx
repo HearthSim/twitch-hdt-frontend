@@ -7,12 +7,7 @@ import { BoardStateDeckCard, FormatType } from "../../twitch-hdt";
 import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";
 import { DecklistPosition } from "../../utils/config";
 import { getCopiableDeck } from "../../utils/hearthstone";
-import {
-	TwitchExtConsumer,
-	TwitchExtConsumerArgs,
-	TwitchExtProps,
-	withTwitchExt,
-} from "../../utils/twitch";
+import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import CardTile from "../CardTile";
 import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "../icons";
 
