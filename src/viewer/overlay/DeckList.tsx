@@ -27,9 +27,9 @@ const Wrapper = styled.div<PositionProps & OpacityProps>`
 	width: 240px;
 	position: absolute;
 	left: ${props =>
-		props.position === DecklistPosition.TOP_LEFT ? "0.75vh" : "unset"};
+		props.position === DecklistPosition.TOP_LEFT ? "20px" : "unset"};
 	right: ${props =>
-		props.position === DecklistPosition.TOP_RIGHT ? "75px" : "unset"};
+		props.position === DecklistPosition.TOP_RIGHT ? "5rem" : "unset"};
 
 	opacity: ${props => (typeof props.opacity === "number" ? props.opacity : 1)};
 	transition: opacity

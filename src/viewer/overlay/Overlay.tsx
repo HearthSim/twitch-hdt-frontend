@@ -154,11 +154,11 @@ const Statistics = styled.div`
 `;
 
 const LeftStatistics = styled(Statistics)`
-	left: 3vh;
+	left: 20px;
 `;
 
 const RightStatistics = styled(Statistics)`
-	right: 7vh;
+	right: 5rem;
 `;
 
 const Offset = styled.div`
