@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.0.0] - 2020-04-10
 ### Added
 - Added Google Analytics
 - Added support for Hearthstone Battlegrounds
@@ -127,7 +129,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added a deck list with hover zones over each card
 - Added setup interface with connection guide and basic overlay configuration
 
-[Unreleased]: https://github.com/HearthSim/twitch-hdt-frontend/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/HearthSim/twitch-hdt-frontend/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/HearthSim/twitch-hdt-frontend/compare/v0.4.1...v1.0.0
 [0.4.1]: https://github.com/HearthSim/twitch-hdt-frontend/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/HearthSim/twitch-hdt-frontend/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/HearthSim/twitch-hdt-frontend/compare/v0.2.2...v0.3.0
