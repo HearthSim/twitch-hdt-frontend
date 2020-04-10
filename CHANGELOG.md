@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Updated deck list position for new Twitch player layout
 - Updated card stats position for new Twitch player layout
 - Updated Extension Configuration for dark theme
+- Updated unpin behaviour
 
 ### Removed
 - Removed Stream preview due to deprecation of unauthenticated API requests

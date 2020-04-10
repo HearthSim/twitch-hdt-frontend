@@ -38,7 +38,8 @@ const Wrapper = styled.div<PositionProps & OpacityProps>`
 
 	opacity: ${props => (typeof props.opacity === "number" ? props.opacity : 1)};
 	transition: opacity
-		${props => ((props.opacity || 0) > 0.5 ? `0.25s ease-out` : `1.5s ease-in`)};
+		${props =>
+			(props.opacity || 0) > 0.5 ? `0.25s ease-out` : `0.25s ease-in`};
 `;
 
 const Header = styled.header`
@@ -279,118 +280,111 @@ class DeckList extends React.Component<
 			typeof this.props.name === "string" && this.props.name.trim().length > 0;
 
 		return (
-			<TwitchExtConsumer>
-				{({ query }: TwitchExtConsumerArgs) => (
-					<Wrapper
-						position={position}
-						opacity={this.props.hidden ? 0 : this.props.pinned ? 1 : 0.85}
-						ref={ref => (this.ref = ref)}
-					>
-						<CardList
-							style={{
-								transform: `scale(${this.state.scale || 1})`,
-							}}
-							onMouseDown={e => {
-								this.props.onMoveStart && this.props.onMoveStart(e);
-							}}
-							onMouseUp={e => {
-								this.props.onMoveEnd && this.props.onMoveEnd(e);
-							}}
-							moving={this.props.moving}
-							position={this.props.position}
-						>
-							<li>
-								<Header>
-									<Icon
-										src={HSReplayNetIcon}
-										padding="4px"
-										title="Powered by HSReplay.net"
-									/>
-									<h1 title={useDeckName ? this.props.name : "Unnamed Deck"}>
-										{this.state.copied
-											? "Copied!"
-											: useDeckName
-											? this.props.name
-											: "HSReplay.net"}
-									</h1>
-									<CopyButton
-										onClick={() => {
-											if (
-												this.props.format === null ||
-												this.props.hero === null
-											) {
-												return;
-											}
-											const toCopy = getCopiableDeck(
-												this.props.cardList,
-												this.props.format,
-												[this.props.hero],
-												this.props.name,
-											);
-											clipboard.writeText(toCopy).then(() => {
-												this.setState({ copied: true }, () => {
-													this.clearTimeout();
-													this.copiedTimeout = window.setTimeout(() => {
-														this.setState({ copied: false });
-													}, 3000);
-												});
-											});
-											const target = document.activeElement as HTMLElement;
-											if (target && typeof target.blur === "function") {
-												target.blur();
-											}
-											ga("send", "event", "Deck", "Copy", "Overlay");
-										}}
-										onMouseDown={this.stopPropagation}
-										title="Copy deck to clipboard"
-									>
-										<Icon src={CopyDeckIcon} />
-									</CopyButton>
-									{this.props.pinned ? (
-										<HeaderButton
-											onClick={() => {
-												this.props.onPinned(false);
-												ga("send", "event", "Deck", "Hide");
-											}}
-											onMouseDown={this.stopPropagation}
-											title="Automatically hide deck list"
-										>
-											<Icon src={PinIcon} />
-										</HeaderButton>
-									) : (
-										<HeaderButton
-											onClick={() => {
-												this.props.onPinned(true);
-												ga("send", "event", "Deck", "Show");
-											}}
-											onMouseDown={this.stopPropagation}
-											title="Keep deck list visible"
-										>
-											<Icon src={UnpinIcon} />
-										</HeaderButton>
-									)}
-								</Header>
-							</li>
-							{cards
-								.map((card: Triplet, index: number) => {
-									const [dbfId, current, initial] = card;
-									return (
-										<li key={index}>
-											<CardTile
-												dbfId={dbfId}
-												count={current}
-												showRarity={this.props.showRarities}
-												gift={initial === 0}
-												tooltipDisabled={this.props.hidden || this.props.moving}
-											/>
-										</li>
+			<Wrapper
+				position={position}
+				opacity={this.props.hidden ? 0 : 1}
+				ref={ref => (this.ref = ref)}
+			>
+				<CardList
+					style={{
+						transform: `scale(${this.state.scale || 1})`,
+					}}
+					onMouseDown={e => {
+						this.props.onMoveStart && this.props.onMoveStart(e);
+					}}
+					onMouseUp={e => {
+						this.props.onMoveEnd && this.props.onMoveEnd(e);
+					}}
+					moving={this.props.moving}
+					position={this.props.position}
+				>
+					<li>
+						<Header>
+							<Icon
+								src={HSReplayNetIcon}
+								padding="4px"
+								title="Powered by HSReplay.net"
+							/>
+							<h1 title={useDeckName ? this.props.name : "Unnamed Deck"}>
+								{this.state.copied
+									? "Copied!"
+									: useDeckName
+									? this.props.name
+									: "HSReplay.net"}
+							</h1>
+							<CopyButton
+								onClick={() => {
+									if (this.props.format === null || this.props.hero === null) {
+										return;
+									}
+									const toCopy = getCopiableDeck(
+										this.props.cardList,
+										this.props.format,
+										[this.props.hero],
+										this.props.name,
 									);
-								})
-								.filter(x => !!x)}
-						</CardList>
-					</Wrapper>
-				)}
-			</TwitchExtConsumer>
+									clipboard.writeText(toCopy).then(() => {
+										this.setState({ copied: true }, () => {
+											this.clearTimeout();
+											this.copiedTimeout = window.setTimeout(() => {
+												this.setState({ copied: false });
+											}, 3000);
+										});
+									});
+									const target = document.activeElement as HTMLElement;
+									if (target && typeof target.blur === "function") {
+										target.blur();
+									}
+									ga("send", "event", "Deck", "Copy", "Overlay");
+								}}
+								onMouseDown={this.stopPropagation}
+								title="Copy deck to clipboard"
+							>
+								<Icon src={CopyDeckIcon} />
+							</CopyButton>
+							{this.props.pinned ? (
+								<HeaderButton
+									onClick={() => {
+										this.props.onPinned(false);
+										ga("send", "event", "Deck", "Hide");
+									}}
+									onMouseDown={this.stopPropagation}
+									title="Automatically hide deck list"
+								>
+									<Icon src={PinIcon} />
+								</HeaderButton>
+							) : (
+								<HeaderButton
+									onClick={() => {
+										this.props.onPinned(true);
+										ga("send", "event", "Deck", "Show");
+									}}
+									onMouseDown={this.stopPropagation}
+									title="Keep deck list visible"
+								>
+									<Icon src={UnpinIcon} />
+								</HeaderButton>
+							)}
+						</Header>
+					</li>
+					{cards
+						.map((card: Triplet, index: number) => {
+							const [dbfId, current, initial] = card;
+							return (
+								<li key={index}>
+									<CardTile
+										dbfId={dbfId}
+										count={current}
+										showRarity={this.props.showRarities}
+										gift={initial === 0}
+										tooltipDisabled={this.props.hidden || this.props.moving}
+									/>
+								</li>
+							);
+						})
+						.filter(x => !!x)}
+				</CardList>
+			</Wrapper>
 		);
 	}
 
