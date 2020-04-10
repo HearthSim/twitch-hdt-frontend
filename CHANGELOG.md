@@ -6,17 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- Added support for Hearthstone Battlegrounds
 - Added Google Analytics
-- Added a text-based fallback for the copy deck button
+- Added support for Hearthstone Battlegrounds
+- Added a text-based fallback for the copy deck button on mobile
+- Added dark theme support to Extension Configuration
 
 ### Changed
 - Updated for Hearthstone's Year of the Phoenix
-- Updated hearthstonejson library to use native browser cache over localStorage
-- Updated deck list position for new Twitch player layout
-- Updated card stats position for new Twitch player layout
-- Updated Extension Configuration for dark theme
-- Updated unpin behaviour
+- Updated overlay positions for current Twitch player layout
+- Improved the unpin behaviour to feel more snappy
 
 ### Removed
 - Removed Stream preview due to deprecation of unauthenticated API requests
