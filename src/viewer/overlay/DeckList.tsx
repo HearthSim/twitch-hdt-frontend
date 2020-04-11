@@ -1,7 +1,7 @@
-import clipboard from "clipboard-polyfill";
+import * as clipboard from "clipboard-polyfill";
 import { CardData } from "hearthstonejson-client";
 import isEqual from "lodash.isequal";
-import React from "react";
+import * as React from "react";
 import styled from "styled-components";
 import { BoardStateDeckCard, FormatType } from "../../twitch-hdt";
 import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";

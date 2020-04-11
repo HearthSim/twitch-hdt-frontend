@@ -1,5 +1,5 @@
 import { ValidationMap } from "prop-types";
-import React from "react";
+import * as React from "react";
 import { capitalize } from "./strings";
 
 /**

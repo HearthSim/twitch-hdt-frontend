@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Card as ComponentCard } from "react-hs-components";
 import {
 	CardsProps,

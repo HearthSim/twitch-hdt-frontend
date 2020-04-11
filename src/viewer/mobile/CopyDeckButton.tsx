@@ -1,5 +1,5 @@
 import * as clipboard from "clipboard-polyfill";
-import React from "react";
+import * as React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { BoardStatePlayer } from "../../twitch-hdt";

@@ -1,5 +1,5 @@
 import { CardData } from "hearthstonejson-client";
-import React from "react";
+import * as React from "react";
 import styled from "styled-components";
 import { BoardStateDeckCard, FormatType } from "../../twitch-hdt";
 import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";

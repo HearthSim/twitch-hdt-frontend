@@ -1,6 +1,6 @@
 import HearthstoneJSON, { CardData } from "hearthstonejson-client";
 import PropTypes from "prop-types";
-import React from "react";
+import * as React from "react";
 import { HearthstoneLocale } from "react-hs-components/dist/components/Card";
 import { makeHOC } from "./hocs";
 
