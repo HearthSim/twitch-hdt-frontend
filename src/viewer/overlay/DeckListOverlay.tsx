@@ -165,6 +165,7 @@ class DeckListOverlay extends React.Component<Props & TwitchExtProps, State> {
 						moving={this.state.moving}
 						onMoveStart={this.onMoveStart}
 						onMoveEnd={this.onMoveEnd}
+						deck={this.props.deck || null}
 					/>
 				</DeckListBounds>
 			</Wrapper>

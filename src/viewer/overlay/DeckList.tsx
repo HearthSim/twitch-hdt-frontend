@@ -3,12 +3,17 @@ import { CardData } from "hearthstonejson-client";
 import isEqual from "lodash.isequal";
 import * as React from "react";
 import styled from "styled-components";
-import { BoardStateDeckCard, FormatType } from "../../twitch-hdt";
+import {
+	BoardStateDeck,
+	BoardStateDeckCard,
+	FormatType,
+} from "../../twitch-hdt";
 import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";
 import { DecklistPosition } from "../../utils/config";
 import { getCopiableDeck } from "../../utils/hearthstone";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import CardTile from "../CardTile";
+import CopyDeckButton, { CopyDeckButtonChildProps } from "../CopyDeckButton";
 import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "../icons";
 
 interface PositionProps {
@@ -115,19 +120,6 @@ const CardList = styled.ul<{ moving?: boolean; position: DecklistPosition }>`
 		props.position === DecklistPosition.TOP_LEFT ? "top left" : "top right"};
 `;
 
-const CopyDeckButton = styled.button`
-	width: 100%;
-	font-weight: bold;
-	color: white;
-	padding: 5px 0;
-	background-color: #3188b8;
-	border: 1px solid #3188b8;
-
-	&:hover {
-		background-color: #2c79a4;
-	}
-`;
-
 export const Icon = styled.img<PaddingProps>`
 	height: 100%;
 	padding: ${props => (props.padding ? props.padding : "7px 0")};
@@ -150,11 +142,12 @@ interface Props {
 	moving?: boolean;
 	onMoveStart?: (e: React.MouseEvent<HTMLElement>) => void;
 	onMoveEnd?: (e: React.MouseEvent<HTMLElement>) => void;
+	deck: BoardStateDeck | null;
 }
 
 interface State {
-	scale?: number;
-	copied?: boolean;
+	scale: number;
+	copyFallback: string | null;
 }
 
 class DeckList extends React.Component<
@@ -168,7 +161,7 @@ class DeckList extends React.Component<
 		super(props, context);
 		this.state = {
 			scale: 1,
-			copied: false,
+			copyFallback: null,
 		};
 	}
 
@@ -199,10 +192,7 @@ class DeckList extends React.Component<
 		nextState: Readonly<State>,
 		nextContext: any,
 	): boolean {
-		if (
-			nextState.scale !== this.state.scale ||
-			nextState.copied !== this.state.copied
-		) {
+		if (nextState.scale !== this.state.scale) {
 			return true;
 		}
 		if (
@@ -226,7 +216,8 @@ class DeckList extends React.Component<
 			nextProps.hidden !== this.props.hidden ||
 			nextProps.moving !== this.props.moving ||
 			nextProps.onMoveStart !== this.props.onMoveStart ||
-			nextProps.onMoveEnd !== this.props.onMoveEnd
+			nextProps.onMoveEnd !== this.props.onMoveEnd ||
+			nextProps.deck !== this.props.deck
 		);
 	}
 
@@ -266,9 +257,7 @@ class DeckList extends React.Component<
 
 		// shift CardData
 		const cards: Triplet[] = unsortedCards.map(
-			(card: NullableQuad): Triplet => {
-				return [card[1], card[2], card[3]];
-			},
+			(card: NullableQuad): Triplet => [card[1], card[2], card[3]],
 		);
 
 		const useDeckName =
@@ -297,93 +286,94 @@ class DeckList extends React.Component<
 					position={this.props.position}
 				>
 					<li>
-						<Header>
-							<Icon
-								src={HSReplayNetIcon}
-								padding="4px"
-								title="Powered by HSReplay.net"
-							/>
-							<h1 title={useDeckName ? this.props.name : "Unnamed Deck"}>
-								{this.state.copied
-									? "Copied!"
-									: useDeckName
-									? this.props.name
-									: "HSReplay.net"}
-							</h1>
-							<CopyButton
-								onClick={e => {
-									if (e.button !== 0) {
-										return;
-									}
-									e.preventDefault();
-									if (this.props.format === null || this.props.hero === null) {
-										return;
-									}
-									const toCopy = getCopiableDeck(
-										this.props.cardList,
-										this.props.format,
-										[this.props.hero],
-										this.props.name,
-									);
-									clipboard.writeText(toCopy).then(() => {
-										this.setState({ copied: true }, () => {
-											this.clearTimeout();
-											this.copiedTimeout = window.setTimeout(() => {
-												this.setState({ copied: false });
-											}, 3000);
-										});
-									});
-									const target = document.activeElement as HTMLElement;
-									if (target && typeof target.blur === "function") {
-										target.blur();
-									}
-									ga("send", "event", "Deck", "Copy", "Overlay");
-								}}
-								onMouseDown={this.stopPropagation}
-								title="Copy deck to clipboard"
-							>
-								<Icon src={CopyDeckIcon} />
-							</CopyButton>
-							{this.props.pinned ? (
-								<HeaderButton
-									onClick={e => {
-										if (e.button !== 0) {
-											return;
-										}
-										e.preventDefault();
-										this.props.onPinned(false);
-										const target = document.activeElement as HTMLElement;
-										if (target && typeof target.blur === "function") {
-											target.blur();
-										}
-										ga("send", "event", "Deck", "Hide");
-									}}
-									onMouseDown={this.stopPropagation}
-									title="Automatically hide deck list"
-								>
-									<Icon src={PinIcon} />
-								</HeaderButton>
-							) : (
-								<HeaderButton
-									onClick={e => {
-										if (e.button !== 0) {
-											return;
-										}
-										e.preventDefault();
-										this.props.onPinned(true);
-										const target = document.activeElement as HTMLElement;
-										if (target && typeof target.blur === "function") {
-											target.blur();
-										}
-										ga("send", "event", "Deck", "Show");
-									}}
-									onMouseDown={this.stopPropagation}
-									title="Keep deck list visible"
-								>
-									<Icon src={UnpinIcon} />
-								</HeaderButton>
+						<CopyDeckButton
+							deck={this.props.deck}
+							onCopy={() => {
+								ga("send", "event", "Deck", "Copy", "Overlay");
+							}}
+						>
+							{({
+								disabled,
+								copied,
+								onClick: copyDeck,
+							}: CopyDeckButtonChildProps) => (
+								<Header>
+									<Icon
+										src={HSReplayNetIcon}
+										padding="4px"
+										title="Powered by HSReplay.net"
+									/>
+									<h1 title={useDeckName ? this.props.name : "Unnamed Deck"}>
+										{copied
+											? "Copied!"
+											: useDeckName
+											? this.props.name
+											: "HSReplay.net"}
+									</h1>
+									<CopyButton
+										onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+											e.preventDefault();
+											e.stopPropagation();
+											if (
+												e.currentTarget === document.activeElement &&
+												typeof e.currentTarget.blur === "function"
+											) {
+												e.currentTarget.blur();
+											}
+											copyDeck();
+										}}
+										onMouseDown={e => {
+											e.stopPropagation();
+										}}
+										title="Copy deck to clipboard"
+										disabled={disabled}
+									>
+										<Icon src={CopyDeckIcon} />
+									</CopyButton>
+									{this.props.pinned ? (
+										<HeaderButton
+											onClick={e => {
+												if (e.button !== 0) {
+													return;
+												}
+												e.preventDefault();
+												this.props.onPinned(false);
+												if (
+													e.currentTarget === document.activeElement &&
+													typeof e.currentTarget.blur === "function"
+												) {
+													e.currentTarget.blur();
+												}
+												ga("send", "event", "Deck", "Hide");
+											}}
+											onMouseDown={this.stopPropagation}
+											title="Automatically hide deck list"
+										>
+											<Icon src={PinIcon} />
+										</HeaderButton>
+									) : (
+										<HeaderButton
+											onClick={e => {
+												if (e.button !== 0) {
+													return;
+												}
+												e.preventDefault();
+												this.props.onPinned(true);
+												const target = document.activeElement as HTMLElement;
+												if (target && typeof target.blur === "function") {
+													target.blur();
+												}
+												ga("send", "event", "Deck", "Show");
+											}}
+											onMouseDown={this.stopPropagation}
+											title="Keep deck list visible"
+										>
+											<Icon src={UnpinIcon} />
+										</HeaderButton>
+									)}
+								</Header>
 							)}
-						</Header>
+						</CopyDeckButton>
 					</li>
 					{cards
 						.map((card: Triplet, index: number) => {

@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { BnetGameType } from "../twitch-hdt";
 import { CardsProps, withCards } from "../utils/cards";
-import { PortalProps, withPortal } from "../utils/portal";
+import { PortalConsumer } from "../utils/portal";
 import Card from "./Card";
 import CardStatistics from "./CardStatistics";
 
@@ -28,7 +28,7 @@ interface State {
 	width?: number | null;
 }
 
-class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
+class Entity extends React.Component<Props & CardsProps, State> {
 	public static contextTypes = {
 		formatType: PropTypes.number,
 		gameType: PropTypes.number,
@@ -39,7 +39,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 	public statisticsTimeout: number | null = null;
 	public touchTimeout: number | null = null;
 
-	constructor(props: Props & CardsProps & PortalProps, context: any) {
+	constructor(props: Props & CardsProps, context: any) {
 		super(props, context);
 		this.state = {
 			isHovering: false,
@@ -51,7 +51,7 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 	}
 
 	public componentDidUpdate(
-		prevProps: Readonly<Props & CardsProps & PortalProps>,
+		prevProps: Readonly<Props & CardsProps>,
 		prevState: Readonly<State>,
 		prevContext: any,
 	): void {
@@ -93,101 +93,105 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 	}
 
 	public render(): React.ReactNode {
-		if (!this.props.dbfId) {
+		const { dbfId, disabled, flipped, cards, children } = this.props;
+		const { x, y, width, isHovering, isMeaningfulHover } = this.state;
+
+		if (!dbfId) {
 			return null;
-		}
-		const card = this.props.cards.getByDbfId(this.props.dbfId);
-
-		let tooltip = null;
-		let statistics = null;
-		if (
-			this.state.isHovering &&
-			!this.props.disabled &&
-			this.props.portal &&
-			card &&
-			card.id
-		) {
-			tooltip = ReactDOM.createPortal(
-				<Card
-					dbfId={this.props.dbfId}
-					x={this.state.x || 0}
-					y={this.state.y || 0}
-					width={this.state.width || 0}
-					flipped={this.props.flipped}
-					battlegrounds={
-						this.context.gameType === BnetGameType.BGT_BATTLEGROUNDS &&
-						(!card || card.type !== "HERO")
-					}
-				/>,
-				this.props.portal,
-			);
-
-			if (
-				card.collectible &&
-				this.context.statisticsContainer &&
-				this.context.formatType &&
-				this.context.gameType !== BnetGameType.BGT_BATTLEGROUNDS &&
-				this.state.isMeaningfulHover
-			) {
-				const Container = this.context.statisticsContainer;
-				statistics = ReactDOM.createPortal(
-					<Container>
-						<CardStatistics
-							dbfId={this.props.dbfId}
-							formatType={this.context.formatType}
-						/>
-					</Container>,
-					this.props.portal,
-				);
-			}
 		}
 
 		return (
-			<EntityDiv
-				onMouseEnter={e => {
-					let { clientX: x, clientY: y } = e;
-					const rect = this.ref && this.ref.getBoundingClientRect();
-					let width = null;
-					if (rect) {
-						x = rect.right - rect.width / 2;
-						y = rect.bottom - rect.height / 2;
-						width = rect.width;
+			<PortalConsumer>
+				{({ portal }) => {
+					const card = cards.getByDbfId(dbfId);
+
+					let tooltip = null;
+					let statistics = null;
+					if (isHovering && !disabled && portal && card && card.id) {
+						tooltip = ReactDOM.createPortal(
+							<Card
+								dbfId={dbfId}
+								x={x || 0}
+								y={y || 0}
+								width={width || 0}
+								flipped={flipped}
+								battlegrounds={
+									this.context.gameType === BnetGameType.BGT_BATTLEGROUNDS &&
+									(!card || card.type !== "HERO")
+								}
+							/>,
+							portal,
+						);
+
+						if (
+							card.collectible &&
+							this.context.statisticsContainer &&
+							this.context.formatType &&
+							this.context.gameType !== BnetGameType.BGT_BATTLEGROUNDS &&
+							isMeaningfulHover
+						) {
+							const Container = this.context.statisticsContainer;
+							statistics = ReactDOM.createPortal(
+								<Container>
+									<CardStatistics
+										dbfId={dbfId}
+										formatType={this.context.formatType}
+									/>
+								</Container>,
+								portal,
+							);
+						}
 					}
 
-					this.setState({
-						isHovering: true,
-						width,
-						x,
-						y,
-					});
+					return (
+						<EntityDiv
+							onMouseEnter={e => {
+								let { clientX: x, clientY: y } = e;
+								const rect = this.ref && this.ref.getBoundingClientRect();
+								let width = null;
+								if (rect) {
+									x = rect.right - rect.width / 2;
+									y = rect.bottom - rect.height / 2;
+									width = rect.width;
+								}
+
+								this.setState({
+									isHovering: true,
+									width,
+									x,
+									y,
+								});
+							}}
+							onMouseLeave={() => {
+								this.setState({
+									isHovering: false,
+									x: null,
+									y: null,
+								});
+							}}
+							onTouchStart={this.onTouchStart}
+							onTouchMove={() => {
+								this.clearTouchTimeout();
+								this.setState({
+									isHovering: false,
+								});
+							}}
+							onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => {
+								e.preventDefault();
+								this.clearTouchTimeout();
+								this.setState({
+									isHovering: false,
+								});
+							}}
+							ref={(ref: HTMLDivElement | null) => (this.ref = ref)}
+						>
+							{tooltip}
+							{statistics}
+							{children}
+						</EntityDiv>
+					);
 				}}
-				onMouseLeave={() => {
-					this.setState({
-						isHovering: false,
-						x: null,
-						y: null,
-					});
-				}}
-				onTouchStart={this.onTouchStart}
-				onTouchMove={() => {
-					this.clearTouchTimeout();
-					this.setState({
-						isHovering: false,
-					});
-				}}
-				onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => {
-					e.preventDefault();
-					this.clearTouchTimeout();
-					this.setState({
-						isHovering: false,
-					});
-				}}
-				ref={(ref: HTMLDivElement | null) => (this.ref = ref)}
-			>
-				{tooltip}
-				{statistics}
-				{this.props.children}
-			</EntityDiv>
+			</PortalConsumer>
 		);
 	}
 
@@ -209,4 +213,4 @@ class Entity extends React.Component<Props & CardsProps & PortalProps, State> {
 	};
 }
 
-export default withPortal(withCards(Entity));
+export default withCards(Entity);

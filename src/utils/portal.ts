@@ -1,10 +1,8 @@
-import PropTypes from "prop-types";
-import { makeHOC } from "./hocs";
+import React from "react";
 
-export interface PortalProps {
-	portal: HTMLDivElement;
-}
-
-export const withPortal = makeHOC<PortalProps>({
-	portal: PropTypes.object,
+const PortalContext = React.createContext<{ portal: HTMLElement | null }>({
+	portal: null,
 });
+const { Provider: PortalProvider, Consumer: PortalConsumer } = PortalContext;
+
+export { PortalContext, PortalProvider, PortalConsumer };

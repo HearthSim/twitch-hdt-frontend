@@ -4,13 +4,18 @@ import styled from "styled-components";
 import {
 	BnetGameType,
 	BoardStateData,
+	BoardStatePlayer,
 	EBSConfiguration,
 } from "../../twitch-hdt";
+import { PortalProvider } from "../../utils/portal";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
-import { HSReplayNetIcon } from "../icons";
+import CopyDeckButton, {
+	CopyDeckButtonChild,
+	CopyDeckButtonChildProps,
+} from "../CopyDeckButton";
+import { CopyDeckIcon, HSReplayNetIcon } from "../icons";
 import { TooltipBehaviour, TooltipProvider } from "../utils/tooltips";
 import CardList from "./CardList";
-import CopyDeckButton from "./CopyDeckButton";
 import Scroller from "./Scroller";
 
 interface Props {
@@ -205,7 +210,8 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 	public render(): React.ReactNode {
 		const { boardState } = this.props;
 
-		const player = boardState && boardState.player;
+		const player: BoardStatePlayer | null =
+			(boardState && boardState.player) || null;
 		const deck = player && player.deck;
 		const isDark = this.props.twitchExtContext
 			? this.props.twitchExtContext.theme === "dark"
@@ -240,23 +246,25 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 			<TooltipProvider value={{ behaviour: TooltipBehaviour.FULLSCREEN }}>
 				<PanelDiv>
 					<Portal ref={ref => (this.portal = ref)} />
-					<Header>
-						<HeaderIcon src={HSReplayNetIcon} />
-						<h1>{title}</h1>
-						<CopyDeckButton onCopy={this.onCopy} player={player} />
-					</Header>
-					<Scroller>
-						<CardList cardList={deck.cards} />
-					</Scroller>
+					<PortalProvider value={{ portal: this.portal }}>
+						<Header>
+							<HeaderIcon src={HSReplayNetIcon} />
+							<h1>{title}</h1>
+							<CopyDeckButton deck={deck}>
+								{({ onClick, copied, disabled }: CopyDeckButtonChildProps) => (
+									<button onClick={onClick} disabled={disabled}>
+										{copied ? "Copied" : "Copy Deck"}
+									</button>
+								)}
+							</CopyDeckButton>
+						</Header>
+						<Scroller>
+							<CardList cardList={deck.cards} />
+						</Scroller>
+					</PortalProvider>
 				</PanelDiv>
 			</TooltipProvider>
 		);
-	}
-
-	public getChildContext() {
-		return {
-			portal: this.portal,
-		};
 	}
 
 	private clearTimeout(): void {
