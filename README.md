@@ -31,6 +31,10 @@ Follow the [setup guide](https://hsdecktracker.net/twitch/setup/) to add the ext
 - (Re)format code: `yarn format`
 - Lint code: `yarn lint`
 
+## How it works
+
+![System Diagram](docs/hdt-twitch.png)
+
 ## Testing
 
 - Clone [twitch-hdt-simulator](https://github.com/HearthSim/twitch-hdt-simulator)
