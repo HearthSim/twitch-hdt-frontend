@@ -319,10 +319,9 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 			Array.isArray(player.deck.cards) &&
 			!player.deck.cards.length;
 
+		const ignoreDeck = gameType === BnetGameType.BGT_BATTLEGROUNDS;
 		const hideDecklist =
-			isEmptyDeck ||
-			gameType === BnetGameType.BGT_BATTLEGROUNDS ||
-			isHidden(Feature.DECKLIST);
+			isEmptyDeck || ignoreDeck || isHidden(Feature.DECKLIST);
 		const hideTooltips = !boardState || isHidden(Feature.TOOLTIPS);
 
 		return (
@@ -417,34 +416,38 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 							<Weapon bottom={"16.8vh"} left={"64.25vh"}>
 								<Entity dbfId={player.weapon || null} />
 							</Weapon>
-							<Deck top={"24vh"} right={"24vh"}>
-								<Expander
-									title={
-										opponent.deck
-											? opponent.deck.size
-												? `${opponent.deck.size} card${
-														+opponent.deck.size !== 1 ? "s" : ""
-												  } remaining`
-												: `Out of cards! Next draw fatigues for ${(opponent.fatigue ||
-														0) + 1} damage.`
-											: ""
-									}
-								/>
-							</Deck>
-							<Deck bottom={"33vh"} right={"24vh"}>
-								<Expander
-									title={
-										player.deck
-											? player.deck.size
-												? `${player.deck.size} card${
-														+player.deck.size !== 1 ? "s" : ""
-												  } remaining`
-												: `Out of cards! Next draw fatigues for ${(player.fatigue ||
-														0) + 1} damage.`
-											: ""
-									}
-								/>
-							</Deck>
+							{!ignoreDeck ? (
+								<>
+									<Deck top={"24vh"} right={"24vh"}>
+										<Expander
+											title={
+												opponent.deck
+													? opponent.deck.size
+														? `${opponent.deck.size} card${
+																+opponent.deck.size !== 1 ? "s" : ""
+														  } remaining`
+														: `Out of cards! Next draw fatigues for ${(opponent.fatigue ||
+																0) + 1} damage.`
+													: ""
+											}
+										/>
+									</Deck>
+									<Deck bottom={"33vh"} right={"24vh"}>
+										<Expander
+											title={
+												player.deck
+													? player.deck.size
+														? `${player.deck.size} card${
+																+player.deck.size !== 1 ? "s" : ""
+														  } remaining`
+														: `Out of cards! Next draw fatigues for ${(player.fatigue ||
+																0) + 1} damage.`
+													: ""
+											}
+										/>
+									</Deck>
+								</>
+							) : null}
 						</Offset>
 					)}
 				</PortalProvider>
