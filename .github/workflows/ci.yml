@@ -1,0 +1,27 @@
+name: Continuous Integration
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v1
+
+      - name: Install
+        run: yarn --pure-lockfile
+
+      - name: Lint - Prettier
+        run: yarn lint:prettier
+
+      - name: Lint - TSLint
+        continue-on-error: true
+        run: yarn lint:tslint
+
+      - name: Build
+        run: yarn build
