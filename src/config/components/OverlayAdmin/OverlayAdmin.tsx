@@ -2,10 +2,11 @@ import * as React from "react";
 import styled from "styled-components";
 import { EBSConfiguration } from "../../../twitch-hdt";
 import {
-	DecklistPosition,
 	Feature,
 	hasFeature,
+	OverlayPosition,
 	setFeature,
+	WhenToShowBobsBuddy,
 } from "../../../utils/config";
 import { Fieldset, Heading } from "../ConfigView/ConfigView";
 import StreamPreview from "./Preview";
@@ -17,6 +18,16 @@ const VerticalList = styled.ul`
 	& > li:not(:first-child) {
 		margin-top: 10px;
 	}
+`;
+
+const SectionHeader = styled.label`
+	font-size: 20px;
+	font-weight: 250;
+	text-decoration: underline;
+	display: block;
+	border-width: 100%;
+	margin-bottom: 7px;
+	margin-top: 20px;
 `;
 
 const Row = styled.div<{ width?: string }>`
@@ -51,6 +62,10 @@ const Label = styled.label`
 	line-height: 1em;
 `;
 
+const FullLineLabel = styled.label`
+	display: block;
+`;
+
 interface Props {
 	disabled: boolean;
 	settings: EBSConfiguration | null;
@@ -81,7 +96,14 @@ export default class OverlayAdmin extends React.Component<Props> {
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		this.props.setSetting("deck_position", event.target
-			.value as DecklistPosition);
+			.value as OverlayPosition);
+	};
+
+	public changeWhenToShowBobsBuddy = (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		this.props.setSetting("when_to_show_bobs_buddy", event.target
+			.value as WhenToShowBobsBuddy);
 	};
 
 	public setFeature = (feature: Feature) => (
@@ -113,17 +135,24 @@ export default class OverlayAdmin extends React.Component<Props> {
 	};
 
 	public render(): React.ReactNode {
-		let decklistPosition = DecklistPosition.TOP_LEFT;
+		let decklistPosition = OverlayPosition.TOP_LEFT;
 		if (this.props.settings) {
 			decklistPosition =
-				(this.props.settings.deck_position as DecklistPosition) ||
+				(this.props.settings.deck_position as OverlayPosition) ||
 				decklistPosition;
+		}
+
+		let whenToShowBobsBuddy = WhenToShowBobsBuddy.All;
+		if (this.props.settings) {
+			whenToShowBobsBuddy =
+				(this.props.settings.when_to_show_bobs_buddy as WhenToShowBobsBuddy) ||
+				whenToShowBobsBuddy;
 		}
 
 		const hiddenFeatures = this.getHiddenFeatures();
 		const tooltipsEnabled = !hasFeature(hiddenFeatures, Feature.TOOLTIPS);
 		const decklistEnabled = !hasFeature(hiddenFeatures, Feature.DECKLIST);
-
+		const bobsBuddyEnabled = !hasFeature(hiddenFeatures, Feature.BOBSBUDDY);
 		const hideTooltips = true;
 		const horizontalGameOffset = this.props.settings
 			? this.props.settings.game_offset_horizontal
@@ -139,6 +168,7 @@ export default class OverlayAdmin extends React.Component<Props> {
 					<div>
 						<VerticalList>
 							<li>
+								<SectionHeader>Deck List</SectionHeader>
 								<label>
 									<input
 										type="checkbox"
@@ -146,7 +176,7 @@ export default class OverlayAdmin extends React.Component<Props> {
 										disabled={this.props.disabled}
 										onChange={this.setFeature(Feature.DECKLIST)}
 									/>{" "}
-									Deck List
+									Enable Deck List
 								</label>
 							</li>
 							{decklistEnabled ? (
@@ -164,9 +194,9 @@ export default class OverlayAdmin extends React.Component<Props> {
 										<label>
 											<input
 												type="radio"
-												checked={decklistPosition === DecklistPosition.TOP_LEFT}
+												checked={decklistPosition === OverlayPosition.TOP_LEFT}
 												disabled={!decklistEnabled || this.props.disabled}
-												value={DecklistPosition.TOP_LEFT}
+												value={OverlayPosition.TOP_LEFT}
 												onChange={this.changeDecklistPosition}
 											/>{" "}
 											Top Left
@@ -174,11 +204,9 @@ export default class OverlayAdmin extends React.Component<Props> {
 										<label>
 											<input
 												type="radio"
-												checked={
-													decklistPosition === DecklistPosition.TOP_RIGHT
-												}
+												checked={decklistPosition === OverlayPosition.TOP_RIGHT}
 												disabled={!decklistEnabled || this.props.disabled}
-												value={DecklistPosition.TOP_RIGHT}
+												value={OverlayPosition.TOP_RIGHT}
 												onChange={this.changeDecklistPosition}
 											/>{" "}
 											Top Right
@@ -187,6 +215,69 @@ export default class OverlayAdmin extends React.Component<Props> {
 								</li>
 							) : null}
 							<li>
+								<SectionHeader>Bob's Buddy</SectionHeader>
+								<label>
+									<input
+										type="checkbox"
+										checked={bobsBuddyEnabled}
+										disabled={this.props.disabled}
+										onChange={this.setFeature(Feature.BOBSBUDDY)}
+									/>{" "}
+									Enable Bob's Buddy
+								</label>
+							</li>
+							{bobsBuddyEnabled ? (
+								<li>
+									<p style={{ fontStyle: "italic" }}>
+										Viewers can see your Bob's Buddy results. They can hide the
+										panel for themselves. Note: This feature requires Bob's
+										Buddy to be active and configured on your Hearthstone Deck
+										Tracker.
+										<br />
+									</p>
+
+									<Label as="span" style={{ marginBottom: "4px" }}>
+										When To Show Bob's Buddy Results:
+									</Label>
+									<FullLineLabel>
+										<input
+											type="radio"
+											checked={whenToShowBobsBuddy === WhenToShowBobsBuddy.All}
+											disabled={!bobsBuddyEnabled || this.props.disabled}
+											value={WhenToShowBobsBuddy.All}
+											onChange={this.changeWhenToShowBobsBuddy}
+										/>{" "}
+										Always
+									</FullLineLabel>
+									<FullLineLabel>
+										<input
+											type="radio"
+											checked={
+												whenToShowBobsBuddy ===
+												WhenToShowBobsBuddy.OnlyInShopping
+											}
+											disabled={!bobsBuddyEnabled || this.props.disabled}
+											value={WhenToShowBobsBuddy.OnlyInShopping}
+											onChange={this.changeWhenToShowBobsBuddy}
+										/>{" "}
+										Only During Shopping
+									</FullLineLabel>
+									<FullLineLabel>
+										<input
+											type="radio"
+											checked={
+												whenToShowBobsBuddy === WhenToShowBobsBuddy.OnlyInCombat
+											}
+											disabled={!bobsBuddyEnabled || this.props.disabled}
+											value={WhenToShowBobsBuddy.OnlyInCombat}
+											onChange={this.changeWhenToShowBobsBuddy}
+										/>{" "}
+										Only During Combat
+									</FullLineLabel>
+								</li>
+							) : null}
+							<li>
+								<SectionHeader>Interactive Tooltips</SectionHeader>
 								<label>
 									<input
 										type="checkbox"
@@ -194,7 +285,7 @@ export default class OverlayAdmin extends React.Component<Props> {
 										disabled={this.props.disabled}
 										onChange={this.setFeature(Feature.TOOLTIPS)}
 									/>{" "}
-									Interactive Tooltips
+									Enable Interactive Tooltips
 								</label>
 							</li>
 							{tooltipsEnabled ? (
@@ -205,7 +296,7 @@ export default class OverlayAdmin extends React.Component<Props> {
 								>
 									<p style={{ fontStyle: "italic" }}>
 										Viewers can hover over Minions, Heroes, Hero Powers,
-										Weapons, Secrets, Quests to view the full card.
+										Weapons, Secrets, and Quests to view the full card.
 									</p>
 									<Label>
 										Horizontal Offset:

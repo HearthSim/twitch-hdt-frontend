@@ -6,11 +6,20 @@ import {
 	BoardStateData,
 	EBSConfiguration,
 } from "../../twitch-hdt";
-import { DecklistPosition, Feature, hasFeature } from "../../utils/config";
+import {
+	Feature,
+	hasFeature,
+	OverlayPosition,
+	WhenToShowBobsBuddy,
+} from "../../utils/config";
 import { PortalProvider } from "../../utils/portal";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import Entity from "../Entity";
-import DeckListOverlay from "./DeckListOverlay";
+import { getViewerConfig, setViewerConfig } from "../utils/userconfigutil";
+import BobsBuddy from "./BobsBuddy";
+import BobsBuddyUserConfig from "./BobsBuddyUserConfig";
+import DeckList from "./DeckList";
+import PositionableOverlay from "./PositionableOverlay";
 
 export interface PositionProps {
 	top?: string;
@@ -181,6 +190,9 @@ interface Props {
 interface State {
 	hovering?: boolean;
 	pinDeck?: boolean;
+	bobsBuddyEnabled: boolean;
+	bobsBuddyShowDuringCombat: boolean;
+	bobsBuddyShowDuringShopping: boolean;
 }
 
 class Overlay extends React.Component<Props & TwitchExtProps, State> {
@@ -199,6 +211,15 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		this.state = {
 			hovering: true,
 			pinDeck: true,
+			bobsBuddyEnabled: getViewerConfig("bobs_buddy-enabled", "1"),
+			bobsBuddyShowDuringCombat: getViewerConfig(
+				"bobs_buddy-show_during_combat",
+				"1",
+			),
+			bobsBuddyShowDuringShopping: getViewerConfig(
+				"bobs_buddy-show_during_shopping",
+				"1",
+			),
 		};
 	}
 
@@ -288,7 +309,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 					: BnetGameType.BGT_UNKNOWN,
 			portal: this.portal,
 			statisticsContainer:
-				this.props.config.deck_position === DecklistPosition.TOP_RIGHT
+				this.props.config.deck_position === OverlayPosition.TOP_RIGHT
 					? LeftStatistics
 					: RightStatistics,
 		};
@@ -322,6 +343,8 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		const ignoreDeck = gameType === BnetGameType.BGT_BATTLEGROUNDS;
 		const hideDecklist =
 			isEmptyDeck || ignoreDeck || isHidden(Feature.DECKLIST);
+		const hideBobsBuddy =
+			gameType != BnetGameType.BGT_BATTLEGROUNDS || isHidden(Feature.BOBSBUDDY);
 		const hideTooltips = !boardState || isHidden(Feature.TOOLTIPS);
 
 		return (
@@ -342,21 +365,133 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 				<Portal ref={ref => (this.portal = ref)} />
 				<PortalProvider value={{ portal: this.portal }}>
 					{hideDecklist ? null : (
-						<DeckListOverlay
-							deck={player.deck}
+						<PositionableOverlay
 							position={
-								this.props.config.deck_position === DecklistPosition.TOP_RIGHT
-									? DecklistPosition.TOP_RIGHT
-									: DecklistPosition.TOP_LEFT
+								this.props.config.deck_position === OverlayPosition.TOP_RIGHT
+									? OverlayPosition.TOP_RIGHT
+									: OverlayPosition.TOP_LEFT
 							}
-							pinDeck={!!this.state.pinDeck}
-							onPinDeck={(pinDeck: boolean) => {
-								this.setState({ pinDeck });
-							}}
 							engaged={this.state.hovering}
-							hidden={!boardState}
-						/>
+							hidden={!this.state.pinDeck && !this.state.hovering}
+							movable={true}
+						>
+							{({ moving, onMoveStart, onMoveEnd }) => (
+								<DeckList
+									cardList={
+										player.deck && Array.isArray(player.deck.cards)
+											? player.deck.cards
+											: []
+									}
+									format={
+										player.deck && player.deck.format
+											? player.deck.format
+											: null
+									}
+									hero={
+										player.deck && player.deck.hero ? player.deck.hero : null
+									}
+									name={player.deck && player.deck.name}
+									showRarities={false}
+									position={
+										this.props.config.deck_position ===
+										OverlayPosition.TOP_RIGHT
+											? OverlayPosition.TOP_RIGHT
+											: OverlayPosition.TOP_LEFT
+									}
+									pinned={!!this.state.pinDeck}
+									onPinned={(pinDeck: boolean) => {
+										this.setState({ pinDeck });
+									}}
+									hidden={!boardState}
+									moving={moving}
+									onMoveStart={onMoveStart}
+									onMoveEnd={onMoveEnd}
+									deck={player.deck || null}
+								/>
+							)}
+						</PositionableOverlay>
 					)}
+					{boardState != null &&
+					boardState.bobs_buddy_state != undefined &&
+					!hideBobsBuddy ? (
+						<>
+							{this.state.bobsBuddyEnabled ? (
+								<PositionableOverlay
+									position={OverlayPosition.TOP_CENTER}
+									engaged={this.state.hovering}
+									hidden={false}
+									movable={false}
+								>
+									{({ moving, onMoveStart, onMoveEnd }) =>
+										boardState != null &&
+										boardState.bobs_buddy_state !== undefined ? (
+											<BobsBuddy
+												winRate={boardState.bobs_buddy_state.win_rate}
+												tieRate={boardState.bobs_buddy_state.tie_rate}
+												lossRate={boardState.bobs_buddy_state.loss_rate}
+												playerLethal={
+													boardState.bobs_buddy_state.player_lethal_rate
+												}
+												opponentLethal={
+													boardState.bobs_buddy_state.opponent_lethal_rate
+												}
+												simulationState={
+													boardState.bobs_buddy_state.simulation_state
+												}
+												whenToShowStats={
+													this.props.config.when_to_show_bobs_buddy
+														? (this.props.config
+																.when_to_show_bobs_buddy as WhenToShowBobsBuddy)
+														: WhenToShowBobsBuddy.All
+												}
+												userSeesDuringCombat={
+													this.state.bobsBuddyShowDuringCombat
+												}
+												userSeesDuringShopping={
+													this.state.bobsBuddyShowDuringShopping
+												}
+												moving={moving}
+												onMoveStart={onMoveStart}
+												onMoveEnd={onMoveEnd}
+												layout="overlay"
+											/>
+										) : null
+									}
+								</PositionableOverlay>
+							) : null}
+							<BobsBuddyUserConfig
+								show={!!this.state.hovering}
+								enabled={this.state.bobsBuddyEnabled}
+								showDuringCombat={this.state.bobsBuddyShowDuringCombat}
+								showDuringShopping={this.state.bobsBuddyShowDuringShopping}
+								onEnabledChanged={(enabled: boolean) => {
+									this.setState({ bobsBuddyEnabled: enabled });
+									setViewerConfig("bobs_buddy-enabled", enabled);
+								}}
+								onShowDuringCombatChanged={(show: boolean) => {
+									this.setState({ bobsBuddyShowDuringCombat: show });
+									setViewerConfig("bobs_buddy-show_during_combat", show);
+								}}
+								onShowDuringShoppingChanged={(show: boolean) => {
+									this.setState({ bobsBuddyShowDuringShopping: show });
+									setViewerConfig("bobs_buddy-show_during_shopping", show);
+								}}
+								streamerShowsDuringCombat={
+									this.props.config.when_to_show_bobs_buddy ===
+										WhenToShowBobsBuddy.All ||
+									this.props.config.when_to_show_bobs_buddy ===
+										WhenToShowBobsBuddy.OnlyInCombat
+								}
+								streamerShowsDuringShopping={
+									this.props.config.when_to_show_bobs_buddy ===
+										WhenToShowBobsBuddy.All ||
+									this.props.config.when_to_show_bobs_buddy ===
+										WhenToShowBobsBuddy.OnlyInShopping
+								}
+							/>
+						</>
+					) : null}
+
 					{hideTooltips ? null : (
 						<Offset
 							style={{

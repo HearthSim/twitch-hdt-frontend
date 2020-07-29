@@ -1,13 +1,19 @@
-export const enum DecklistPosition {
+export const enum OverlayPosition {
 	TOP_LEFT = "topleft",
+	TOP_CENTER = "topcenter",
 	TOP_RIGHT = "topright",
 }
 
+export const enum WhenToShowBobsBuddy {
+	All = "all",
+	OnlyInShopping = "onlyinshopping",
+	OnlyInCombat = "onlyincombat",
+}
+
 export const enum Feature {
-	DECKLIST = 1,
-	TOOLTIPS = 2,
-	// C = 4,
-	// D = 8,
+	DECKLIST = 1 << 0,
+	TOOLTIPS = 1 << 1,
+	BOBSBUDDY = 1 << 2,
 }
 
 export const setFeature = (

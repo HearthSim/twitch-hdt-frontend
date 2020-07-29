@@ -9,16 +9,12 @@ import {
 	FormatType,
 } from "../../twitch-hdt";
 import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";
-import { DecklistPosition } from "../../utils/config";
+import { OverlayPosition } from "../../utils/config";
 import { getCopiableDeck } from "../../utils/hearthstone";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import CardTile from "../CardTile";
 import CopyDeckButton, { CopyDeckButtonChildProps } from "../CopyDeckButton";
 import { CopyDeckIcon, HSReplayNetIcon, PinIcon, UnpinIcon } from "../icons";
-
-interface PositionProps {
-	position: DecklistPosition;
-}
 
 interface OpacityProps {
 	opacity?: number;
@@ -28,13 +24,9 @@ interface PaddingProps {
 	padding?: string;
 }
 
-const Wrapper = styled.div<PositionProps & OpacityProps>`
+const Wrapper = styled.div<OpacityProps>`
 	width: 240px;
 	position: absolute;
-	left: ${props =>
-		props.position === DecklistPosition.TOP_LEFT ? "20px" : "unset"};
-	right: ${props =>
-		props.position === DecklistPosition.TOP_RIGHT ? "5rem" : "unset"};
 
 	opacity: ${props => (typeof props.opacity === "number" ? props.opacity : 1)};
 	transition: opacity
@@ -105,19 +97,16 @@ const CopyButton = styled(HeaderButton)`
 	cursor: copy;
 `;
 
-const CardList = styled.ul<{ moving?: boolean; position: DecklistPosition }>`
+const CardList = styled.ul<{ position: OverlayPosition }>`
 	margin: 0;
 	list-style-type: none;
 	padding-left: 0;
 	display: flex;
 	flex-direction: column;
 
-	// movement
-	cursor: ${props => (props.moving ? "grabbing" : "grab")};
-
 	// scaling
 	transform-origin: ${props =>
-		props.position === DecklistPosition.TOP_LEFT ? "top left" : "top right"};
+		props.position === OverlayPosition.TOP_LEFT ? "top left" : "top right"};
 `;
 
 export const Icon = styled.img<PaddingProps>`
@@ -133,7 +122,7 @@ interface Props {
 	cardList: BoardStateDeckCard[];
 	format: FormatType | null;
 	hero: number | null;
-	position: DecklistPosition;
+	position: OverlayPosition;
 	name?: string;
 	showRarities?: boolean;
 	pinned?: boolean;
@@ -146,7 +135,6 @@ interface Props {
 }
 
 interface State {
-	scale: number;
 	copyFallback: string | null;
 }
 
@@ -154,37 +142,13 @@ class DeckList extends React.Component<
 	Props & CardsProps & TwitchExtProps,
 	State
 > {
-	public copiedTimeout: number | null = null;
 	public ref: HTMLDivElement | null = null;
 
 	constructor(props: Props & CardsProps & TwitchExtProps, context: any) {
 		super(props, context);
 		this.state = {
-			scale: 1,
 			copyFallback: null,
 		};
-	}
-
-	public onResize = (e: UIEvent) => {
-		window.requestAnimationFrame(() => this.resize());
-	};
-
-	public clearTimeout() {
-		if (!this.copiedTimeout) {
-			return;
-		}
-		window.clearTimeout(this.copiedTimeout);
-		this.copiedTimeout = null;
-	}
-
-	public componentDidMount() {
-		window.addEventListener("resize", this.onResize);
-		this.resize();
-	}
-
-	public componentWillUnmount() {
-		window.removeEventListener("resize", this.onResize);
-		this.clearTimeout();
 	}
 
 	public shouldComponentUpdate(
@@ -192,9 +156,6 @@ class DeckList extends React.Component<
 		nextState: Readonly<State>,
 		nextContext: any,
 	): boolean {
-		if (nextState.scale !== this.state.scale) {
-			return true;
-		}
 		if (
 			this.didPlayerLayoutChange(
 				this.props.twitchExtContext,
@@ -226,15 +187,6 @@ class DeckList extends React.Component<
 	}
 
 	public render(): React.ReactNode {
-		let position = this.props.position;
-		if (
-			[DecklistPosition.TOP_LEFT, DecklistPosition.TOP_RIGHT].indexOf(
-				position,
-			) === -1
-		) {
-			position = DecklistPosition.TOP_LEFT;
-		}
-
 		type Triplet = [number, number, number];
 		type NullableQuad = [CardData | null, number, number, number];
 
@@ -263,15 +215,34 @@ class DeckList extends React.Component<
 		const useDeckName =
 			typeof this.props.name === "string" && this.props.name.trim().length > 0;
 
+		let overrideScale: number = 0;
+		const maxScreenHeightProportion = 0.85;
+		if (
+			this.ref &&
+			this.ref.parentElement &&
+			this.ref.parentElement.parentElement
+		) {
+			const parent =
+				this.ref.parentElement && this.ref.parentElement.parentElement;
+			const { height: ownHeight } = this.ref.getBoundingClientRect();
+			let { height: boundsHeight } = parent.getBoundingClientRect();
+			boundsHeight *= maxScreenHeightProportion;
+
+			if (ownHeight > boundsHeight) {
+				overrideScale = boundsHeight / ownHeight;
+			}
+		}
+
+		const scaleTo = overrideScale !== 0 ? overrideScale : 1;
+
 		return (
 			<Wrapper
-				position={position}
 				opacity={this.props.hidden ? 0 : 1}
 				ref={ref => (this.ref = ref)}
 			>
 				<CardList
 					style={{
-						transform: `scale(${this.state.scale || 1})`,
+						transform: `scale(${scaleTo})`,
 					}}
 					onMouseDown={e => {
 						if (e.button !== 0) {
@@ -282,7 +253,6 @@ class DeckList extends React.Component<
 					onMouseUp={e => {
 						this.props.onMoveEnd && this.props.onMoveEnd(e);
 					}}
-					moving={this.props.moving}
 					position={this.props.position}
 				>
 					<li>
@@ -396,23 +366,6 @@ class DeckList extends React.Component<
 		);
 	}
 
-	public resize() {
-		if (!this.ref || !this.ref.parentElement) {
-			return;
-		}
-		if (this.props.moving) {
-			return;
-		}
-		const parent = this.ref.parentElement;
-		const { height: ownHeight } = this.ref.getBoundingClientRect();
-		const { height: boundsHeight } = parent.getBoundingClientRect();
-		const scale = Math.min(boundsHeight / ownHeight, 1);
-		if (scale === this.state.scale) {
-			return;
-		}
-		this.setState({ scale });
-	}
-
 	public didPlayerLayoutChange(
 		contextA?: TwitchExtContext,
 		contextB?: TwitchExtContext,
@@ -440,7 +393,6 @@ class DeckList extends React.Component<
 		) {
 			return;
 		}
-		this.resize();
 	}
 }
 
