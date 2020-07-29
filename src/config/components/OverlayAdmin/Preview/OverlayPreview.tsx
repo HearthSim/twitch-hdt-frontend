@@ -1,11 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { EBSConfiguration } from "../../../../twitch-hdt";
-import {
-	DecklistPosition,
-	Feature,
-	hasFeature,
-} from "../../../../utils/config";
+import { Feature, hasFeature, OverlayPosition } from "../../../../utils/config";
 
 const Stream = styled.div`
 	position: relative;
@@ -27,9 +23,9 @@ const OverlayElement = styled.div`
 	background-color: ${props => props.theme.accent};
 `;
 
-const DeckList = styled(OverlayElement)<{ position: DecklistPosition }>`
+const DeckList = styled(OverlayElement)<{ position: OverlayPosition }>`
 	${props =>
-		props.position === DecklistPosition.TOP_LEFT ? "left: 2%" : "right: 5%"};
+		props.position === OverlayPosition.TOP_LEFT ? "left: 2%" : "right: 5%"};
 	top: 10%;
 	width: 15%;
 	height: 60%;
@@ -114,7 +110,7 @@ export default class OverlayPreview extends React.Component<
 				{this.props.settings &&
 				!hasFeature(+(this.props.settings.hidden || 0), Feature.DECKLIST) ? (
 					<DeckList
-						position={this.props.settings.deck_position as DecklistPosition}
+						position={this.props.settings.deck_position as OverlayPosition}
 					/>
 				) : null}
 				{this.props.settings &&

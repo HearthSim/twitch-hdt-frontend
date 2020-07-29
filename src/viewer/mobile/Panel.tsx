@@ -7,6 +7,12 @@ import {
 	BoardStatePlayer,
 	EBSConfiguration,
 } from "../../twitch-hdt";
+import {
+	Feature,
+	hasFeature,
+	OverlayPosition,
+	WhenToShowBobsBuddy,
+} from "../../utils/config";
 import { PortalProvider } from "../../utils/portal";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import CopyDeckButton, {
@@ -14,6 +20,7 @@ import CopyDeckButton, {
 	CopyDeckButtonChildProps,
 } from "../CopyDeckButton";
 import { CopyDeckIcon, HSReplayNetIcon } from "../icons";
+import BobsBuddy from "../overlay/BobsBuddy";
 import { TooltipBehaviour, TooltipProvider } from "../utils/tooltips";
 import CardList from "./CardList";
 import Scroller from "./Scroller";
@@ -28,7 +35,7 @@ interface State {
 	hadBoardState: boolean;
 }
 
-const PanelDiv = styled.div`
+const PanelDiv = styled.div<ThemeProps>`
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -36,6 +43,8 @@ const PanelDiv = styled.div`
 	position: relative;
 	overflow: hidden;
 	user-select: none;
+	background-color: ${(props: ThemeProps) =>
+		props.dark ? "#141528" : "white"};
 `;
 
 const Portal = styled.div`
@@ -220,13 +229,25 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 			boardState && boardState.game_type === BnetGameType.BGT_BATTLEGROUNDS;
 		const emptyDeck = deck && deck.cards && !deck.cards.length;
 
-		if (!player || !deck || !deck.cards || emptyDeck || isBattlegrounds) {
-			if (
-				this.state.hadBoardState ||
-				this.state.timedOut ||
-				emptyDeck ||
-				isBattlegrounds
-			) {
+		const isHidden = (feature: Feature) =>
+			hasFeature(
+				this.props.config.hidden && !isNaN(+this.props.config.hidden)
+					? +this.props.config.hidden
+					: 0,
+				feature,
+			);
+
+		const gameType =
+			boardState && boardState.game_type
+				? boardState.game_type
+				: BnetGameType.BGT_UNKNOWN;
+
+		const showBobsBuddy = !isHidden(Feature.BOBSBUDDY);
+
+		const showDeckList = !isHidden(Feature.DECKLIST);
+
+		if (!isBattlegrounds && (!player || !deck || !deck.cards || emptyDeck)) {
+			if (this.state.hadBoardState || this.state.timedOut || emptyDeck) {
 				return (
 					<Message dark={isDark}>
 						<h1>No deck available</h1>
@@ -240,27 +261,57 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 			return <Message dark={isDark}>Loading…</Message>;
 		}
 
-		const title = deck.name || "HSReplay.net";
-
 		return (
 			<TooltipProvider value={{ behaviour: TooltipBehaviour.FULLSCREEN }}>
-				<PanelDiv>
+				<PanelDiv dark={isDark}>
 					<Portal ref={ref => (this.portal = ref)} />
 					<PortalProvider value={{ portal: this.portal }}>
-						<Header>
-							<HeaderIcon src={HSReplayNetIcon} />
-							<h1>{title}</h1>
-							<CopyDeckButton deck={deck}>
-								{({ onClick, copied, disabled }: CopyDeckButtonChildProps) => (
-									<button onClick={onClick} disabled={disabled}>
-										{copied ? "Copied" : "Copy Deck"}
-									</button>
-								)}
-							</CopyDeckButton>
-						</Header>
-						<Scroller>
-							<CardList cardList={deck.cards} />
-						</Scroller>
+						{isBattlegrounds ? (
+							boardState &&
+							boardState.bobs_buddy_state != null &&
+							showBobsBuddy ? (
+								<BobsBuddy
+									winRate={boardState.bobs_buddy_state.win_rate}
+									tieRate={boardState.bobs_buddy_state.tie_rate}
+									lossRate={boardState.bobs_buddy_state.loss_rate}
+									playerLethal={boardState.bobs_buddy_state.player_lethal_rate}
+									opponentLethal={
+										boardState.bobs_buddy_state.opponent_lethal_rate
+									}
+									simulationState={boardState.bobs_buddy_state.simulation_state}
+									whenToShowStats={
+										this.props.config.when_to_show_bobs_buddy
+											? (this.props.config
+													.when_to_show_bobs_buddy as WhenToShowBobsBuddy)
+											: WhenToShowBobsBuddy.All
+									}
+									userSeesDuringCombat={true}
+									userSeesDuringShopping={true}
+									layout="mobile"
+								/>
+							) : null
+						) : showDeckList && deck && deck.cards ? (
+							<>
+								<Header>
+									<HeaderIcon src={HSReplayNetIcon} />
+									<h1>{deck.name || "HSReplay.net"}</h1>
+									<CopyDeckButton deck={deck}>
+										{({
+											onClick,
+											copied,
+											disabled,
+										}: CopyDeckButtonChildProps) => (
+											<button onClick={onClick} disabled={disabled}>
+												{copied ? "Copied" : "Copy Deck"}
+											</button>
+										)}
+									</CopyDeckButton>
+								</Header>
+								<Scroller>
+									<CardList cardList={deck.cards} />
+								</Scroller>
+							</>
+						) : null}
 					</PortalProvider>
 				</PanelDiv>
 			</TooltipProvider>

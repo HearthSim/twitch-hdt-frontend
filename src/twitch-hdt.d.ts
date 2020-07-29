@@ -8,6 +8,7 @@ interface BaseMessage {
 
 interface EBSConfiguration {
 	deck_position?: string;
+	when_to_show_bobs_buddy?: string;
 	hidden?: string;
 	game_offset_horizontal?: string;
 	promote_on_hsreplaynet?: boolean;
@@ -33,6 +34,11 @@ export interface BoardStateData {
 	 * Contains the game type of the current game.
 	 */
 	game_type?: BnetGameType;
+
+	/**
+	 * Contains the results of the last Bob's Buddy simulation.
+	 */
+	bobs_buddy_state?: BobsBuddyState;
 }
 
 export interface BoardStatePlayer {
@@ -90,6 +96,38 @@ export interface BoardStateQuest {
 	 * The total required progress of the active quest (corresponds to GameTag.QUEST_PROGRESS_TOTAL).
 	 */
 	total: number;
+}
+
+export interface BobsBuddyState {
+	/**
+	 * The player's likelihood to deal lethal damage to their opponent.
+	 */
+	player_lethal_rate: number;
+
+	/**
+	 * The player's likelihood to win the combat round.
+	 */
+	win_rate: number;
+
+	/**
+	 * The likelihood for the combat round to tie.
+	 */
+	tie_rate: number;
+
+	/**
+	 * The player's likelihood to lose the combat round.
+	 */
+	loss_rate: number;
+
+	/**
+	 * The player's likelihood to be killed by their opponent.
+	 */
+	opponent_lethal_rate: number;
+
+	/**
+	 * The state of the player's Bob's Buddy instance (corresponds to BobsBuddyState.TwitchSimulationState)/
+	 */
+	simulation_state: SimulationState;
 }
 
 export interface BoardStateHand {
