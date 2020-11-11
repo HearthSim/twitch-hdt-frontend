@@ -271,19 +271,19 @@ export default class BobsBuddy extends React.Component<Props> {
 				{layout === "mobile" ? (
 					<Stats style={{ height: showStats ? 55 : 0 }}>
 						<LethalStat>
-							<Label color={"#8AC66E"} opacity={opponentLethal > 0 ? 1 : 0.3}>
-								LETHAL
-							</Label>
-							<Value opacity={opponentLethal > 0 ? 1 : 0.3}>
-								{formatLikelihood(opponentLethal)}
-							</Value>
-						</LethalStat>
-						<LeftBorderLethalStat>
-							<Label color={"#C66E6E"} opacity={playerLethal > 0 ? 1 : 0.3}>
+							<Label color={"#8AC66E"} opacity={playerLethal > 0 ? 1 : 0.3}>
 								LETHAL
 							</Label>
 							<Value opacity={playerLethal > 0 ? 1 : 0.3}>
 								{formatLikelihood(playerLethal)}
+							</Value>
+						</LethalStat>
+						<LeftBorderLethalStat>
+							<Label color={"#C66E6E"} opacity={opponentLethal > 0 ? 1 : 0.3}>
+								LETHAL
+							</Label>
+							<Value opacity={opponentLethal > 0 ? 1 : 0.3}>
+								{formatLikelihood(opponentLethal)}
 							</Value>
 						</LeftBorderLethalStat>
 					</Stats>
