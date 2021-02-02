@@ -15,7 +15,7 @@ interface GA {
 
 	(command: "send", hitType: "pageview", page: string): void;
 
-	(command: "set", hitTyp00e: "anonymizeIp", value: boolean): void;
+	(command: "set", hitType: "anonymizeIp", value: boolean): void;
 }
 
 declare var ga: GA;
