@@ -367,8 +367,8 @@ class DeckList extends React.Component<
 	}
 
 	public didPlayerLayoutChange(
-		contextA?: TwitchExtContext,
-		contextB?: TwitchExtContext,
+		contextA?: Twitch.ext.Context,
+		contextB?: Twitch.ext.Context,
 	): boolean {
 		if (!contextA || !contextB) {
 			return false;

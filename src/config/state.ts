@@ -15,8 +15,8 @@ export interface State {
 		readonly defaults: EBSConfiguration;
 	};
 	readonly twitch: {
-		readonly context: TwitchExtContext | null;
-		readonly authorized: TwitchExtAuthorized | null;
+		readonly context: Twitch.ext.Context | null;
+		readonly authorized: Twitch.ext.Authorized | null;
 		readonly stream: TwitchApiStream | false | null;
 	};
 }

@@ -1046,10 +1046,10 @@
     "@types/react-native" "*"
     csstype "^2.2.0"
 
-"@types/twitch-ext@^1.14.0":
-  version "1.20.0"
-  resolved "https://registry.yarnpkg.com/@types/twitch-ext/-/twitch-ext-1.20.0.tgz#e5ff42390bace2eff351dbdb64ea174757390651"
-  integrity sha512-wynqz8XfciYzqwL/D8g4T2V+Tz4br7cGq6aqsdi6eXdEsZ5f+t8vQlaiHyqF4moohhI1KPZIpMhDeuVDPHnMeA==
+"@types/twitch-ext@^1.24.1":
+  version "1.24.1"
+  resolved "https://registry.yarnpkg.com/@types/twitch-ext/-/twitch-ext-1.24.1.tgz#bf2dcc3bf9b15bee085f7a1c8f1d2ac4adafab38"
+  integrity sha512-IJDcRroTGCaE3K8urj/GPUnrYTHAM3e0I5MwcRLAFHXGznxgIoQdHekfWS79DXdvjM4yjlKhE3Gjv+wGHIiESQ==
 
 "@types/webpack-env@^1.13.5":
   version "1.14.0"

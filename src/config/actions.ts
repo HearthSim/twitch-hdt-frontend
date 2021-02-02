@@ -36,11 +36,11 @@ export interface Actions {
 	};
 	SET_TWITCH_EXT_CONTEXT: {
 		type: typeof SET_TWITCH_EXT_CONTEXT;
-		context: TwitchExtContext;
+		context: Twitch.ext.Context;
 	};
 	SET_TWITCH_EXT_AUTHORIZED: {
 		type: typeof SET_TWITCH_EXT_AUTHORIZED;
-		authorized: TwitchExtAuthorized;
+		authorized: Twitch.ext.Authorized;
 	};
 	SET_TWITCH_API_STREAM: {
 		type: typeof SET_TWITCH_API_STREAM;
@@ -230,13 +230,13 @@ export const actionCreators = {
 		type: ROLLBACK_SETTINGS,
 	}),
 	setTwitchExtContext: (
-		context: TwitchExtContext,
+		context: Twitch.ext.Context,
 	): Actions[typeof SET_TWITCH_EXT_CONTEXT] => ({
 		context,
 		type: SET_TWITCH_EXT_CONTEXT,
 	}),
 	setTwitchExtAuthorized: (
-		authorized: TwitchExtAuthorized,
+		authorized: Twitch.ext.Authorized,
 	): Actions[typeof SET_TWITCH_EXT_AUTHORIZED] => ({
 		authorized,
 		type: SET_TWITCH_EXT_AUTHORIZED,

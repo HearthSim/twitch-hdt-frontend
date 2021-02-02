@@ -15,9 +15,9 @@ interface Props {
 	working: boolean;
 	settings: EBSConfiguration | null;
 	setSetting: (key: keyof EBSConfiguration, value: string) => any;
-	twitchExtContext: TwitchExtContext | null;
-	setTwitchExtContext: (context: Partial<TwitchExtContext>) => any;
-	setTwitchExtAuthorized: (authorized: TwitchExtAuthorized) => any;
+	twitchExtContext: Twitch.ext.Context | null;
+	setTwitchExtContext: (context: Partial<Twitch.ext.Context>) => any;
+	setTwitchExtAuthorized: (authorized: Twitch.ext.Authorized) => any;
 }
 
 const Wrapper = styled.div`
@@ -96,10 +96,10 @@ export const ErrorMessage = styled.span`
 
 export default class ConfigView extends React.Component<Props> {
 	public componentDidMount(): void {
-		window.Twitch.ext.onContext((context: Partial<TwitchExtContext>) =>
+		window.Twitch.ext.onContext((context: Partial<Twitch.ext.Context>) =>
 			this.props.setTwitchExtContext(context),
 		);
-		window.Twitch.ext.onAuthorized((auth: TwitchExtAuthorized) => {
+		window.Twitch.ext.onAuthorized((auth: Twitch.ext.Authorized) => {
 			this.props.setTwitchExtAuthorized(auth);
 			if (!this.props.hasInitialized) {
 				this.props.refreshConnectionStatus();

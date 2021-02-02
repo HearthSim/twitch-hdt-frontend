@@ -3,15 +3,15 @@ import React, { ChildContextProvider } from "react";
 import { makeHOC } from "./hocs";
 
 export interface TwitchExtProps {
-	twitchExtContext?: TwitchExtContext;
+	twitchExtContext?: Twitch.ext.Context;
 	twitchExtVisibility?: boolean;
-	twitchExtClientQueryParams?: TwitchExtClientQueryParams;
+	twitchExtClientQueryParams?: Twitch.ext.ClientQueryParams;
 }
 
 export interface TwitchExtConsumerArgs {
-	context: TwitchExtContext | null;
+	context: Twitch.ext.Context | null;
 	visible: boolean | null;
-	query: Partial<TwitchExtClientQueryParams>;
+	query: Partial<Twitch.ext.ClientQueryParams>;
 }
 
 const { Provider, Consumer } = React.createContext<TwitchExtConsumerArgs>({
@@ -23,7 +23,7 @@ const { Provider, Consumer } = React.createContext<TwitchExtConsumerArgs>({
 interface Props {}
 
 interface State {
-	context: TwitchExtContext | null;
+	context: Twitch.ext.Context | null;
 	visible: boolean | null;
 }
 
@@ -43,7 +43,7 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		};
 	}
 
-	public getClientQueryParams(): Partial<TwitchExtClientQueryParams> {
+	public getClientQueryParams(): Partial<Twitch.ext.ClientQueryParams> {
 		const { search } = window.location;
 		return search.split("&").reduce((obj, param) => {
 			const [key, value] = param.split("=", 2);
@@ -78,7 +78,7 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		);
 	}
 
-	private onContext = (context: Partial<TwitchExtContext>): void => {
+	private onContext = (context: Partial<Twitch.ext.Context>): void => {
 		this.setState(prevState => {
 			const lastContext = prevState.context === null ? {} : prevState.context;
 			return Object.assign({}, prevState, {
@@ -89,7 +89,7 @@ export class TwitchExtProvider extends React.Component<Props, State>
 
 	private onVisibilityChanged = (
 		isVisible: boolean,
-		context?: TwitchExtContext,
+		context?: Twitch.ext.Context,
 	): void => {
 		this.setState(prevState => {
 			return Object.assign(
