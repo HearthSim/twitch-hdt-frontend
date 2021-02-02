@@ -2,7 +2,7 @@ interface GA {
 	l: number;
 	q: any[];
 
-	(command: "create", trackingId: string, cookieDomain?: string): void;
+	(command: "create", trackingId: string, options?: object): void;
 
 	(
 		command: "send",
