@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Removed
 - Removed the Standard year from copied decks
 
-## [1.1.1] -2020-11-11
+## [1.1.1] - 2020-11-11
 ### Fixed
 - Fixed two Bob's Buddy percentages being swapped on mobile
 
