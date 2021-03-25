@@ -60,7 +60,6 @@ export const getCopiableDeck = (
 					}`,
 			  ]
 			: []),
-		...(isStandard ? ["# Year of the Gryphon"] : []),
 		"#",
 		deckstring,
 		"#",
