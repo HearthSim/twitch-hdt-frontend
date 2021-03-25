@@ -49,20 +49,24 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 	public getChildContext(): any {
 		return {
 			fetchStatistics: async (
-				dbfId: number | string,
-				formatType: FormatType,
+				_dbfId: number | string,
+				_formatType: FormatType,
 			): Promise<SingleCardDetailsPayload> => {
-				const _dbfId = "" + dbfId;
-				const _formatType =
-					formatType === FormatType.FT_WILD ? "RANKED_WILD" : "RANKED_STANDARD";
+				const dbfId = "" + _dbfId;
+				const formatType =
+					_formatType === FormatType.FT_STANDARD
+						? "RANKED_STANDARD"
+						: _formatType === FormatType.FT_CLASSIC
+						? "RANKED_CLASSIC"
+						: "RANKED_WILD";
 				// cache lookup
-				if (this.state.statistics[_formatType]) {
-					const cached = this.state.statistics[_formatType][_dbfId];
+				if (this.state.statistics[formatType]) {
+					const cached = this.state.statistics[formatType][dbfId];
 					if (cached) {
 						return cached;
 					}
 				}
-				const params = [`card_id=${_dbfId}`, `GameType=${_formatType}`];
+				const params = [`card_id=${dbfId}`, `GameType=${formatType}`];
 				const url = `https://hsreplay.net/analytics/query/single_card_details/?${params.join(
 					"&",
 				)}`;
@@ -82,9 +86,9 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 					...prevState,
 					statistics: {
 						...prevState.statistics,
-						[_formatType]: {
-							...prevState.statistics[_formatType],
-							[_dbfId]: payload,
+						[formatType]: {
+							...prevState.statistics[formatType],
+							[dbfId]: payload,
 						},
 					},
 				}));

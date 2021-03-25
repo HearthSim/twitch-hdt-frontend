@@ -150,6 +150,7 @@ export interface BoardStateDeck {
 export const enum FormatType {
 	FT_WILD = 1,
 	FT_STANDARD = 2,
+	FT_CLASSIC = 3,
 }
 
 export const enum BnetGameType {

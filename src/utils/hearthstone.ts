@@ -49,11 +49,18 @@ export const getCopiableDeck = (
 	}
 
 	const isStandard = format === FormatType.FT_STANDARD;
+	const isClassic = format === FormatType.FT_CLASSIC;
 
 	return [
 		...(name ? [`### ${name}`] : []),
-		...(format ? [`# Format: ${isStandard ? "Standard" : "Wild"}`] : []),
-		...(isStandard ? ["# Year of the Phoenix"] : []),
+		...(format
+			? [
+					`# Format: ${
+						isStandard ? "Standard" : isClassic ? "Classic" : "Wild"
+					}`,
+			  ]
+			: []),
+		...(isStandard ? ["# Year of the Gryphon"] : []),
 		"#",
 		deckstring,
 		"#",
