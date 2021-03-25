@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.2.0] - 2021-03-26
 ### Added
 - Added support for decks in the Classic format type
 
@@ -155,7 +157,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added a deck list with hover zones over each card
 - Added setup interface with connection guide and basic overlay configuration
 
-[Unreleased]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/HearthSim/hdt-twitch-extension/compare/v0.4.1...v1.0.0
