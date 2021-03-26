@@ -10,7 +10,6 @@ import {
 } from "../../twitch-hdt";
 import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";
 import { OverlayPosition } from "../../utils/config";
-import { getCopiableDeck } from "../../utils/hearthstone";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
 import CardTile from "../CardTile";
 import CopyDeckButton, { CopyDeckButtonChildProps } from "../CopyDeckButton";

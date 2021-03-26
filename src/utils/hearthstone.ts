@@ -1,7 +1,7 @@
 import { encode } from "deckstrings";
 import { BoardStateDeckCard, FormatType } from "../twitch-hdt";
 
-export const getCopiableDeck = (
+export const getDeckToCopy = (
 	cardList: BoardStateDeckCard[],
 	format: FormatType,
 	heroes: number[],
@@ -45,11 +45,11 @@ export const getCopiableDeck = (
 		deckstring = encode(deckDescription);
 	} catch (e) {
 		console.error(e);
-		return "";
+		return null;
 	}
 
 	if (deckstring === null) {
-		return "";
+		return null;
 	}
 
 	const isStandard = format === FormatType.FT_STANDARD;

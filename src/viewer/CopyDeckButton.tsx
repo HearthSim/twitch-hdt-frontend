@@ -4,7 +4,7 @@ import { useCallback, useContext, useMemo, useState } from "react";
 import * as ReactDOM from "react-dom";
 import styled from "styled-components";
 import { BoardStateDeck, BoardStatePlayer } from "../twitch-hdt";
-import { getCopiableDeck } from "../utils/hearthstone";
+import { getDeckToCopy } from "../utils/hearthstone";
 import { PortalContext } from "../utils/portal";
 
 const FallbackModal = styled.div`
@@ -96,7 +96,7 @@ const CopyDeckButton: React.FC<Props> = ({
 		if (!format || !cards || !hero) {
 			return null;
 		}
-		return getCopiableDeck(cards, format, [hero], name);
+		return getDeckToCopy(cards, format, [hero], name);
 	}, [deck]);
 
 	const copy = useCallback(async () => {
