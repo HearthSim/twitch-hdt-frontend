@@ -107,15 +107,12 @@ const CopyDeckButton: React.FC<Props> = ({
 			await clipboard.writeText(deckstring);
 			setCopied(true);
 		} catch (e) {
-			console.log("fallback");
 			setFallback(true);
 		}
 		if (onCopy) {
 			onCopy();
 		}
 	}, [deckstring]);
-
-	console.log(fallback, deckstring, portal);
 
 	return (
 		<>

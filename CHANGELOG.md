@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Fixed a potential crash when receiving a bad format type through pubsub
+- Fixed the card statistics popup showing when no statistics are available
 
 ### Removed
 - Removed the Standard year from copied decks
