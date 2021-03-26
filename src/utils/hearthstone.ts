@@ -6,7 +6,11 @@ export const getCopiableDeck = (
 	format: FormatType,
 	heroes: number[],
 	name?: string,
-): string => {
+): string | null => {
+	if (format === FormatType.FT_UNKNOWN) {
+		return null;
+	}
+
 	const initialCards: [number, number][] = cardList
 		.filter((card: BoardStateDeckCard) => {
 			const [dbfId, current, initial] = card;

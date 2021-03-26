@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Added support for decks in the Classic format type
 
+### Fixed
+- Fixed a potential crash when receiving a bad format type through pubsub
+
 ### Removed
 - Removed the Standard year from copied decks
 
