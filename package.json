@@ -63,7 +63,7 @@
 		"redux-thunk": "^2.3.0",
 		"styled-components": "^5.1.0",
 		"typescript": "^3.8.3",
-		"webpack": "^4.44.0",
+		"webpack": "^4",
 		"webpack-cli": "^3.1.0",
 		"webpack-sources": "^1.1.0",
 		"zip-webpack-plugin": "^3.0.0"
@@ -76,6 +76,9 @@
 		"tslint-config-prettier": "^1.18.0",
 		"tslint-react": "^4.0.0",
 		"webpack-dev-server": "^3.8.0"
+	},
+	"resolutions": {
+		"terser-webpack-plugin": "4.2.3"
 	},
 	"private": true
 }
