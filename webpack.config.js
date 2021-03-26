@@ -168,8 +168,10 @@ module.exports = (env, args) => {
 			minimizer: [
 				new TerserPlugin({
 					terserOptions: {
-						drop_console: true,
-						pure_funcs: ["onUnhandled"],
+						compress: {
+							drop_console: true,
+							pure_funcs: ["onUnhandled", "warnOrLog"],
+						},
 						mangle: false,
 					},
 				}),
