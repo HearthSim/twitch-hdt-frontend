@@ -32,7 +32,9 @@ const Overlay = styled.div<
 			? "50%"
 			: "unset"};
 	right: ${props =>
-		props.position === OverlayPosition.TOP_RIGHT ? "-22rem" : "unset"};
+		props.position === OverlayPosition.TOP_RIGHT
+			? `calc(240px * ${props.scale} + 10px)`
+			: "unset"};
 
 	transform: ${props =>
 		props.position === OverlayPosition.TOP_CENTER
