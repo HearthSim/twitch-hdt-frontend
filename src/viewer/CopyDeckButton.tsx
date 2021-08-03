@@ -1,9 +1,9 @@
-import * as clipboard from "clipboard-polyfill";
 import * as React from "react";
 import { useCallback, useContext, useMemo, useState } from "react";
 import * as ReactDOM from "react-dom";
 import styled from "styled-components";
 import { BoardStateDeck, BoardStatePlayer } from "../twitch-hdt";
+import { copyText } from "../utils/clipboard";
 import { getDeckToCopy } from "../utils/hearthstone";
 import { PortalContext } from "../utils/portal";
 
@@ -104,7 +104,7 @@ const CopyDeckButton: React.FC<Props> = ({
 			return;
 		}
 		try {
-			await clipboard.writeText(deckstring);
+			await copyText(deckstring);
 			setCopied(true);
 		} catch (e) {
 			setFallback(true);

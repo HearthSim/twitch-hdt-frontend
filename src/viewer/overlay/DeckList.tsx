@@ -1,4 +1,3 @@
-import * as clipboard from "clipboard-polyfill";
 import { CardData } from "hearthstonejson-client";
 import isEqual from "lodash.isequal";
 import * as React from "react";
