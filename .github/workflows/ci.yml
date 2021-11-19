@@ -12,6 +12,8 @@ jobs:
 
       - name: Setup NodeJS
         uses: actions/setup-node@v1
+        with:
+          node-version: '14'
 
       - name: Install
         run: yarn --pure-lockfile
