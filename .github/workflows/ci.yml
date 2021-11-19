@@ -21,9 +21,9 @@ jobs:
       - name: Lint - Prettier
         run: yarn lint:prettier
 
-      - name: Lint - TSLint
+      - name: Lint - ESLint
         continue-on-error: true
-        run: yarn lint:tslint
+        run: yarn lint:eslint
 
       - name: Build
         run: yarn build

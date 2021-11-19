@@ -16,12 +16,12 @@
 		"typecheck": "tsc --noEmit",
 		"build": "webpack --mode production",
 		"dev": "webpack-dev-server -d --hot",
-		"format": "yarn format:tslint; yarn format:prettier",
+		"format": "yarn format:eslint; yarn format:prettier",
 		"format:prettier": "prettier --write \"{src/**/*.ts{,x},*.js}\"",
-		"format:tslint": "tslint --project . --fix",
-		"lint": "yarn lint:prettier; yarn lint:tslint",
+		"format:eslint": "eslint . --ext .js,.jsx,.ts,.tsx --cache --fix",
+		"lint": "yarn lint:eslint; yarn lint:prettier",
 		"lint:prettier": "prettier --list-different \"{src/**/*.ts{,x},*.js}\"",
-		"lint:tslint": "tslint --project ."
+		"lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx --cache"
 	},
 	"dependencies": {
 		"@babel/core": "^7.9.0",
@@ -69,12 +69,15 @@
 		"zip-webpack-plugin": "^3.0.0"
 	},
 	"devDependencies": {
+		"@hearthsim/eslint-config-typescript": "^1.0.1",
 		"@types/js-cookie": "^2.2.6",
+		"@typescript-eslint/eslint-plugin": "5.4.0",
+		"eslint": "^8.2.0",
+		"eslint-plugin-import": "2.25.3",
+		"eslint-plugin-jest": "25.2.4",
+		"eslint-plugin-react": "7.27.1",
+		"eslint-plugin-react-hooks": "4.3.0",
 		"prettier": "^2.4.1",
-		"tslint": "^5.18.0",
-		"tslint-config-airbnb": "^5.11.1",
-		"tslint-config-prettier": "^1.18.0",
-		"tslint-react": "^4.0.0",
 		"webpack-dev-server": "^3.8.0"
 	},
 	"resolutions": {
