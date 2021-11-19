@@ -6,7 +6,7 @@ import { Feature, hasFeature, OverlayPosition } from "../../../../utils/config";
 const Stream = styled.div`
 	position: relative;
 	background-color: none;
-	border: 1px solid ${props => props.theme.textColor};
+	border: 1px solid ${(props) => props.theme.textColor};
 	width: 100%;
 	height: auto;
 	z-index: 5;
@@ -20,11 +20,11 @@ const Stream = styled.div`
 `;
 
 const OverlayElement = styled.div`
-	background-color: ${props => props.theme.accent};
+	background-color: ${(props) => props.theme.accent};
 `;
 
 const DeckList = styled(OverlayElement)<{ position: OverlayPosition }>`
-	${props =>
+	${(props) =>
 		props.position === OverlayPosition.TOP_LEFT ? "left: 2%" : "right: 5%"};
 	top: 10%;
 	width: 15%;
@@ -44,8 +44,8 @@ const Centered = styled.div<{ top?: string; bottom?: string }>`
 	display: flex;
 	width: 100%;
 	height: 15%;
-	top: ${props => props.top || "unset"};
-	bottom: ${props => props.bottom || "unset"};
+	top: ${(props) => props.top || "unset"};
+	bottom: ${(props) => props.bottom || "unset"};
 	justify-content: center;
 	text-align: center;
 `;
@@ -82,9 +82,7 @@ interface OverlayPreviewProps {
 	hideTooltips?: boolean;
 }
 
-export default class OverlayPreview extends React.Component<
-	OverlayPreviewProps
-> {
+export default class OverlayPreview extends React.Component<OverlayPreviewProps> {
 	private ref: HTMLDivElement | null = null;
 
 	public render(): React.ReactNode {
@@ -105,7 +103,7 @@ export default class OverlayPreview extends React.Component<
 						thumbnailUrl !== null ? `url(${thumbnailUrl})` : undefined,
 					backgroundSize: "100%",
 				}}
-				ref={ref => (this.ref = ref)}
+				ref={(ref) => (this.ref = ref)}
 			>
 				{this.props.settings &&
 				!hasFeature(+(this.props.settings.hidden || 0), Feature.DECKLIST) ? (

@@ -32,7 +32,7 @@ const SectionHeader = styled.label`
 
 const Row = styled.div<{ width?: string }>`
 	display: flex;
-	width: ${props =>
+	width: ${(props) =>
 		typeof props.width !== "undefined" ? props.width : "100%"};
 	flex-direction: row;
 
@@ -53,7 +53,7 @@ const Centered = styled.div<{ margin?: string }>`
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	margin: ${props => (props.margin ? props.margin : "unset")};
+	margin: ${(props) => (props.margin ? props.margin : "unset")};
 `;
 
 const Label = styled.label`
@@ -95,26 +95,29 @@ export default class OverlayAdmin extends React.Component<Props> {
 	public changeDecklistPosition = (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
-		this.props.setSetting("deck_position", event.target
-			.value as OverlayPosition);
+		this.props.setSetting(
+			"deck_position",
+			event.target.value as OverlayPosition,
+		);
 	};
 
 	public changeWhenToShowBobsBuddy = (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
-		this.props.setSetting("when_to_show_bobs_buddy", event.target
-			.value as WhenToShowBobsBuddy);
-	};
-
-	public setFeature = (feature: Feature) => (
-		event: React.ChangeEvent<HTMLInputElement>,
-	) => {
-		const hiddenFeatures = this.getHiddenFeatures();
 		this.props.setSetting(
-			"hidden",
-			"" + setFeature(hiddenFeatures, feature, !event.target.checked),
+			"when_to_show_bobs_buddy",
+			event.target.value as WhenToShowBobsBuddy,
 		);
 	};
+
+	public setFeature =
+		(feature: Feature) => (event: React.ChangeEvent<HTMLInputElement>) => {
+			const hiddenFeatures = this.getHiddenFeatures();
+			this.props.setSetting(
+				"hidden",
+				"" + setFeature(hiddenFeatures, feature, !event.target.checked),
+			);
+		};
 
 	public setHorizontalGameOffset = (
 		event: React.ChangeEvent<HTMLInputElement>,

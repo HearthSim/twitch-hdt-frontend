@@ -66,8 +66,8 @@ const Label = styled.label<LabelProps>`
 	font-size: 12px;
 	padding: 2px;
 	font-weight: 900;
-	opacity: ${props => (props.opacity !== undefined ? props.opacity : 1)};
-	color: ${props => props.color};
+	opacity: ${(props) => (props.opacity !== undefined ? props.opacity : 1)};
+	color: ${(props) => props.color};
 `;
 
 const Message = styled.label`
@@ -85,7 +85,7 @@ const Message = styled.label`
 
 const Value = styled.span<{ opacity?: number }>`
 	color: white;
-	opacity: ${props => (props.opacity !== undefined ? props.opacity : 1)};
+	opacity: ${(props) => (props.opacity !== undefined ? props.opacity : 1)};
 	font-weight: bold;
 	font-size: 20px;
 `;
@@ -212,13 +212,13 @@ export default class BobsBuddy extends React.Component<Props> {
 
 		return (
 			<Wrapper
-				onMouseDown={e => {
+				onMouseDown={(e) => {
 					if (e.button !== 0) {
 						return;
 					}
 					this.props.onMoveStart && this.props.onMoveStart(e);
 				}}
-				onMouseUp={e => {
+				onMouseUp={(e) => {
 					this.props.onMoveEnd && this.props.onMoveEnd(e);
 				}}
 			>

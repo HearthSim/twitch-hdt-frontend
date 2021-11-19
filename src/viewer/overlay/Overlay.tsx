@@ -55,9 +55,9 @@ const OverlayElement = styled.div<PositionProps>`
 `;
 
 const Center = styled(OverlayElement)`
-	top: ${props => props.top || "unset"};
-	bottom: ${props => props.bottom || "unset"};
-	margin-left: ${props => props.left || "unset"};
+	top: ${(props) => props.top || "unset"};
+	bottom: ${(props) => props.bottom || "unset"};
+	margin-left: ${(props) => props.left || "unset"};
 	width: 100vw;
 	text-align: center;
 	display: flex;
@@ -67,8 +67,8 @@ const Center = styled(OverlayElement)`
 const Board = styled(Center)`
 	width: 100vw;
 	height: 15vh;
-	top: ${props => props.top || "unset"};
-	bottom: ${props => props.bottom || "unset"};
+	top: ${(props) => props.top || "unset"};
+	bottom: ${(props) => props.bottom || "unset"};
 	display: flex;
 
 	justify-content: center;
@@ -100,8 +100,8 @@ const Hero = styled.div`
 `;
 
 const Secret = styled(OverlayElement)`
-	top: ${props => props.top || "unset"};
-	margin-left: ${props => props.left || "unset"};
+	top: ${(props) => props.top || "unset"};
+	margin-left: ${(props) => props.left || "unset"};
 
 	height: 4.4vh;
 	width: 4.4vh;
@@ -113,9 +113,9 @@ const Secret = styled(OverlayElement)`
 `;
 
 const Quest = styled(OverlayElement)`
-	top: ${props => props.top || "unset"};
-	bottom: ${props => props.bottom || "unset"};
-	margin-left: ${props => props.left || "unset"};
+	top: ${(props) => props.top || "unset"};
+	bottom: ${(props) => props.bottom || "unset"};
+	margin-left: ${(props) => props.left || "unset"};
 
 	height: 5.1vh;
 	width: 4vh;
@@ -127,9 +127,9 @@ const Quest = styled(OverlayElement)`
 `;
 
 const HeroPower = styled(OverlayElement)`
-	top: ${props => props.top || "unset"};
-	right: ${props => props.right || "unset"};
-	bottom: ${props => props.bottom || "unset"};
+	top: ${(props) => props.top || "unset"};
+	right: ${(props) => props.right || "unset"};
+	bottom: ${(props) => props.bottom || "unset"};
 
 	height: 13.5vh;
 	width: 13.5vh;
@@ -137,9 +137,9 @@ const HeroPower = styled(OverlayElement)`
 `;
 
 const Weapon = styled(OverlayElement)`
-	top: ${props => props.top || "unset"};
-	left: ${props => props.left || "unset"};
-	bottom: ${props => props.bottom || "unset"};
+	top: ${(props) => props.top || "unset"};
+	left: ${(props) => props.left || "unset"};
+	bottom: ${(props) => props.bottom || "unset"};
 
 	height: 13vh;
 	width: 13vh;
@@ -147,9 +147,9 @@ const Weapon = styled(OverlayElement)`
 `;
 
 const Deck = styled(OverlayElement)`
-	top: ${props => props.top || "unset"};
-	right: ${props => props.right || "unset"};
-	bottom: ${props => props.bottom || "unset"};
+	top: ${(props) => props.top || "unset"};
+	right: ${(props) => props.right || "unset"};
+	bottom: ${(props) => props.bottom || "unset"};
 	width: 6vh;
 	height: 15vh;
 	transform: rotate(-1deg);
@@ -292,7 +292,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 					</Secret>
 				);
 			})
-			.filter(s => s !== null);
+			.filter((s) => s !== null);
 	}
 
 	public getChildContext() {
@@ -352,7 +352,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 				onMouseEnter={() => {
 					this.setState({ hovering: true });
 				}}
-				onMouseMove={e => {
+				onMouseMove={(e) => {
 					this.refreshMovementTimeout();
 					if (!this.state.hovering) {
 						this.setState({ hovering: true });
@@ -362,7 +362,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 					this.setState({ hovering: false });
 				}}
 			>
-				<Portal ref={ref => (this.portal = ref)} />
+				<Portal ref={(ref) => (this.portal = ref)} />
 				<PortalProvider value={{ portal: this.portal }}>
 					{hideDecklist ? null : (
 						<PositionableOverlay
@@ -561,8 +561,9 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 														? `${opponent.deck.size} card${
 																+opponent.deck.size !== 1 ? "s" : ""
 														  } remaining`
-														: `Out of cards! Next draw fatigues for ${(opponent.fatigue ||
-																0) + 1} damage.`
+														: `Out of cards! Next draw fatigues for ${
+																(opponent.fatigue || 0) + 1
+														  } damage.`
 													: ""
 											}
 										/>
@@ -575,8 +576,9 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 														? `${player.deck.size} card${
 																+player.deck.size !== 1 ? "s" : ""
 														  } remaining`
-														: `Out of cards! Next draw fatigues for ${(player.fatigue ||
-																0) + 1} damage.`
+														: `Out of cards! Next draw fatigues for ${
+																(player.fatigue || 0) + 1
+														  } damage.`
 													: ""
 											}
 										/>

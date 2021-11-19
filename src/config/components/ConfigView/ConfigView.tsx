@@ -27,7 +27,7 @@ const Wrapper = styled.div`
 	flex-direction: row;
 	align-items: flex-start;
 	justify-content: center;
-	color: ${props => props.theme.textColor};
+	color: ${(props) => props.theme.textColor};
 `;
 
 const MessageWrapper = styled(Wrapper)`
@@ -37,7 +37,7 @@ const MessageWrapper = styled(Wrapper)`
 	text-align: center;
 	align-items: center;
 	flex-direction: column;
-	color: ${props => props.theme.textColor};
+	color: ${(props) => props.theme.textColor};
 	width: 100%;
 
 	overflow: hidden;

@@ -119,22 +119,22 @@ const CopyDeckButton: React.FC<Props> = ({
 			{fallback && deckstring && portal
 				? ReactDOM.createPortal(
 						<FallbackModal
-							onMouseDown={e => {
+							onMouseDown={(e) => {
 								e.stopPropagation();
 							}}
-							onClick={e => {
+							onClick={(e) => {
 								e.stopPropagation();
 							}}
 						>
 							<TextArea
 								value={deckstring}
 								readOnly={true}
-								onFocus={e => {
+								onFocus={(e) => {
 									if (e.target) {
 										selectAll(e.target);
 									}
 								}}
-								onClick={e => {
+								onClick={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
 									if (e.target) {
@@ -144,7 +144,7 @@ const CopyDeckButton: React.FC<Props> = ({
 								rows={8}
 							/>
 							<button
-								onClick={e => {
+								onClick={(e) => {
 									e.preventDefault();
 									setFallback(false);
 								}}

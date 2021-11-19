@@ -91,9 +91,8 @@ export default class BobsBuddyUserConfig extends React.Component<Props, State> {
 		if (!this.ref || !this.ref.parentElement) {
 			return;
 		}
-		const {
-			height: boundsHeight,
-		} = this.ref.parentElement.getBoundingClientRect();
+		const { height: boundsHeight } =
+			this.ref.parentElement.getBoundingClientRect();
 		const scale = Math.min(boundsHeight / 1080, 1);
 		if (scale === this.state.scale) {
 			return;
@@ -116,7 +115,7 @@ export default class BobsBuddyUserConfig extends React.Component<Props, State> {
 					pointerEvents: show ? "all" : "none",
 					transform: `scale(${this.state.scale}) translateY(-50%)`,
 				}}
-				ref={ref => (this.ref = ref)}
+				ref={(ref) => (this.ref = ref)}
 			>
 				<li>
 					<SectionHeader>

@@ -51,164 +51,167 @@ export interface Actions {
 
 export type ActionTypes = Actions[keyof Actions];
 
-const getSettings = (): ThunkAction<void, State, null, Action<any>> => async (
-	dispatch,
-	getState,
-) => {
-	dispatch({
-		status: "pending",
-		type: UPDATE_SETTINGS,
-	});
-	try {
-		const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
-			headers: new Headers({
-				Accept: "application/json",
-				...getEBSHeaders(getState()),
-			}),
-			method: "GET",
-			mode: "cors",
-		});
-		if (response.status !== 200) {
-			throw new Error("Invalid status code from EBS");
-		}
-		const contentType = response.headers.get("content-type");
-		if (!contentType || !contentType.includes("application/json")) {
-			throw new Error(`Invalid content type "${contentType}" from EBS`);
-		}
-		let settings = await response.json();
-		settings = Object.assign({}, getState().config.defaults, settings);
-		dispatch({
-			settings,
-			status: "success",
-			type: UPDATE_SETTINGS,
-		});
-	} catch (e) {
-		dispatch({
-			status: "error",
-			type: UPDATE_SETTINGS,
-		});
-	}
-};
-
-const setSetting = (
-	setting: keyof EBSConfiguration,
-	value: any,
-): ThunkAction<void, State, null, Action> => async (dispatch, getState) =>
-	dispatch(setSettings({ [setting]: value }));
-
-const setSettings = (
-	settings: EBSConfiguration,
-): ThunkAction<void, State, null, Action> => async (dispatch, getState) => {
-	const config = getState().config;
-	if (!settings || !config.settings || config.readonly) {
-		return;
-	}
-	dispatch(actionCreators.previewSettings(settings));
-	dispatch(actionCreators.commitSettings());
-};
-
-const commitSettings = (): ThunkAction<void, State, null, Action> => async (
-	dispatch,
-	getState,
-) => {
-	const config = getState().config;
-	if (!config.settings || !config.preview || config.readonly) {
-		return;
-	}
-	try {
+const getSettings =
+	(): ThunkAction<void, State, null, Action<any>> =>
+	async (dispatch, getState) => {
 		dispatch({
 			status: "pending",
 			type: UPDATE_SETTINGS,
 		});
-		const proposedSettings = Object.assign({}, config.settings, config.preview);
-		const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
-			body: JSON.stringify(proposedSettings),
-			headers: new Headers({
-				"Content-Type": "application/json",
-				...getEBSHeaders(getState()),
-			}),
-			method: "PUT",
-			mode: "cors",
-		});
-		if (response.status !== 200) {
-			throw new Error("Invalid status code from EBS");
+		try {
+			const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
+				headers: new Headers({
+					Accept: "application/json",
+					...getEBSHeaders(getState()),
+				}),
+				method: "GET",
+				mode: "cors",
+			});
+			if (response.status !== 200) {
+				throw new Error("Invalid status code from EBS");
+			}
+			const contentType = response.headers.get("content-type");
+			if (!contentType || !contentType.includes("application/json")) {
+				throw new Error(`Invalid content type "${contentType}" from EBS`);
+			}
+			let settings = await response.json();
+			settings = Object.assign({}, getState().config.defaults, settings);
+			dispatch({
+				settings,
+				status: "success",
+				type: UPDATE_SETTINGS,
+			});
+		} catch (e) {
+			dispatch({
+				status: "error",
+				type: UPDATE_SETTINGS,
+			});
 		}
-		const contentType = response.headers.get("content-type");
-		if (!contentType || !contentType.includes("application/json")) {
-			throw new Error(`Invalid content type "${contentType}" from EBS`);
-		}
-		const settings = await response.json();
-		dispatch({
-			settings,
-			status: "success",
-			type: UPDATE_SETTINGS,
-		});
-	} catch (e) {
-		dispatch({
-			status: "error",
-			type: UPDATE_SETTINGS,
-		});
-	}
-};
+	};
 
-const updateConnectionStatus = (): ThunkAction<
-	void,
-	State,
-	null,
-	Action
-> => async (dispatch, getState) => {
-	dispatch({
-		type: UPDATING_CONNECTION_STATUS,
-	});
-	try {
-		const response = await fetch("https://twitch-ebs.hearthsim.net/setup/", {
-			headers: new Headers({
-				Accept: "application/json",
-				...getEBSHeaders(getState()),
-			}),
-			method: "POST",
-			mode: "cors",
-		});
-		switch (response.status) {
-			case 200:
-				return dispatch(
-					actionCreators.setConnectionStatus(ConnectionStatus.READY),
-				);
-			case 403:
-			case 502:
-				const contentType = response.headers.get("content-type");
-				if (!contentType || !contentType.includes("application/json")) {
-					throw new Error(`Invalid response content type "${contentType}"`);
-				}
-				const responsePayload = await response.json();
-				const { error } = responsePayload;
-				switch (error) {
-					case "account_not_linked":
-						return dispatch(
-							actionCreators.setConnectionStatus(
-								ConnectionStatus.ACCOUNT_NOT_LINKED,
-							),
-						);
-					case "upstream_client_not_found":
-						return dispatch(
-							actionCreators.setConnectionStatus(
-								ConnectionStatus.UPSTREAM_CLIENT_NOT_FOUND,
-							),
-						);
-					case "bad_upstream":
-						return dispatch(
-							actionCreators.setConnectionStatus(ConnectionStatus.BAD_UPSTREAM),
-						);
-					default:
-						throw new Error(`Invalid error "${error}"`);
-				}
-			default:
-				throw new Error(`Unexpected status code ${response.status}`);
+const setSetting =
+	(
+		setting: keyof EBSConfiguration,
+		value: any,
+	): ThunkAction<void, State, null, Action> =>
+	async (dispatch, getState) =>
+		dispatch(setSettings({ [setting]: value }));
+
+const setSettings =
+	(settings: EBSConfiguration): ThunkAction<void, State, null, Action> =>
+	async (dispatch, getState) => {
+		const config = getState().config;
+		if (!settings || !config.settings || config.readonly) {
+			return;
 		}
-	} catch (e) {
-		return dispatch(actionCreators.setConnectionStatus(ConnectionStatus.ERROR));
-	}
-};
+		dispatch(actionCreators.previewSettings(settings));
+		dispatch(actionCreators.commitSettings());
+	};
+
+const commitSettings =
+	(): ThunkAction<void, State, null, Action> => async (dispatch, getState) => {
+		const config = getState().config;
+		if (!config.settings || !config.preview || config.readonly) {
+			return;
+		}
+		try {
+			dispatch({
+				status: "pending",
+				type: UPDATE_SETTINGS,
+			});
+			const proposedSettings = Object.assign(
+				{},
+				config.settings,
+				config.preview,
+			);
+			const response = await fetch("https://twitch-ebs.hearthsim.net/config/", {
+				body: JSON.stringify(proposedSettings),
+				headers: new Headers({
+					"Content-Type": "application/json",
+					...getEBSHeaders(getState()),
+				}),
+				method: "PUT",
+				mode: "cors",
+			});
+			if (response.status !== 200) {
+				throw new Error("Invalid status code from EBS");
+			}
+			const contentType = response.headers.get("content-type");
+			if (!contentType || !contentType.includes("application/json")) {
+				throw new Error(`Invalid content type "${contentType}" from EBS`);
+			}
+			const settings = await response.json();
+			dispatch({
+				settings,
+				status: "success",
+				type: UPDATE_SETTINGS,
+			});
+		} catch (e) {
+			dispatch({
+				status: "error",
+				type: UPDATE_SETTINGS,
+			});
+		}
+	};
+
+const updateConnectionStatus =
+	(): ThunkAction<void, State, null, Action> => async (dispatch, getState) => {
+		dispatch({
+			type: UPDATING_CONNECTION_STATUS,
+		});
+		try {
+			const response = await fetch("https://twitch-ebs.hearthsim.net/setup/", {
+				headers: new Headers({
+					Accept: "application/json",
+					...getEBSHeaders(getState()),
+				}),
+				method: "POST",
+				mode: "cors",
+			});
+			switch (response.status) {
+				case 200:
+					return dispatch(
+						actionCreators.setConnectionStatus(ConnectionStatus.READY),
+					);
+				case 403:
+				case 502:
+					const contentType = response.headers.get("content-type");
+					if (!contentType || !contentType.includes("application/json")) {
+						throw new Error(`Invalid response content type "${contentType}"`);
+					}
+					const responsePayload = await response.json();
+					const { error } = responsePayload;
+					switch (error) {
+						case "account_not_linked":
+							return dispatch(
+								actionCreators.setConnectionStatus(
+									ConnectionStatus.ACCOUNT_NOT_LINKED,
+								),
+							);
+						case "upstream_client_not_found":
+							return dispatch(
+								actionCreators.setConnectionStatus(
+									ConnectionStatus.UPSTREAM_CLIENT_NOT_FOUND,
+								),
+							);
+						case "bad_upstream":
+							return dispatch(
+								actionCreators.setConnectionStatus(
+									ConnectionStatus.BAD_UPSTREAM,
+								),
+							);
+						default:
+							throw new Error(`Invalid error "${error}"`);
+					}
+				default:
+					throw new Error(`Unexpected status code ${response.status}`);
+			}
+		} catch (e) {
+			return dispatch(
+				actionCreators.setConnectionStatus(ConnectionStatus.ERROR),
+			);
+		}
+	};
 
 export const actionCreators = {
 	updateConnectionStatus,

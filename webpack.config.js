@@ -31,7 +31,7 @@ module.exports = (env, args) => {
 					pkg.homepage,
 					"HearthSim, LLC. All Rights Reserved.",
 				].join("\n"),
-				include: ["viewer", "mobile", "config"].map(b =>
+				include: ["viewer", "mobile", "config"].map((b) =>
 					path.join(bundlePath, b),
 				),
 			}),
@@ -101,7 +101,7 @@ module.exports = (env, args) => {
 									],
 									//"@babel/plugin-proposal-class-properties",
 									//"babel-plugin-transform-object-rest-spread",
-								].filter(x => x !== null),
+								].filter((x) => x !== null),
 							},
 						},
 						{

@@ -82,7 +82,7 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 				const data = await response.json();
 				const payload = data.series.data.ALL;
 				// cache payload
-				this.setState(prevState => ({
+				this.setState((prevState) => ({
 					...prevState,
 					statistics: {
 						...prevState.statistics,

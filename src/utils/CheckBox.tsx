@@ -10,7 +10,7 @@ interface Props {
 
 const Container = styled.div<{ disabled?: boolean }>`
 	display: flex;
-	color: rgba(255, 255, 255, ${props => (props.disabled ? 0.5 : 1)});
+	color: rgba(255, 255, 255, ${(props) => (props.disabled ? 0.5 : 1)});
 `;
 
 const Box = styled.div<{ disabled?: boolean }>`
@@ -21,7 +21,7 @@ const Box = styled.div<{ disabled?: boolean }>`
 	align-items: center;
 	justify-content: center;
 	margin-right: 4px;
-	background: rgba(255, 255, 255, ${props => (props.disabled ? 0.35 : 0.15)});
+	background: rgba(255, 255, 255, ${(props) => (props.disabled ? 0.35 : 0.15)});
 `;
 
 export default class CheckBox extends React.Component<Props> {

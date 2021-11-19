@@ -264,7 +264,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 		return (
 			<TooltipProvider value={{ behaviour: TooltipBehaviour.FULLSCREEN }}>
 				<PanelDiv dark={isDark}>
-					<Portal ref={ref => (this.portal = ref)} />
+					<Portal ref={(ref) => (this.portal = ref)} />
 					<PortalProvider value={{ portal: this.portal }}>
 						{isBattlegrounds ? (
 							boardState &&

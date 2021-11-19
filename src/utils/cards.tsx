@@ -33,12 +33,12 @@ export class HearthstoneJSONCards implements Cards {
 		return new HearthstoneJSON()
 			.getLatest(this._locale)
 			.then((c: CardDefinition[]) => {
-				c.map(card => {
+				c.map((card) => {
 					if (card.dbfId) {
 						this._cards[card.dbfId] = card;
 					}
 					return null;
-				}).filter(x => x !== null);
+				}).filter((x) => x !== null);
 			});
 	}
 

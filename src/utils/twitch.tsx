@@ -27,8 +27,10 @@ interface State {
 	visible: boolean | null;
 }
 
-export class TwitchExtProvider extends React.Component<Props, State>
-	implements ChildContextProvider<TwitchExtProps> {
+export class TwitchExtProvider
+	extends React.Component<Props, State>
+	implements ChildContextProvider<TwitchExtProps>
+{
 	public static childContextTypes = {
 		twitchExtContext: PropTypes.object,
 		twitchExtVisibility: PropTypes.bool,
@@ -79,7 +81,7 @@ export class TwitchExtProvider extends React.Component<Props, State>
 	}
 
 	private onContext = (context: Partial<Twitch.ext.Context>): void => {
-		this.setState(prevState => {
+		this.setState((prevState) => {
 			const lastContext = prevState.context === null ? {} : prevState.context;
 			return Object.assign({}, prevState, {
 				context: Object.assign({}, lastContext, context),
@@ -91,7 +93,7 @@ export class TwitchExtProvider extends React.Component<Props, State>
 		isVisible: boolean,
 		context?: Twitch.ext.Context,
 	): void => {
-		this.setState(prevState => {
+		this.setState((prevState) => {
 			return Object.assign(
 				{},
 				prevState,

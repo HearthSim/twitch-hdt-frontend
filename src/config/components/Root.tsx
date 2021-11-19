@@ -8,7 +8,7 @@ interface RootProps {
 	store: Store<State>;
 }
 
-const Root: React.SFC<RootProps> = props => {
+const Root: React.SFC<RootProps> = (props) => {
 	return (
 		<Provider store={props.store}>
 			<ConfigView />

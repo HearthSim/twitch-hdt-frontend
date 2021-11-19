@@ -193,7 +193,7 @@ class CardStatistics extends React.Component<Props & CardsProps, State> {
 				winrateInOpeningHand,
 				winrateWhenDrawn,
 				winrateWhenPlayed,
-			].every(x => x === null)
+			].every((x) => x === null)
 		) {
 			return null;
 		}

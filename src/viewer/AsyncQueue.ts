@@ -33,7 +33,7 @@ export default class AsyncQueue<T extends {}> {
 	}
 
 	public unlisten(listener: Listener<T>): void {
-		this.listeners.filter(l => l === listener);
+		this.listeners.filter((l) => l === listener);
 	}
 
 	protected _work(): void {
@@ -45,6 +45,6 @@ export default class AsyncQueue<T extends {}> {
 	}
 
 	protected _emit(data: T): void {
-		this.listeners.forEach(l => l(data));
+		this.listeners.forEach((l) => l(data));
 	}
 }

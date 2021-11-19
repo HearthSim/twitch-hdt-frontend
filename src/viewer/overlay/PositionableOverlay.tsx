@@ -10,8 +10,8 @@ const Wrapper = styled.div<{ active?: boolean; moveable: boolean }>`
 	height: 100vh;
 	width: 100vw;
 	overflow: hidden;
-	pointer-events: ${props => (props.active ? "all" : "none")};
-	cursor: ${props =>
+	pointer-events: ${(props) => (props.active ? "all" : "none")};
+	cursor: ${(props) =>
 		props.moveable ? (props.active ? "grabbing" : "grab") : "default"};
 `;
 
@@ -19,24 +19,24 @@ const Overlay = styled.div<
 	PositionProps & { position?: OverlayPosition; scale: number }
 >`
 	position: absolute;
-	top: ${props =>
+	top: ${(props) =>
 		props.position === OverlayPosition.TOP_CENTER ? 0 : props.top || "100px"};
-	height: calc(100vh - ${props => props.top || "100px"} - 80px);
+	height: calc(100vh - ${(props) => props.top || "100px"} - 80px);
 	overflow: visible;
 	pointer-events: none;
 	max-width: 100%;
-	left: ${props =>
+	left: ${(props) =>
 		props.position === OverlayPosition.TOP_LEFT
 			? "10px"
 			: props.position === OverlayPosition.TOP_CENTER
 			? "50%"
 			: "unset"};
-	right: ${props =>
+	right: ${(props) =>
 		props.position === OverlayPosition.TOP_RIGHT
 			? `calc(240px * ${props.scale} + 10px)`
 			: "unset"};
 
-	transform: ${props =>
+	transform: ${(props) =>
 		props.position === OverlayPosition.TOP_CENTER
 			? `scale(${props.scale}) translateX(-50%) `
 			: `scale(${props.scale})`};
@@ -151,7 +151,7 @@ class PositionableOverlay extends React.Component<
 		if (!this.state.moving) {
 			return;
 		}
-		this.setState(state => ({
+		this.setState((state) => ({
 			movePreviewOffset: null,
 			moving: false,
 			viewerOffset: state.viewerOffset
@@ -217,23 +217,23 @@ class PositionableOverlay extends React.Component<
 				active={this.state.moving}
 				onMouseMove={this.onMove}
 				onMouseUp={this.onMoveEnd}
-				ref={ref => (this.ref = ref)}
+				ref={(ref) => (this.ref = ref)}
 				moveable={this.props.movable}
 			>
 				<Overlay
 					style={{
-						marginLeft: `${(this.state.viewerOffset
-							? this.state.viewerOffset.x
-							: 0) +
+						marginLeft: `${
+							(this.state.viewerOffset ? this.state.viewerOffset.x : 0) +
 							(this.state.movePreviewOffset
 								? this.state.movePreviewOffset.x
-								: 0)}vw`,
-						marginTop: `${(this.state.viewerOffset
-							? this.state.viewerOffset.y
-							: 0) +
+								: 0)
+						}vw`,
+						marginTop: `${
+							(this.state.viewerOffset ? this.state.viewerOffset.y : 0) +
 							(this.state.movePreviewOffset
 								? this.state.movePreviewOffset.y
-								: 0)}vh`,
+								: 0)
+						}vh`,
 					}}
 					position={position}
 					scale={this.state.scale}

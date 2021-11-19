@@ -9,9 +9,7 @@ export interface TooltipConsumerArgs {
 	behaviour: TooltipBehaviour;
 }
 
-export const {
-	Provider: TooltipProvider,
-	Consumer: TooltipConsumer,
-} = React.createContext<TooltipConsumerArgs>({
-	behaviour: TooltipBehaviour.ATTACHED,
-});
+export const { Provider: TooltipProvider, Consumer: TooltipConsumer } =
+	React.createContext<TooltipConsumerArgs>({
+		behaviour: TooltipBehaviour.ATTACHED,
+	});

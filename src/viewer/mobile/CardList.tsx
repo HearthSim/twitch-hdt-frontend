@@ -82,7 +82,7 @@ class CardList extends React.Component<Props & CardsProps, State> {
 							</li>
 						);
 					})
-					.filter(x => !!x)}
+					.filter((x) => !!x)}
 			</CardListList>
 		);
 	}

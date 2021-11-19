@@ -38,15 +38,15 @@ const Element = styled.li<ConnectedProps>`
 	padding: 10px 16px;
 	border: 1px solid black;
 	//margin: 0 1em;
-	color: ${props =>
+	color: ${(props) =>
 		props.connected === null ? getElementColor(props) : "unset"};
-	border-color: ${props =>
+	border-color: ${(props) =>
 		props.connected === null ? getElementColor(props) : "unset"};
 `;
 
 const Connection = styled.li<ConnectedProps>`
 	font-family: monospace;
-	color: ${props => getConnectionColor(props)};
+	color: ${(props) => getConnectionColor(props)};
 `;
 
 interface Props {

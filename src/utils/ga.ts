@@ -18,4 +18,4 @@ interface GA {
 	(command: "set", hitType: "anonymizeIp", value: boolean): void;
 }
 
-declare var ga: GA;
+declare let ga: GA;

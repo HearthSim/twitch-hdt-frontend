@@ -32,7 +32,7 @@ export default class OtherAdmin extends React.Component<Props> {
 						type="checkbox"
 						checked={promoteStream}
 						disabled={this.props.disabled}
-						onChange={event =>
+						onChange={(event) =>
 							this.props.setSetting(
 								"promote_on_hsreplaynet",
 								event.target.checked,

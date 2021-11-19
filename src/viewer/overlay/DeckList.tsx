@@ -26,9 +26,10 @@ const Wrapper = styled.div<OpacityProps>`
 	width: 240px;
 	position: absolute;
 
-	opacity: ${props => (typeof props.opacity === "number" ? props.opacity : 1)};
+	opacity: ${(props) =>
+		typeof props.opacity === "number" ? props.opacity : 1};
 	transition: opacity
-		${props =>
+		${(props) =>
 			(props.opacity || 0) > 0.5 ? `0.25s ease-out` : `0.25s ease-in`};
 `;
 
@@ -103,13 +104,13 @@ const CardList = styled.ul<{ position: OverlayPosition }>`
 	flex-direction: column;
 
 	// scaling
-	transform-origin: ${props =>
+	transform-origin: ${(props) =>
 		props.position === OverlayPosition.TOP_LEFT ? "top left" : "top right"};
 `;
 
 export const Icon = styled.img<PaddingProps>`
 	height: 100%;
-	padding: ${props => (props.padding ? props.padding : "7px 0")};
+	padding: ${(props) => (props.padding ? props.padding : "7px 0")};
 	filter: drop-shadow(-1px -1px 0 rgba(0, 0, 0, 0.5))
 		drop-shadow(-1px 1px 0 rgba(0, 0, 0, 0.5))
 		drop-shadow(1px -1px 0 rgba(0, 0, 0, 0.5))
@@ -236,19 +237,19 @@ class DeckList extends React.Component<
 		return (
 			<Wrapper
 				opacity={this.props.hidden ? 0 : 1}
-				ref={ref => (this.ref = ref)}
+				ref={(ref) => (this.ref = ref)}
 			>
 				<CardList
 					style={{
 						transform: `scale(${scaleTo})`,
 					}}
-					onMouseDown={e => {
+					onMouseDown={(e) => {
 						if (e.button !== 0) {
 							return;
 						}
 						this.props.onMoveStart && this.props.onMoveStart(e);
 					}}
-					onMouseUp={e => {
+					onMouseUp={(e) => {
 						this.props.onMoveEnd && this.props.onMoveEnd(e);
 					}}
 					position={this.props.position}
@@ -290,7 +291,7 @@ class DeckList extends React.Component<
 											}
 											copyDeck();
 										}}
-										onMouseDown={e => {
+										onMouseDown={(e) => {
 											e.stopPropagation();
 										}}
 										title="Copy deck to clipboard"
@@ -300,7 +301,7 @@ class DeckList extends React.Component<
 									</CopyButton>
 									{this.props.pinned ? (
 										<HeaderButton
-											onClick={e => {
+											onClick={(e) => {
 												if (e.button !== 0) {
 													return;
 												}
@@ -321,7 +322,7 @@ class DeckList extends React.Component<
 										</HeaderButton>
 									) : (
 										<HeaderButton
-											onClick={e => {
+											onClick={(e) => {
 												if (e.button !== 0) {
 													return;
 												}
@@ -358,7 +359,7 @@ class DeckList extends React.Component<
 								</li>
 							);
 						})
-						.filter(x => !!x)}
+						.filter((x) => !!x)}
 				</CardList>
 			</Wrapper>
 		);

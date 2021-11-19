@@ -145,7 +145,7 @@ class Entity extends React.Component<Props & CardsProps, State> {
 
 					return (
 						<EntityDiv
-							onMouseEnter={e => {
+							onMouseEnter={(e) => {
 								let { clientX: x, clientY: y } = e;
 								const rect = this.ref && this.ref.getBoundingClientRect();
 								let width = null;
