@@ -255,12 +255,7 @@ class DeckList extends React.Component<
 					position={this.props.position}
 				>
 					<li>
-						<CopyDeckButton
-							deck={this.props.deck}
-							onCopy={() => {
-								ga("send", "event", "Deck", "Copy", "Overlay");
-							}}
-						>
+						<CopyDeckButton deck={this.props.deck} onCopy={DeckList.onCopy}>
 							{({
 								disabled,
 								copied,
@@ -392,6 +387,10 @@ class DeckList extends React.Component<
 		) {
 			return;
 		}
+	}
+
+	private static onCopy() {
+		ga("send", "event", "Deck", "Copy", "Overlay");
 	}
 }
 

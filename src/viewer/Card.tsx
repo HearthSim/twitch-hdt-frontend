@@ -81,7 +81,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 										/>
 									);
 								case TooltipBehaviour.ATTACHED:
-								default:
+								default: {
 									const widthOverHeight = 512 / 764;
 
 									const viewPortHeight = window.innerHeight;
@@ -138,6 +138,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 											triple={triple}
 										/>
 									);
+								}
 							}
 						}}
 					</TooltipConsumer>

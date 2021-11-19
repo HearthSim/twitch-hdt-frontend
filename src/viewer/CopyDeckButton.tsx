@@ -112,7 +112,7 @@ const CopyDeckButton: React.FC<Props> = ({
 		if (onCopy) {
 			onCopy();
 		}
-	}, [deckstring]);
+	}, [deckstring, onCopy]);
 
 	return (
 		<>

@@ -1,6 +1,6 @@
 type Listener<T> = (data: T) => void;
 
-export default class AsyncQueue<T extends {}> {
+export default class AsyncQueue<T> {
 	protected _delay: number;
 	public queue: { message: T; time: number }[];
 	public listeners: Listener<T>[];

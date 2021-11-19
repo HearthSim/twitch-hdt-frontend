@@ -29,7 +29,7 @@ const rootReducer: Reducer<State> = (
 				hasInitialized:
 					state.hasInitialized || action.status !== ConnectionStatus.ERROR,
 			});
-		case UPDATE_SETTINGS:
+		case UPDATE_SETTINGS: {
 			const status = action.status;
 			return Object.assign({}, state, {
 				config: Object.assign({}, state.config, {
@@ -41,6 +41,7 @@ const rootReducer: Reducer<State> = (
 					readonly: status === "pending",
 				}),
 			});
+		}
 		case PREVIEW_SETTINGS:
 			return Object.assign({}, state, {
 				config: Object.assign({}, state.config, {

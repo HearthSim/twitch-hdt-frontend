@@ -174,7 +174,7 @@ const updateConnectionStatus =
 						actionCreators.setConnectionStatus(ConnectionStatus.READY),
 					);
 				case 403:
-				case 502:
+				case 502: {
 					const contentType = response.headers.get("content-type");
 					if (!contentType || !contentType.includes("application/json")) {
 						throw new Error(`Invalid response content type "${contentType}"`);
@@ -203,6 +203,7 @@ const updateConnectionStatus =
 						default:
 							throw new Error(`Invalid error "${error}"`);
 					}
+				}
 				default:
 					throw new Error(`Unexpected status code ${response.status}`);
 			}
