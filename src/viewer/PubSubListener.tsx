@@ -67,7 +67,7 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 					}
 				}
 				const params = [`card_id=${dbfId}`, `GameType=${formatType}`];
-				const url = `https://hsreplay.net/analytics/query/single_card_details/?${params.join(
+				const url = `https://hsreplay.net/api/v1/analytics/query/single_card_details/?${params.join(
 					"&",
 				)}`;
 				const response = await fetch(url, {
