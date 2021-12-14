@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Fixed deck overlay not appearing when set to display on the right
+- Fixed the clipboard not working in Chrome-based browsers
 
 ## [1.2.0] - 2021-03-26
 ### Added
