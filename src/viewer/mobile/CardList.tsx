@@ -21,18 +21,9 @@ interface Props {
 	format?: FormatType;
 }
 
-interface State {
-	scale?: number;
-	copied?: boolean;
-}
-
-class CardList extends React.Component<Props & CardsProps, State> {
-	public copiedTimeout: number | null = null;
-	public ref: HTMLDivElement | null = null;
-
+class CardList extends React.Component<Props & CardsProps> {
 	constructor(props: Props & CardsProps, context: any) {
 		super(props, context);
-		this.state = {};
 	}
 
 	public render(): React.ReactNode {
