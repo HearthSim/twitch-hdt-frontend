@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import * as ReactDOM from "react-dom";
 import styled from "styled-components";
 import { BoardStateDeck, BoardStatePlayer } from "../twitch-hdt";
@@ -113,6 +113,17 @@ const CopyDeckButton: React.FC<Props> = ({
 			onCopy();
 		}
 	}, [deckstring, onCopy]);
+
+	useEffect(() => {
+		if (copied) {
+			const timeoutRef = window.setTimeout(() => {
+				setCopied(false);
+			}, timeout);
+			return () => {
+				window.clearTimeout(timeoutRef);
+			};
+		}
+	}, [copied, timeout]);
 
 	return (
 		<>
