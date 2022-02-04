@@ -57,7 +57,7 @@
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"react-hot-loader": "^4.12.20",
-		"react-hs-components": "https://libs.hearthsim.net/react-hs-components-v0.6.0.tgz",
+		"react-hs-components": "https://libs.hearthsim.net/react-hs-components-v0.6.1.tgz",
 		"react-redux": "^7",
 		"redux": "^4.0.4",
 		"redux-thunk": "^2.3.0",

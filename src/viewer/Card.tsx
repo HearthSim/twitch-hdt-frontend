@@ -11,6 +11,7 @@ import {
 	TwitchExtProps,
 	withTwitchExt,
 } from "../utils/twitch";
+import { getNotFound } from "./notfound";
 import { getPlaceholder } from "./placeholders";
 import {
 	TooltipBehaviour,
@@ -133,6 +134,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 											}}
 											resolution={512}
 											locale={locale}
+											notFound={getNotFound(card.type || "")}
 											placeholder={getPlaceholder(card.type || "")}
 											battlegrounds={this.props.battlegrounds}
 											triple={triple}
