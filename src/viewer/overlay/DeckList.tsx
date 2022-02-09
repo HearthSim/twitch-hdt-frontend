@@ -249,6 +249,10 @@ class DeckList extends React.Component<
 						}
 						this.props.onMoveStart && this.props.onMoveStart(e);
 					}}
+					onDoubleClick={(event) => {
+						// prevent Twitch fullscreen when clicked
+						event.stopPropagation();
+					}}
 					onMouseUp={(e) => {
 						this.props.onMoveEnd && this.props.onMoveEnd(e);
 					}}

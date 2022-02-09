@@ -136,6 +136,10 @@ const CopyDeckButton: React.FC<Props> = ({
 							onClick={(e) => {
 								e.stopPropagation();
 							}}
+							onDoubleClick={(event) => {
+								// prevent Twitch fullscreen when clicked
+								event.stopPropagation();
+							}}
 						>
 							<TextArea
 								value={deckstring}

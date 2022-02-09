@@ -115,6 +115,10 @@ export default class BobsBuddyUserConfig extends React.Component<Props, State> {
 					pointerEvents: show ? "all" : "none",
 					transform: `scale(${this.state.scale}) translateY(-50%)`,
 				}}
+				onDoubleClick={(event) => {
+					// prevent Twitch fullscreen when clicked
+					event.stopPropagation();
+				}}
 				ref={(ref) => (this.ref = ref)}
 			>
 				<li>
