@@ -8,7 +8,7 @@ interface Props {
 	onChange: (checked: boolean) => void;
 }
 
-const Container = styled.div<{ disabled?: boolean }>`
+const Container = styled.label<{ disabled?: boolean }>`
 	display: flex;
 	color: rgba(255, 255, 255, ${(props) => (props.disabled ? 0.5 : 1)});
 `;
@@ -30,9 +30,20 @@ export default class CheckBox extends React.Component<Props> {
 		return (
 			<Container
 				onClick={() => !disabled && onChange(!checked)}
+				onDoubleClick={(event) => {
+					// prevent Twitch fullscreen when clicked
+					event.stopPropagation();
+				}}
 				disabled={disabled}
 			>
-				<Box disabled={disabled}>{checked ? "✔" : ""}</Box>
+				<Box
+					disabled={disabled}
+					role="checkbox"
+					aria-checked={checked}
+					aria-disabled={disabled}
+				>
+					{checked ? "✔" : ""}
+				</Box>
 				{label}
 			</Container>
 		);
