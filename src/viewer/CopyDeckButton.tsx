@@ -92,11 +92,11 @@ const CopyDeckButton: React.FC<Props> = ({
 		if (!deck) {
 			return null;
 		}
-		const { name, cards, format, hero } = deck;
+		const { name, cards, sideboards, format, hero } = deck;
 		if (!format || !cards || !hero) {
 			return null;
 		}
-		return getDeckToCopy(cards, format, [hero], name);
+		return getDeckToCopy(cards, sideboards || [], format, [hero], name);
 	}, [deck]);
 
 	const copy = useCallback(async () => {

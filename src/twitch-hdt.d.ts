@@ -135,10 +135,43 @@ export interface BoardStateHand {
 	size: number;
 }
 
-export type BoardStateDeckCard = [number, number, number];
+export type BoardStateDeckCard = [
+	/**
+	 * dbf id
+	 */
+	number,
+	/**
+	 * current count
+	 */
+	number,
+	/**
+	 * initial count
+	 */
+	number,
+];
+
+export type SideboardDeckCard = [
+	/**
+	 * owner dbf id
+	 */
+	number,
+	/**
+	 * dbf id
+	 */
+	number,
+	/**
+	 * current count
+	 */
+	number,
+	/**
+	 * initial count
+	 */
+	number,
+];
 
 export interface BoardStateDeck {
-	cards?: BoardStateDeckCard[]; // [dbfId, current, initial]
+	cards?: BoardStateDeckCard[];
+	sideboards?: SideboardDeckCard[];
 	name?: string;
 	hero?: number;
 	format?: FormatType;
@@ -152,6 +185,7 @@ export const enum FormatType {
 	FT_WILD = 1,
 	FT_STANDARD = 2,
 	FT_CLASSIC = 3,
+	FT_TWIST = 4,
 }
 
 export const enum BnetGameType {

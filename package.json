@@ -45,7 +45,7 @@
 		"babel-plugin-styled-components": "^1.10.7",
 		"clean-webpack-plugin": "^0.1.19",
 		"clipboard-polyfill": "^2.8.6",
-		"deckstrings": "^2.2.1",
+		"deckstrings": "^3.1.1",
 		"file-loader": "^2.0.0",
 		"hearthstonejson-client": "^1.4.0",
 		"html-webpack-include-sibling-chunks-plugin": "0.1.0",

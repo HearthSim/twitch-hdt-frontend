@@ -1,8 +1,13 @@
-import { encode } from "deckstrings";
-import { BoardStateDeckCard, FormatType } from "../twitch-hdt";
+import { DeckDefinition, encode } from "deckstrings";
+import {
+	BoardStateDeckCard,
+	FormatType,
+	SideboardDeckCard,
+} from "../twitch-hdt";
 
 export const getDeckToCopy = (
 	cardList: BoardStateDeckCard[],
+	sideboards: SideboardDeckCard[],
 	format: FormatType,
 	heroes: number[],
 	name?: string,
@@ -11,10 +16,9 @@ export const getDeckToCopy = (
 		return null;
 	}
 
-	const initialCards: [number, number][] = cardList
+	const initialCards: DeckDefinition["cards"] = cardList
 		.filter((card: BoardStateDeckCard) => {
-			const [dbfId, current, initial] = card;
-			return !!initial;
+			return !!card[2];
 		})
 		.map<[number, number]>((card: BoardStateDeckCard) => {
 			const [dbfId, current, initial] = card;
@@ -34,15 +38,40 @@ export const getDeckToCopy = (
 			},
 			[],
 		);
-	const deckDescription = {
+
+	const sideboardCards: DeckDefinition["sideboardCards"] = sideboards
+		.filter((card: SideboardDeckCard) => {
+			return !!card[3];
+		})
+		.map<[number, number, number]>((card: SideboardDeckCard) => {
+			const [owner, dbfId, current, initial] = card;
+			return [dbfId, initial, owner];
+		})
+		.reduce<[number, number, number][]>(
+			(result: [number, number, number][], card: [number, number, number]) => {
+				result = result.slice(0);
+				for (let i = 0; i < result.length; i++) {
+					if (result[i][0] === card[0] && result[i][2] === card[2]) {
+						result[i][1] += card[1];
+						return result;
+					}
+				}
+				// new card, append
+				return result.concat([card]);
+			},
+			[],
+		);
+
+	const deckDefinition: DeckDefinition = {
 		cards: initialCards,
+		sideboardCards,
 		format,
 		heroes,
 	};
 
 	let deckstring = null;
 	try {
-		deckstring = encode(deckDescription);
+		deckstring = encode(deckDefinition);
 	} catch (e) {
 		console.error(e);
 		return null;
@@ -54,13 +83,20 @@ export const getDeckToCopy = (
 
 	const isStandard = format === FormatType.FT_STANDARD;
 	const isClassic = format === FormatType.FT_CLASSIC;
+	const isTwist = format === FormatType.FT_TWIST;
 
 	return [
 		...(name ? [`### ${name}`] : []),
 		...(format
 			? [
 					`# Format: ${
-						isStandard ? "Standard" : isClassic ? "Classic" : "Wild"
+						isStandard
+							? "Standard"
+							: isTwist
+							? "Twist"
+							: isClassic
+							? "Classic"
+							: "Wild"
 					}`,
 			  ]
 			: []),
