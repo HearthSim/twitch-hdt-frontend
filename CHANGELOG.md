@@ -174,7 +174,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added a deck list with hover zones over each card
 - Added setup interface with connection guide and basic overlay configuration
 
-[Unreleased]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.2.3...HEAD
+[1.2.3]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.2.2...v1.2.3
+[1.2.2]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.2.1...v1.2.2
+[1.2.1]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/HearthSim/hdt-twitch-extension/compare/v1.0.0...v1.0.1
