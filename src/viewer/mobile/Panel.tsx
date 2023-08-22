@@ -24,6 +24,7 @@ import BobsBuddy from "../overlay/BobsBuddy";
 import { TooltipBehaviour, TooltipProvider } from "../utils/tooltips";
 import CardList from "./CardList";
 import Scroller from "./Scroller";
+import CardTile from "../CardTile";
 
 interface Props {
 	boardState: BoardStateData | null;
@@ -167,6 +168,13 @@ const HeaderIcon = styled.img`
 	padding: 8px 3px;
 `;
 
+const BattlegroundsContainer = styled.div`
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+`;
+
 class Panel extends React.Component<Props & TwitchExtProps, State> {
 	public static getDerivedStateFromProps(
 		nextProps: Props & TwitchExtProps,
@@ -267,28 +275,45 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 					<Portal ref={(ref) => (this.portal = ref)} />
 					<PortalProvider value={{ portal: this.portal }}>
 						{isBattlegrounds ? (
-							boardState &&
-							boardState.bobs_buddy_state != null &&
-							showBobsBuddy ? (
-								<BobsBuddy
-									winRate={boardState.bobs_buddy_state.win_rate}
-									tieRate={boardState.bobs_buddy_state.tie_rate}
-									lossRate={boardState.bobs_buddy_state.loss_rate}
-									playerLethal={boardState.bobs_buddy_state.player_lethal_rate}
-									opponentLethal={
-										boardState.bobs_buddy_state.opponent_lethal_rate
-									}
-									simulationState={boardState.bobs_buddy_state.simulation_state}
-									whenToShowStats={
-										this.props.config.when_to_show_bobs_buddy
-											? (this.props.config
-													.when_to_show_bobs_buddy as WhenToShowBobsBuddy)
-											: WhenToShowBobsBuddy.All
-									}
-									userSeesDuringCombat={true}
-									userSeesDuringShopping={true}
-									layout="mobile"
-								/>
+							boardState ? (
+								<BattlegroundsContainer>
+									{boardState.bobs_buddy_state != null && showBobsBuddy ? (
+										<BobsBuddy
+											winRate={boardState.bobs_buddy_state.win_rate}
+											tieRate={boardState.bobs_buddy_state.tie_rate}
+											lossRate={boardState.bobs_buddy_state.loss_rate}
+											playerLethal={
+												boardState.bobs_buddy_state.player_lethal_rate
+											}
+											opponentLethal={
+												boardState.bobs_buddy_state.opponent_lethal_rate
+											}
+											simulationState={
+												boardState.bobs_buddy_state.simulation_state
+											}
+											whenToShowStats={
+												this.props.config.when_to_show_bobs_buddy
+													? (this.props.config
+															.when_to_show_bobs_buddy as WhenToShowBobsBuddy)
+													: WhenToShowBobsBuddy.All
+											}
+											userSeesDuringCombat={true}
+											userSeesDuringShopping={true}
+											layout="mobile"
+										/>
+									) : null}
+									{boardState && boardState.battlegrounds_anomaly ? (
+										<div>
+											<Header style={{ paddingLeft: "3px" }}>
+												<h1>Battlegrounds Anomaly (tap and hold)</h1>
+											</Header>
+											<CardTile
+												dbfId={boardState.battlegrounds_anomaly}
+												showRarity={false}
+											/>
+										</div>
+									) : null}
+								</BattlegroundsContainer>
 							) : null
 						) : showDeckList && deck && deck.cards ? (
 							<>

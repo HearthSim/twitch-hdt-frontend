@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Added support for decks containing sideboard
 - Added support for Twist decks
+- Added support for Battlegrounds anomalies
 
 ## [1.2.3] - 2022-02-04
 ### Added

@@ -31,6 +31,11 @@ export interface BoardStateData {
 	opponent?: BoardStatePlayer;
 
 	/**
+	 * The dbfId of the Battleground anomaly.
+	 */
+	battlegrounds_anomaly?: number;
+
+	/**
 	 * Contains the game type of the current game.
 	 */
 	game_type?: BnetGameType;
