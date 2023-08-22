@@ -146,6 +146,15 @@ const Weapon = styled(OverlayElement)`
 	clip-path: circle(50% at 50% 50%);
 `;
 
+const BattlegroundsAnomaly = styled(OverlayElement)`
+	top: ${(props) => props.top || "unset"};
+	right: ${(props) => props.right || "unset"};
+
+	height: 8.5vh;
+	width: 8.5vh;
+	clip-path: circle(50% at 50% 50%);
+`;
+
 const Deck = styled(OverlayElement)`
 	top: ${(props) => props.top || "unset"};
 	right: ${(props) => props.right || "unset"};
@@ -321,6 +330,11 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		const player = boardState && boardState.player ? boardState.player : {};
 		const opponent =
 			boardState && boardState.opponent ? boardState.opponent : {};
+
+		const anomaly =
+			boardState && boardState.battlegrounds_anomaly
+				? boardState.battlegrounds_anomaly
+				: null;
 
 		const gameType =
 			boardState && boardState.game_type
@@ -585,6 +599,9 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 									</Deck>
 								</>
 							) : null}
+							<BattlegroundsAnomaly right={"24vh"} top={"34.5vh"}>
+								<Entity dbfId={anomaly || null} />
+							</BattlegroundsAnomaly>
 						</Offset>
 					)}
 				</PortalProvider>
