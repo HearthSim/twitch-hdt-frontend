@@ -170,6 +170,8 @@ const updateConnectionStatus =
 			});
 			switch (response.status) {
 				case 200:
+				case 201:
+				case 204:
 					return dispatch(
 						actionCreators.setConnectionStatus(ConnectionStatus.READY),
 					);
