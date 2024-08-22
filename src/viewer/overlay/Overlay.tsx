@@ -156,6 +156,15 @@ const Trinket = styled(OverlayElement)`
 	clip-path: circle(50% at 50% 50%);
 `;
 
+const TraditionalAnomaly = styled(OverlayElement)`
+	top: ${(props) => props.top || "unset"};
+	left: ${(props) => props.left || "unset"};
+
+	height: 6.5vh;
+	width: 6.5vh;
+	clip-path: circle(50% at 50% 50%);
+`;
+
 const BattlegroundsAnomaly = styled(OverlayElement)`
 	top: ${(props) => props.top || "unset"};
 	right: ${(props) => props.right || "unset"};
@@ -341,7 +350,12 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		const opponent =
 			boardState && boardState.opponent ? boardState.opponent : {};
 
-		const anomaly =
+		const traditionalAnomaly =
+			boardState && boardState.traditional_anomaly
+				? boardState.traditional_anomaly
+				: null;
+
+		const battlegroundsAnomaly =
 			boardState && boardState.battlegrounds_anomaly
 				? boardState.battlegrounds_anomaly
 				: null;
@@ -600,6 +614,10 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 								</Weapon>
 							)}
 
+							<TraditionalAnomaly left={"26.5vh"} top={"27vh"}>
+								<Entity dbfId={traditionalAnomaly || null} />
+							</TraditionalAnomaly>
+
 							{!ignoreDeck ? (
 								<>
 									<Deck top={"24vh"} right={"24vh"}>
@@ -635,7 +653,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 								</>
 							) : null}
 							<BattlegroundsAnomaly right={"24vh"} top={"34.5vh"}>
-								<Entity dbfId={anomaly || null} />
+								<Entity dbfId={battlegroundsAnomaly || null} />
 							</BattlegroundsAnomaly>
 						</Offset>
 					)}

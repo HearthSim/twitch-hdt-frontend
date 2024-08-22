@@ -31,6 +31,11 @@ export interface BoardStateData {
 	opponent?: BoardStatePlayer;
 
 	/**
+	 * The dbfId of the anomaly in traditional Hearthstone.
+	 */
+	traditional_anomaly?: number;
+
+	/**
 	 * The dbfId of the Battleground anomaly.
 	 */
 	battlegrounds_anomaly?: number;
