@@ -146,6 +146,16 @@ const Weapon = styled(OverlayElement)`
 	clip-path: circle(50% at 50% 50%);
 `;
 
+const Trinket = styled(OverlayElement)`
+	top: ${(props) => props.top || "unset"};
+	left: ${(props) => props.left || "unset"};
+	bottom: ${(props) => props.bottom || "unset"};
+
+	height: 9.5vh;
+	width: 9.5vh;
+	clip-path: circle(50% at 50% 50%);
+`;
+
 const BattlegroundsAnomaly = styled(OverlayElement)`
 	top: ${(props) => props.top || "unset"};
 	right: ${(props) => props.right || "unset"};
@@ -559,12 +569,37 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 							<HeroPower bottom={"16.9vh"} right={"65.6vh"}>
 								<Entity dbfId={player.hero_power || null} />
 							</HeroPower>
-							<Weapon top={"15.5vh"} left={"65.8vh"}>
-								<Entity dbfId={opponent.weapon || null} />
-							</Weapon>
-							<Weapon bottom={"16.8vh"} left={"64.25vh"}>
-								<Entity dbfId={player.weapon || null} />
-							</Weapon>
+
+							{opponent.first_trinket || opponent.second_trinket ? (
+								<>
+									<Trinket top={"10.7vh"} left={"72.7vh"}>
+										<Entity dbfId={opponent.first_trinket || null} />
+									</Trinket>
+									<Trinket top={"16.7vh"} left={"65.3vh"}>
+										<Entity dbfId={opponent.second_trinket || null} />
+									</Trinket>
+								</>
+							) : (
+								<Weapon top={"15.5vh"} left={"65.8vh"}>
+									<Entity dbfId={opponent.weapon || null} />
+								</Weapon>
+							)}
+
+							{player.first_trinket || player.second_trinket ? (
+								<>
+									<Trinket bottom={"14.3vh"} left={"71.6vh"}>
+										<Entity dbfId={player.first_trinket || null} />
+									</Trinket>
+									<Trinket bottom={"21vh"} left={"64.6vh"}>
+										<Entity dbfId={player.second_trinket || null} />
+									</Trinket>
+								</>
+							) : (
+								<Weapon bottom={"16.8vh"} left={"64.25vh"}>
+									<Entity dbfId={player.weapon || null} />
+								</Weapon>
+							)}
+
 							{!ignoreDeck ? (
 								<>
 									<Deck top={"24vh"} right={"24vh"}>
