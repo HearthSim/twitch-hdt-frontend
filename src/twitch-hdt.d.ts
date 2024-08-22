@@ -71,6 +71,16 @@ export interface BoardStatePlayer {
 	weapon?: number;
 
 	/**
+	 * The dbfId of the first trinket, if any.
+	 */
+	first_trinket?: number;
+
+	/**
+	 * The dbfId of the second trinket, if any.
+	 */
+	second_trinket?: number;
+
+	/**
 	 * The dbfIds of secrets.
 	 */
 	secrets?: number[];
