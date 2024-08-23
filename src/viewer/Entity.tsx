@@ -71,17 +71,6 @@ class Entity extends React.Component<Props & CardsProps, State> {
 		if (prevState.isHovering && !this.state.isHovering) {
 			this.setState({ isMeaningfulHover: false });
 		}
-		if (
-			this.state.isHovering &&
-			!prevState.isMeaningfulHover &&
-			this.state.isMeaningfulHover
-		) {
-			if (this.props.dbfId) {
-				ga("send", "event", "Overlay", "Hover Card", String(this.props.dbfId));
-			} else {
-				ga("send", "event", "Overlay", "Hover Card");
-			}
-		}
 	}
 
 	public componentWillUnmount(): void {

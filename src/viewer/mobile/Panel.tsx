@@ -7,19 +7,11 @@ import {
 	BoardStatePlayer,
 	EBSConfiguration,
 } from "../../twitch-hdt";
-import {
-	Feature,
-	hasFeature,
-	OverlayPosition,
-	WhenToShowBobsBuddy,
-} from "../../utils/config";
+import { Feature, hasFeature, WhenToShowBobsBuddy } from "../../utils/config";
 import { PortalProvider } from "../../utils/portal";
 import { TwitchExtProps, withTwitchExt } from "../../utils/twitch";
-import CopyDeckButton, {
-	CopyDeckButtonChild,
-	CopyDeckButtonChildProps,
-} from "../CopyDeckButton";
-import { CopyDeckIcon, HSReplayNetIcon } from "../icons";
+import CopyDeckButton, { CopyDeckButtonChildProps } from "../CopyDeckButton";
+import { HSReplayNetIcon } from "../icons";
 import BobsBuddy from "../overlay/BobsBuddy";
 import { TooltipBehaviour, TooltipProvider } from "../utils/tooltips";
 import CardList from "./CardList";
@@ -357,10 +349,6 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 			this.setState({ timedOut: true });
 		}, 30 * 1000);
 	}
-
-	private onCopy = () => {
-		ga("send", "event", "Deck", "Copy", "Mobile");
-	};
 }
 
 export default withTwitchExt(Panel);

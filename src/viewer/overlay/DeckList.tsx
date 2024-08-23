@@ -259,7 +259,7 @@ class DeckList extends React.Component<
 					position={this.props.position}
 				>
 					<li>
-						<CopyDeckButton deck={this.props.deck} onCopy={DeckList.onCopy}>
+						<CopyDeckButton deck={this.props.deck}>
 							{({
 								disabled,
 								copied,
@@ -312,7 +312,6 @@ class DeckList extends React.Component<
 												) {
 													e.currentTarget.blur();
 												}
-												ga("send", "event", "Deck", "Hide");
 											}}
 											onMouseDown={this.stopPropagation}
 											title="Automatically hide deck list"
@@ -331,7 +330,6 @@ class DeckList extends React.Component<
 												if (target && typeof target.blur === "function") {
 													target.blur();
 												}
-												ga("send", "event", "Deck", "Show");
 											}}
 											onMouseDown={this.stopPropagation}
 											title="Keep deck list visible"
@@ -391,10 +389,6 @@ class DeckList extends React.Component<
 		) {
 			return;
 		}
-	}
-
-	private static onCopy() {
-		ga("send", "event", "Deck", "Copy", "Overlay");
 	}
 }
 
