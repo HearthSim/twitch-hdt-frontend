@@ -20,6 +20,7 @@ import BobsBuddy from "./BobsBuddy";
 import BobsBuddyUserConfig from "./BobsBuddyUserConfig";
 import DeckList from "./DeckList";
 import PositionableOverlay from "./PositionableOverlay";
+import { isBattlegroundsGameType } from "../../utils/hearthstone";
 
 export interface PositionProps {
 	top?: string;
@@ -378,11 +379,10 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 			Array.isArray(player.deck.cards) &&
 			!player.deck.cards.length;
 
-		const ignoreDeck = gameType === BnetGameType.BGT_BATTLEGROUNDS;
+		const isBattlegrounds = isBattlegroundsGameType(gameType);
 		const hideDecklist =
-			isEmptyDeck || ignoreDeck || isHidden(Feature.DECKLIST);
-		const hideBobsBuddy =
-			gameType != BnetGameType.BGT_BATTLEGROUNDS || isHidden(Feature.BOBSBUDDY);
+			isEmptyDeck || isBattlegrounds || isHidden(Feature.DECKLIST);
+		const hideBobsBuddy = !isBattlegrounds || isHidden(Feature.BOBSBUDDY);
 		const hideTooltips = !boardState || isHidden(Feature.TOOLTIPS);
 
 		return (
@@ -618,7 +618,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 								<Entity dbfId={traditionalAnomaly || null} />
 							</TraditionalAnomaly>
 
-							{!ignoreDeck ? (
+							{!isBattlegrounds ? (
 								<>
 									<Deck top={"24vh"} right={"24vh"}>
 										<Expander

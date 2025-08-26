@@ -1,5 +1,6 @@
 import { DeckDefinition, encode } from "deckstrings";
 import {
+	BnetGameType,
 	BoardStateDeckCard,
 	FormatType,
 	SideboardDeckCard,
@@ -105,4 +106,18 @@ export const getDeckToCopy = (
 		"#",
 		"# To use this deck, copy it to your clipboard and create a new deck in Hearthstone",
 	].join("\n");
+};
+
+export const isBattlegroundsGameType = (
+	gameType: number | undefined,
+): boolean => {
+	return (
+		[
+			BnetGameType.BGT_BATTLEGROUNDS,
+			BnetGameType.BGT_BATTLEGROUNDS_FRIENDLY,
+			BnetGameType.BGT_BATTLEGROUNDS_DUO,
+			BnetGameType.BGT_BATTLEGROUNDS_DUO_VS_AI,
+			BnetGameType.BGT_BATTLEGROUNDS_DUO_FRIENDLY,
+		].indexOf(gameType || 0) !== -1
+	);
 };

@@ -17,6 +17,7 @@ import { TooltipBehaviour, TooltipProvider } from "../utils/tooltips";
 import CardList from "./CardList";
 import Scroller from "./Scroller";
 import CardTile from "../CardTile";
+import { isBattlegroundsGameType } from "../../utils/hearthstone";
 
 interface Props {
 	boardState: BoardStateData | null;
@@ -226,7 +227,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 			? this.props.twitchExtContext.theme === "dark"
 			: false;
 		const isBattlegrounds =
-			boardState && boardState.game_type === BnetGameType.BGT_BATTLEGROUNDS;
+			boardState && isBattlegroundsGameType(boardState.game_type);
 		const emptyDeck = deck && deck.cards && !deck.cards.length;
 
 		const isHidden = (feature: Feature) =>

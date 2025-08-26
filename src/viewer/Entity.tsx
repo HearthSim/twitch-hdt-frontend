@@ -7,6 +7,7 @@ import { CardsProps, withCards } from "../utils/cards";
 import { PortalConsumer } from "../utils/portal";
 import Card from "./Card";
 import CardStatistics from "./CardStatistics";
+import { isBattlegroundsGameType } from "../utils/hearthstone";
 
 const EntityDiv = styled.div`
 	width: 100%;
@@ -89,6 +90,8 @@ class Entity extends React.Component<Props & CardsProps, State> {
 			return null;
 		}
 
+		const isBattlegrounds = isBattlegroundsGameType(this.context.gameType);
+
 		return (
 			<PortalConsumer>
 				{({ portal }) => {
@@ -105,8 +108,7 @@ class Entity extends React.Component<Props & CardsProps, State> {
 								width={width || 0}
 								flipped={flipped}
 								battlegrounds={
-									this.context.gameType === BnetGameType.BGT_BATTLEGROUNDS &&
-									(!card || card.type !== "HERO")
+									isBattlegrounds && (!card || card.type !== "HERO")
 								}
 							/>,
 							portal,
@@ -116,7 +118,7 @@ class Entity extends React.Component<Props & CardsProps, State> {
 							card.collectible &&
 							this.context.statisticsContainer &&
 							this.context.formatType &&
-							this.context.gameType !== BnetGameType.BGT_BATTLEGROUNDS &&
+							!isBattlegrounds &&
 							isMeaningfulHover
 						) {
 							const Container = this.context.statisticsContainer;
