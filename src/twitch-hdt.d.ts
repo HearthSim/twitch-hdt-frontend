@@ -76,6 +76,16 @@ export interface BoardStatePlayer {
 	hero_power?: number;
 
 	/**
+	 * The dbfId of the top hero power when there are two hero powers, if any.
+	 */
+	hero_power_top?: number;
+
+	/**
+	 * The dbfId of the bottom hero power when there are two hero powers, if any.
+	 */
+	hero_power_bottom?: number;
+
+	/**
 	 * The dbfId of the weapon, if any.
 	 */
 	weapon?: number;

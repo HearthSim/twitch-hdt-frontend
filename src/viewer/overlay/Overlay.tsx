@@ -137,6 +137,16 @@ const HeroPower = styled(OverlayElement)`
 	clip-path: circle(50% at 50% 50%);
 `;
 
+const HeroPowerSmall = styled(OverlayElement)`
+	top: ${(props) => props.top || "unset"};
+	right: ${(props) => props.right || "unset"};
+	bottom: ${(props) => props.bottom || "unset"};
+
+	height: 9.5vh;
+	width: 9.5vh;
+	clip-path: circle(50% at 50% 50%);
+`;
+
 const Weapon = styled(OverlayElement)`
 	top: ${(props) => props.top || "unset"};
 	left: ${(props) => props.left || "unset"};
@@ -577,12 +587,34 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 									<Entity dbfId={player.hero || null} />
 								</Hero>
 							</Center>
-							<HeroPower top={"15vh"} right={"66.4vh"}>
-								<Entity dbfId={opponent.hero_power || null} />
-							</HeroPower>
-							<HeroPower bottom={"16.9vh"} right={"65.6vh"}>
-								<Entity dbfId={player.hero_power || null} />
-							</HeroPower>
+							{opponent.hero_power_top || opponent.hero_power_bottom ? (
+								<>
+									<HeroPowerSmall top={"10.5vh"} right={"71.15vh"}>
+										<Entity dbfId={opponent.hero_power_top || null} />
+									</HeroPowerSmall>
+									<HeroPowerSmall top={"16.75vh"} right={"64.3vh"}>
+										<Entity dbfId={opponent.hero_power_bottom || null} />
+									</HeroPowerSmall>
+								</>
+							) : (
+								<HeroPower top={"15vh"} right={"66.4vh"}>
+									<Entity dbfId={opponent.hero_power || null} />
+								</HeroPower>
+							)}
+							{player.hero_power_top || player.hero_power_bottom ? (
+								<>
+									<HeroPowerSmall bottom={"22.1vh"} right={"62.3vh"}>
+										<Entity dbfId={player.hero_power_top || null} />
+									</HeroPowerSmall>
+									<HeroPowerSmall bottom={"14.9vh"} right={"69.15vh"}>
+										<Entity dbfId={player.hero_power_bottom || null} />
+									</HeroPowerSmall>
+								</>
+							) : (
+								<HeroPower bottom={"16.9vh"} right={"65.6vh"}>
+									<Entity dbfId={player.hero_power || null} />
+								</HeroPower>
+							)}
 
 							{opponent.first_trinket || opponent.second_trinket ? (
 								<>
