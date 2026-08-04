@@ -578,16 +578,20 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 									!!player.quest,
 								)}
 							</Center>
-							<Center top={"8vh"}>
-								<Hero>
-									<Entity cardId={opponent.hero || null} />
-								</Hero>
-							</Center>
-							<Center bottom={"15.2vh"}>
-								<Hero>
-									<Entity cardId={player.hero || null} />
-								</Hero>
-							</Center>
+							{!isBattlegrounds ? (
+								<>
+									<Center top={"8vh"}>
+										<Hero>
+											<Entity cardId={opponent.hero || null} />
+										</Hero>
+									</Center>
+									<Center bottom={"15.2vh"}>
+										<Hero>
+											<Entity cardId={player.hero || null} />
+										</Hero>
+									</Center>
+								</>
+							) : null}
 							{opponent.hero_power_top || opponent.hero_power_bottom ? (
 								<>
 									<HeroPowerSmall top={"10.5vh"} right={"71.15vh"}>
