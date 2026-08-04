@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.4.0] - 2024-08-22
 ### Added
 - Added support for Battlegrounds trinkets
-- Added support for anomalieis in traditional Hearthstone
+- Added support for anomalies in traditional Hearthstone
 
 ### Fixed
 - Fix some success status codes being treated as connection failures on the setup page
