@@ -9,9 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added support for dual hero powers
 - Added support for pre-release versions of Hearthstone
 
-### Changed
-- Hid the hero tooltips in Battlegrounds
-
 ### Fixed
 - Fixed some Battlegrounds game types being considered as traditional Hearthstone
 
