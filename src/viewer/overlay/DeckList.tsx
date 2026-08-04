@@ -347,7 +347,7 @@ class DeckList extends React.Component<
 							return (
 								<li key={index}>
 									<CardTile
-										dbfId={dbfId}
+										cardId={dbfId}
 										count={current}
 										showRarity={this.props.showRarities}
 										gift={initial === 0}

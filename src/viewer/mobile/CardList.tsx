@@ -65,7 +65,7 @@ class CardList extends React.Component<Props & CardsProps> {
 						return (
 							<li key={index}>
 								<CardTile
-									dbfId={dbfId}
+									cardId={dbfId}
 									count={current}
 									showRarity={true}
 									gift={initial === 0}

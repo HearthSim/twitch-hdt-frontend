@@ -2,6 +2,7 @@ import HearthstoneJSON, { CardData } from "hearthstonejson-client";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { HearthstoneLocale } from "react-hs-components/dist/components/Card";
+import { CardIdentifier } from "../twitch-hdt";
 import { makeHOC } from "./hocs";
 
 export type CardDefinition = CardData;
@@ -109,6 +110,25 @@ export class CardsProvider extends React.Component<Props, State> {
 export const withCards = makeHOC<CardsProps>({
 	cards: PropTypes.object.isRequired,
 });
+
+export interface ResolvedCard {
+	cardId: string | null;
+	card: CardDefinition | null;
+}
+
+export function resolveCard(
+	cards: Cards,
+	identifier: CardIdentifier | null | undefined,
+): ResolvedCard {
+	if (!identifier) {
+		return { cardId: null, card: null };
+	}
+	if (typeof identifier === "number") {
+		const card = cards.getByDbfId(identifier);
+		return { cardId: card?.id ?? null, card: card ?? null };
+	}
+	return { cardId: identifier, card: null };
+}
 
 export function isPlayableCard(card: CardDefinition) {
 	const type = ("" + card.type).toUpperCase();

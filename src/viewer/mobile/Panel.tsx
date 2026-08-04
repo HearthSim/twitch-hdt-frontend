@@ -301,7 +301,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 												<h1>Battlegrounds Anomaly (tap and hold)</h1>
 											</Header>
 											<CardTile
-												dbfId={boardState.battlegrounds_anomaly}
+												cardId={boardState.battlegrounds_anomaly}
 												showRarity={false}
 											/>
 										</div>

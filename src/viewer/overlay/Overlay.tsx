@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {
 	BnetGameType,
 	BoardStateData,
+	CardIdentifier,
 	EBSConfiguration,
 } from "../../twitch-hdt";
 import {
@@ -285,15 +286,15 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		this.clearMovementTimeout();
 	}
 
-	public renderBoard(dbfIds: number[]): any {
-		return dbfIds.map((dbfId: number, i: number) => (
+	public renderBoard(cardIds: CardIdentifier[]): any {
+		return cardIds.map((cardId: CardIdentifier, i: number) => (
 			<Minion key={i}>
-				<Entity dbfId={dbfId} />
+				<Entity cardId={cardId} />
 			</Minion>
 		));
 	}
 
-	public renderSecrets(dbfIds: number[], hasQuest?: boolean): any {
+	public renderSecrets(cardIds: CardIdentifier[], hasQuest?: boolean): any {
 		const secretPositions = [
 			{
 				left: "0.2vh",
@@ -316,8 +317,8 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 				top: "8.5vh",
 			},
 		];
-		return dbfIds
-			.map((dbfId: number, zonePosition: number) => {
+		return cardIds
+			.map((cardId: CardIdentifier, zonePosition: number) => {
 				if (hasQuest) {
 					zonePosition++;
 				}
@@ -327,7 +328,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 				}
 				return (
 					<Secret key={zonePosition} {...position}>
-						<Entity dbfId={dbfId} />
+						<Entity cardId={cardId} />
 					</Secret>
 				);
 			})
@@ -560,10 +561,10 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 								)}
 							</Board>
 							<Quest top={"7.0vh"} left={"0.32vh"}>
-								<Entity dbfId={opponent.quest ? opponent.quest.dbfId : null} />
+								<Entity cardId={opponent.quest ? opponent.quest.dbfId : null} />
 							</Quest>
 							<Quest bottom={"30.4vh"}>
-								<Entity dbfId={player.quest ? player.quest.dbfId : null} />
+								<Entity cardId={player.quest ? player.quest.dbfId : null} />
 							</Quest>
 							<Center top={"8vh"} left={"0.1vh"}>
 								{this.renderSecrets(
@@ -579,75 +580,75 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 							</Center>
 							<Center top={"8vh"}>
 								<Hero>
-									<Entity dbfId={opponent.hero || null} />
+									<Entity cardId={opponent.hero || null} />
 								</Hero>
 							</Center>
 							<Center bottom={"15.2vh"}>
 								<Hero>
-									<Entity dbfId={player.hero || null} />
+									<Entity cardId={player.hero || null} />
 								</Hero>
 							</Center>
 							{opponent.hero_power_top || opponent.hero_power_bottom ? (
 								<>
 									<HeroPowerSmall top={"10.5vh"} right={"71.15vh"}>
-										<Entity dbfId={opponent.hero_power_top || null} />
+										<Entity cardId={opponent.hero_power_top || null} />
 									</HeroPowerSmall>
 									<HeroPowerSmall top={"16.75vh"} right={"64.3vh"}>
-										<Entity dbfId={opponent.hero_power_bottom || null} />
+										<Entity cardId={opponent.hero_power_bottom || null} />
 									</HeroPowerSmall>
 								</>
 							) : (
 								<HeroPower top={"15vh"} right={"66.4vh"}>
-									<Entity dbfId={opponent.hero_power || null} />
+									<Entity cardId={opponent.hero_power || null} />
 								</HeroPower>
 							)}
 							{player.hero_power_top || player.hero_power_bottom ? (
 								<>
 									<HeroPowerSmall bottom={"22.1vh"} right={"62.3vh"}>
-										<Entity dbfId={player.hero_power_top || null} />
+										<Entity cardId={player.hero_power_top || null} />
 									</HeroPowerSmall>
 									<HeroPowerSmall bottom={"14.9vh"} right={"69.15vh"}>
-										<Entity dbfId={player.hero_power_bottom || null} />
+										<Entity cardId={player.hero_power_bottom || null} />
 									</HeroPowerSmall>
 								</>
 							) : (
 								<HeroPower bottom={"16.9vh"} right={"65.6vh"}>
-									<Entity dbfId={player.hero_power || null} />
+									<Entity cardId={player.hero_power || null} />
 								</HeroPower>
 							)}
 
 							{opponent.first_trinket || opponent.second_trinket ? (
 								<>
 									<Trinket top={"10.7vh"} left={"72.7vh"}>
-										<Entity dbfId={opponent.first_trinket || null} />
+										<Entity cardId={opponent.first_trinket || null} />
 									</Trinket>
 									<Trinket top={"16.7vh"} left={"65.3vh"}>
-										<Entity dbfId={opponent.second_trinket || null} />
+										<Entity cardId={opponent.second_trinket || null} />
 									</Trinket>
 								</>
 							) : (
 								<Weapon top={"15.5vh"} left={"65.8vh"}>
-									<Entity dbfId={opponent.weapon || null} />
+									<Entity cardId={opponent.weapon || null} />
 								</Weapon>
 							)}
 
 							{player.first_trinket || player.second_trinket ? (
 								<>
 									<Trinket bottom={"14.3vh"} left={"71.6vh"}>
-										<Entity dbfId={player.first_trinket || null} />
+										<Entity cardId={player.first_trinket || null} />
 									</Trinket>
 									<Trinket bottom={"21vh"} left={"64.6vh"}>
-										<Entity dbfId={player.second_trinket || null} />
+										<Entity cardId={player.second_trinket || null} />
 									</Trinket>
 								</>
 							) : (
 								<Weapon bottom={"16.8vh"} left={"64.25vh"}>
-									<Entity dbfId={player.weapon || null} />
+									<Entity cardId={player.weapon || null} />
 								</Weapon>
 							)}
 
 							<TraditionalAnomaly left={"26.5vh"} top={"27vh"}>
-								<Entity dbfId={traditionalAnomaly || null} />
+								<Entity cardId={traditionalAnomaly || null} />
 							</TraditionalAnomaly>
 
 							{!isBattlegrounds ? (
@@ -685,7 +686,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 								</>
 							) : null}
 							<BattlegroundsAnomaly right={"24vh"} top={"34.5vh"}>
-								<Entity dbfId={battlegroundsAnomaly || null} />
+								<Entity cardId={battlegroundsAnomaly || null} />
 							</BattlegroundsAnomaly>
 						</Offset>
 					)}

@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Card as ComponentCard } from "react-hs-components";
+import { CardIdentifier } from "../twitch-hdt";
 import {
 	CardsProps,
 	getHearthstoneLocaleFromTwitchLocale,
+	resolveCard,
 	withCards,
 } from "../utils/cards";
 import {
@@ -20,7 +22,7 @@ import {
 } from "./utils/tooltips";
 
 interface Props {
-	dbfId: number;
+	cardId: CardIdentifier;
 	x?: number;
 	y?: number;
 	width?: number;
@@ -35,13 +37,16 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 				{({ query }: TwitchExtConsumerArgs) => (
 					<TooltipConsumer>
 						{({ behaviour }: TooltipConsumerArgs): React.ReactNode => {
-							const card = this.props.cards.getByDbfId(this.props.dbfId);
-							if (!card || !card.id) {
+							const { cardId, card } = resolveCard(
+								this.props.cards,
+								this.props.cardId,
+							);
+							if (!cardId) {
 								return <div>Invalid card</div>;
 							}
 
 							let triple = false;
-							if (this.props.battlegrounds) {
+							if (this.props.battlegrounds && card) {
 								if (
 									card.battlegroundsNormalDbfId &&
 									(!card.battlegroundsPremiumDbfId ||
@@ -51,9 +56,6 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 									// for cases where the golden DBF id has no non-golden render, because that just uses
 									// the normalDbfId. In future we should actually just receive the triple value from HDT.
 									triple = true;
-								}
-								if (!card || !card.id) {
-									return <div>Invalid card</div>;
 								}
 							}
 
@@ -65,7 +67,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 								case TooltipBehaviour.FULLSCREEN:
 									return (
 										<ComponentCard
-											id={card.id}
+											id={cardId}
 											style={{
 												position: "absolute",
 												left: "50%",
@@ -78,7 +80,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 											}}
 											resolution={512}
 											locale={locale}
-											placeholder={getPlaceholder(card.type || "")}
+											placeholder={getPlaceholder(card ? card.type || "" : "")}
 										/>
 									);
 								case TooltipBehaviour.ATTACHED:
@@ -113,7 +115,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 
 									return (
 										<ComponentCard
-											id={card.id}
+											id={cardId}
 											style={{
 												position: "absolute",
 												height,
@@ -134,8 +136,8 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 											}}
 											resolution={512}
 											locale={locale}
-											notFound={getNotFound(card.type || "")}
-											placeholder={getPlaceholder(card.type || "")}
+											notFound={getNotFound(card ? card.type || "" : "")}
+											placeholder={getPlaceholder(card ? card.type || "" : "")}
 											battlegrounds={this.props.battlegrounds}
 											triple={triple}
 										/>

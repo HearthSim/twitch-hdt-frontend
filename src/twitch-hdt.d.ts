@@ -1,5 +1,10 @@
 export type Message = BaseMessage | BoardStateMessage | GameEndMessage;
 
+/**
+ * A dbfId, or a string card id for cards unknown to HearthstoneJSON (e.g. during prerelease events).
+ */
+export type CardIdentifier = number | string;
+
 interface BaseMessage {
 	type: string;
 	config: EBSConfiguration;
@@ -31,14 +36,14 @@ export interface BoardStateData {
 	opponent?: BoardStatePlayer;
 
 	/**
-	 * The dbfId of the anomaly in traditional Hearthstone.
+	 * The dbfId of the anomaly in traditional Hearthstone, or its card id if unknown to HearthstoneJSON.
 	 */
-	traditional_anomaly?: number;
+	traditional_anomaly?: CardIdentifier;
 
 	/**
-	 * The dbfId of the Battleground anomaly.
+	 * The dbfId of the Battleground anomaly, or its card id if unknown to HearthstoneJSON.
 	 */
-	battlegrounds_anomaly?: number;
+	battlegrounds_anomaly?: CardIdentifier;
 
 	/**
 	 * Contains the game type of the current game.
@@ -61,49 +66,49 @@ export interface BoardStatePlayer {
 	hand?: BoardStateHand;
 
 	/**
-	 * The dbfIds of minions on the board.
+	 * The dbfIds of minions on the board, or their card ids if unknown to HearthstoneJSON.
 	 */
-	board?: number[];
+	board?: CardIdentifier[];
 
 	/**
-	 * The dbfId of the hero.
+	 * The dbfId of the hero, or its card id if unknown to HearthstoneJSON.
 	 */
-	hero?: number;
+	hero?: CardIdentifier;
 
 	/**
-	 * The dbfId of the hero power.
+	 * The dbfId of the hero power, or its card id if unknown to HearthstoneJSON.
 	 */
-	hero_power?: number;
+	hero_power?: CardIdentifier;
 
 	/**
-	 * The dbfId of the top hero power when there are two hero powers, if any.
+	 * The dbfId of the top hero power when there are two hero powers, if any, or its card id if unknown to HearthstoneJSON.
 	 */
-	hero_power_top?: number;
+	hero_power_top?: CardIdentifier;
 
 	/**
-	 * The dbfId of the bottom hero power when there are two hero powers, if any.
+	 * The dbfId of the bottom hero power when there are two hero powers, if any, or its card id if unknown to HearthstoneJSON.
 	 */
-	hero_power_bottom?: number;
+	hero_power_bottom?: CardIdentifier;
 
 	/**
-	 * The dbfId of the weapon, if any.
+	 * The dbfId of the weapon, if any, or its card id if unknown to HearthstoneJSON.
 	 */
-	weapon?: number;
+	weapon?: CardIdentifier;
 
 	/**
-	 * The dbfId of the first trinket, if any.
+	 * The dbfId of the first trinket, if any, or its card id if unknown to HearthstoneJSON.
 	 */
-	first_trinket?: number;
+	first_trinket?: CardIdentifier;
 
 	/**
-	 * The dbfId of the second trinket, if any.
+	 * The dbfId of the second trinket, if any, or its card id if unknown to HearthstoneJSON.
 	 */
-	second_trinket?: number;
+	second_trinket?: CardIdentifier;
 
 	/**
-	 * The dbfIds of secrets.
+	 * The dbfIds of secrets, or their card ids if unknown to HearthstoneJSON.
 	 */
-	secrets?: number[];
+	secrets?: CardIdentifier[];
 
 	/**
 	 * An object describing the active quest, if any.
@@ -118,9 +123,9 @@ export interface BoardStatePlayer {
 
 export interface BoardStateQuest {
 	/**
-	 * The dbfId of the active quest.
+	 * The dbfId of the active quest, or its card id if unknown to HearthstoneJSON. The field name is kept for wire compatibility.
 	 */
-	dbfId: number;
+	dbfId: CardIdentifier;
 
 	/**
 	 * The progress of the active quest (corresponds to GameTag.QUEST_PROGRESS).
@@ -166,7 +171,7 @@ export interface BobsBuddyState {
 }
 
 export interface BoardStateHand {
-	cards?: number[];
+	cards?: CardIdentifier[];
 	size: number;
 }
 
