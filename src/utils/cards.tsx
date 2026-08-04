@@ -23,23 +23,28 @@ export class EmptyCards implements Cards {
 export class HearthstoneJSONCards implements Cards {
 	public _cards: { [dbfId: number]: CardDefinition };
 	public _locale: string;
+	public _build: number | null;
 
-	constructor(locale: string) {
+	constructor(locale: string, build?: number | null) {
 		this._cards = {};
 		this._locale = locale;
+		this._build = build || null;
 	}
 
 	public fetch(): Promise<void> {
-		return new HearthstoneJSON()
-			.getLatest(this._locale)
-			.then((c: CardDefinition[]) => {
-				c.map((card) => {
-					if (card.dbfId) {
-						this._cards[card.dbfId] = card;
-					}
-					return null;
-				}).filter((x) => x !== null);
-			});
+		const client = new HearthstoneJSON();
+		const promise =
+			this._build && this._build >= 1
+				? client.get(this._build, this._locale)
+				: client.getLatest(this._locale);
+		return promise.then((c: CardDefinition[]) => {
+			c.map((card) => {
+				if (card.dbfId) {
+					this._cards[card.dbfId] = card;
+				}
+				return null;
+			}).filter((x) => x !== null);
+		});
 	}
 
 	public getByDbfId(dbfId: number): CardDefinition | null {
@@ -49,6 +54,7 @@ export class HearthstoneJSONCards implements Cards {
 
 interface Props {
 	locale: string;
+	build?: number | null;
 }
 
 interface State {
@@ -59,6 +65,8 @@ export class CardsProvider extends React.Component<Props, State> {
 	public static childContextTypes = {
 		cards: PropTypes.object.isRequired,
 	};
+
+	private requestToken = 0;
 
 	constructor(props: Props, context: any) {
 		super(props, context);
@@ -72,8 +80,25 @@ export class CardsProvider extends React.Component<Props, State> {
 	}
 
 	public componentDidMount(): void {
-		const cards = new HearthstoneJSONCards(this.props.locale);
-		cards.fetch().then(() => this.setState({ cards }));
+		this.fetchCards();
+	}
+
+	public componentDidUpdate(prevProps: Readonly<Props>): void {
+		const normalize = (build: number | null | undefined) =>
+			build && build >= 1 ? build : null;
+		if (normalize(prevProps.build) !== normalize(this.props.build)) {
+			this.fetchCards();
+		}
+	}
+
+	public fetchCards(): void {
+		const token = ++this.requestToken;
+		const cards = new HearthstoneJSONCards(this.props.locale, this.props.build);
+		cards.fetch().then(() => {
+			if (token === this.requestToken) {
+				this.setState({ cards });
+			}
+		});
 	}
 
 	public render(): React.ReactNode {

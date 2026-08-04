@@ -46,6 +46,11 @@ export interface BoardStateData {
 	game_type?: BnetGameType;
 
 	/**
+	 * The build number of the running Hearthstone client, if known.
+	 */
+	hearthstone_build?: number;
+
+	/**
 	 * Contains the results of the last Bob's Buddy simulation.
 	 */
 	bobs_buddy_state?: BobsBuddyState;
@@ -218,9 +223,17 @@ export const enum BnetGameType {
 	BGT_BATTLEGROUNDS_DUO_FRIENDLY = 67,
 }
 
+export interface GameStartData {
+	deck?: BoardStateDeck;
+	rank?: number;
+	legend_rank?: number;
+	game_type?: BnetGameType;
+	hearthstone_build?: number;
+}
+
 export interface GameStartMessage extends BaseMessage {
 	type: "game_start";
-	data: BoardStateDeck;
+	data: GameStartData;
 }
 
 export interface GameEndMessage extends BaseMessage {

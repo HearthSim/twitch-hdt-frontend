@@ -1,9 +1,6 @@
 import * as React from "react";
 import ReactDOM from "react-dom";
-import {
-	CardsProvider,
-	getHearthstoneLocaleFromTwitchLocale,
-} from "../../utils/cards";
+import { getHearthstoneLocaleFromTwitchLocale } from "../../utils/cards";
 import {
 	TwitchExtConsumer,
 	TwitchExtConsumerArgs,
@@ -16,11 +13,9 @@ ReactDOM.render(
 	<TwitchExtProvider>
 		<TwitchExtConsumer>
 			{({ query }: TwitchExtConsumerArgs) => (
-				<CardsProvider
+				<Root
 					locale={getHearthstoneLocaleFromTwitchLocale(query.language || "en")}
-				>
-					<Root />
-				</CardsProvider>
+				/>
 			)}
 		</TwitchExtConsumer>
 	</TwitchExtProvider>,

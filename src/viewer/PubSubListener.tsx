@@ -19,6 +19,7 @@ interface State {
 	boardState: BoardStateData | null;
 	config: EBSConfiguration;
 	hasError: boolean;
+	hearthstoneBuild: number | null;
 	statistics: {
 		[formatType: string]: {
 			[dbfId: string]: SingleCardDetailsPayload;
@@ -40,6 +41,7 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 			boardState: null,
 			config: {},
 			hasError: false,
+			hearthstoneBuild: null,
 			statistics: {},
 		};
 		this.queue = new AsyncQueue();
@@ -180,6 +182,7 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 
 			this.setState({
 				boardState,
+				hearthstoneBuild: this.normalizeBuild(boardState.hearthstone_build),
 				...(config as any),
 			});
 		} else if (isOfType<GameEndMessage>(message, "game_end")) {
@@ -188,11 +191,21 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 				...(config as any),
 			});
 		} else if (isOfType<GameStartMessage>(message, "game_start")) {
-			// do nothing
+			this.setState({
+				hearthstoneBuild: this.normalizeBuild(message.data.hearthstone_build),
+				...(config as any),
+			});
 		} else {
 			console.debug(`Unexpected message.type "${message.type}"`);
 		}
 	};
+
+	public normalizeBuild(build: number | undefined): number | null {
+		if (typeof build === "number" && build >= 1) {
+			return build;
+		}
+		return this.state.hearthstoneBuild;
+	}
 
 	public render(): React.ReactNode {
 		return (
@@ -200,6 +213,7 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 			(this.props.children as any)({
 				boardState: this.state.boardState || null,
 				config: this.state.config,
+				hearthstoneBuild: this.state.hearthstoneBuild,
 			} as PubSubListenerArgs)
 		);
 	}
@@ -208,6 +222,7 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 export interface PubSubListenerArgs {
 	boardState: BoardStateData | null;
 	config: EBSConfiguration;
+	hearthstoneBuild: number | null;
 }
 
 export default withTwitchExt(PubSubListener);
