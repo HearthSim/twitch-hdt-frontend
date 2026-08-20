@@ -177,6 +177,15 @@ const TraditionalAnomaly = styled(OverlayElement)`
 	clip-path: circle(50% at 50% 50%);
 `;
 
+const BattlegroundsDarkGifts = styled(OverlayElement)`
+	top: ${(props) => props.top || "unset"};
+	right: ${(props) => props.right || "unset"};
+
+	height: 9.5vh;
+	width: 9.5vh;
+	clip-path: circle(50% at 50% 50%);
+`;
+
 const BattlegroundsAnomaly = styled(OverlayElement)`
 	top: ${(props) => props.top || "unset"};
 	right: ${(props) => props.right || "unset"};
@@ -370,6 +379,11 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		const battlegroundsAnomaly =
 			boardState && boardState.battlegrounds_anomaly
 				? boardState.battlegrounds_anomaly
+				: null;
+
+		const battlegroundsDarkGiftSlot =
+			boardState && boardState.battlegrounds_dark_gifts_slot
+				? boardState.battlegrounds_dark_gifts_slot
 				: null;
 
 		const gameType =
@@ -685,6 +699,9 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 									</Deck>
 								</>
 							) : null}
+							<BattlegroundsDarkGifts right={"23.7vh"} top={"23.7vh"}>
+								<Entity cardId={battlegroundsDarkGiftSlot || null} />
+							</BattlegroundsDarkGifts>
 							<BattlegroundsAnomaly right={"24vh"} top={"34.5vh"}>
 								<Entity cardId={battlegroundsAnomaly || null} />
 							</BattlegroundsAnomaly>

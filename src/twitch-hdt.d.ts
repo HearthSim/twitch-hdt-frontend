@@ -52,6 +52,11 @@ export interface BoardStateData {
 	battlegrounds_anomaly?: EntityReference;
 
 	/**
+	 * The dbfId of the Battleground anomaly, or its card id if unknown to HearthstoneJSON.
+	 */
+	battlegrounds_dark_gifts_slot?: EntityReference;
+
+	/**
 	 * Contains the game type of the current game.
 	 */
 	game_type?: BnetGameType;
