@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
+- Added support for showing enchantments alongside cards in tooltips
 - Added support for dual hero powers
 - Added support for pre-release versions of Hearthstone
 

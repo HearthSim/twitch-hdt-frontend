@@ -1,12 +1,17 @@
 import * as React from "react";
 import { CardTile as ComponentCardTile } from "react-hs-components";
-import { CardIdentifier } from "../twitch-hdt";
-import { CardsProps, resolveCard, withCards } from "../utils/cards";
+import { EntityReference } from "../twitch-hdt";
+import {
+	CardsProps,
+	resolveCard,
+	splitEntity,
+	withCards,
+} from "../utils/cards";
 import Entity from "./Entity";
 import gift from "./gift.png";
 
 interface Props {
-	cardId: CardIdentifier;
+	cardId: EntityReference;
 	count?: number;
 	gift?: boolean;
 	showRarity?: boolean;
@@ -15,7 +20,10 @@ interface Props {
 
 class CardTile extends React.Component<Props & CardsProps> {
 	public render(): React.ReactNode {
-		const { cardId, card } = resolveCard(this.props.cards, this.props.cardId);
+		const { cardId, card } = resolveCard(
+			this.props.cards,
+			splitEntity(this.props.cardId).primary,
+		);
 		return (
 			<Entity cardId={this.props.cardId} disabled={this.props.tooltipDisabled}>
 				<ComponentCardTile

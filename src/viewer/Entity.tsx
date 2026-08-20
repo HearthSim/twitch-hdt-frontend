@@ -2,8 +2,13 @@ import PropTypes from "prop-types";
 import * as React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { BnetGameType, CardIdentifier } from "../twitch-hdt";
-import { CardsProps, resolveCard, withCards } from "../utils/cards";
+import { BnetGameType, EntityReference } from "../twitch-hdt";
+import {
+	CardsProps,
+	resolveCard,
+	splitEntity,
+	withCards,
+} from "../utils/cards";
 import { PortalConsumer } from "../utils/portal";
 import Card from "./Card";
 import CardStatistics from "./CardStatistics";
@@ -16,7 +21,7 @@ const EntityDiv = styled.div`
 `;
 
 interface Props {
-	cardId: CardIdentifier | null;
+	cardId: EntityReference | null;
 	flipped?: boolean;
 	disabled?: boolean;
 }
@@ -86,7 +91,9 @@ class Entity extends React.Component<Props & CardsProps, State> {
 		const { cardId, disabled, flipped, cards, children } = this.props;
 		const { x, y, width, isHovering, isMeaningfulHover } = this.state;
 
-		if (!cardId) {
+		const { primary, extra } = splitEntity(cardId);
+
+		if (!primary) {
 			return null;
 		}
 
@@ -95,14 +102,15 @@ class Entity extends React.Component<Props & CardsProps, State> {
 		return (
 			<PortalConsumer>
 				{({ portal }) => {
-					const { cardId: resolvedCardId, card } = resolveCard(cards, cardId);
+					const { cardId: resolvedCardId, card } = resolveCard(cards, primary);
 
 					let tooltip = null;
 					let statistics = null;
 					if (isHovering && !disabled && portal && resolvedCardId) {
 						tooltip = ReactDOM.createPortal(
 							<Card
-								cardId={cardId}
+								cardId={primary}
+								extraCardIds={extra}
 								x={x || 0}
 								y={y || 0}
 								width={width || 0}
@@ -115,7 +123,7 @@ class Entity extends React.Component<Props & CardsProps, State> {
 						);
 
 						if (
-							typeof cardId === "number" &&
+							typeof primary === "number" &&
 							card &&
 							card.collectible &&
 							this.context.statisticsContainer &&
@@ -127,7 +135,7 @@ class Entity extends React.Component<Props & CardsProps, State> {
 							statistics = ReactDOM.createPortal(
 								<Container>
 									<CardStatistics
-										dbfId={cardId}
+										dbfId={primary}
 										formatType={this.context.formatType}
 									/>
 								</Container>,

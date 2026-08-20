@@ -2,7 +2,7 @@ import HearthstoneJSON, { CardData } from "hearthstonejson-client";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { HearthstoneLocale } from "react-hs-components/dist/components/Card";
-import { CardIdentifier } from "../twitch-hdt";
+import { CardReference, EntityReference } from "../twitch-hdt";
 import { makeHOC } from "./hocs";
 
 export type CardDefinition = CardData;
@@ -111,6 +111,24 @@ export const withCards = makeHOC<CardsProps>({
 	cards: PropTypes.object.isRequired,
 });
 
+export interface SplitEntity {
+	primary: CardReference | null;
+	extra: CardReference[];
+}
+
+export function splitEntity(
+	identifier: EntityReference | null | undefined,
+): SplitEntity {
+	if (!Array.isArray(identifier)) {
+		return { primary: identifier || null, extra: [] };
+	}
+	const [primary, ...extra] = identifier;
+	return {
+		primary: primary || null,
+		extra: extra.filter((cardId) => !!cardId),
+	};
+}
+
 export interface ResolvedCard {
 	cardId: string | null;
 	card: CardDefinition | null;
@@ -118,7 +136,7 @@ export interface ResolvedCard {
 
 export function resolveCard(
 	cards: Cards,
-	identifier: CardIdentifier | null | undefined,
+	identifier: CardReference | null | undefined,
 ): ResolvedCard {
 	if (!identifier) {
 		return { cardId: null, card: null };

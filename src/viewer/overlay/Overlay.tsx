@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {
 	BnetGameType,
 	BoardStateData,
-	CardIdentifier,
+	EntityReference,
 	EBSConfiguration,
 } from "../../twitch-hdt";
 import {
@@ -286,15 +286,15 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 		this.clearMovementTimeout();
 	}
 
-	public renderBoard(cardIds: CardIdentifier[]): any {
-		return cardIds.map((cardId: CardIdentifier, i: number) => (
+	public renderBoard(cardIds: EntityReference[]): any {
+		return cardIds.map((cardId: EntityReference, i: number) => (
 			<Minion key={i}>
 				<Entity cardId={cardId} />
 			</Minion>
 		));
 	}
 
-	public renderSecrets(cardIds: CardIdentifier[], hasQuest?: boolean): any {
+	public renderSecrets(cardIds: EntityReference[], hasQuest?: boolean): any {
 		const secretPositions = [
 			{
 				left: "0.2vh",
@@ -318,7 +318,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 			},
 		];
 		return cardIds
-			.map((cardId: CardIdentifier, zonePosition: number) => {
+			.map((cardId: EntityReference, zonePosition: number) => {
 				if (hasQuest) {
 					zonePosition++;
 				}
