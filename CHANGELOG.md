@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Added Battlegrounds-specific image placeholders.
+- Added Battlegrounds hero power and trinkets to the mobile panel
 
 ## [1.6.0] - 2026-08-21
 ### Added

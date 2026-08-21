@@ -6,6 +6,7 @@ import {
 	BoardStateData,
 	BoardStatePlayer,
 	EBSConfiguration,
+	EntityReference,
 } from "../../twitch-hdt";
 import { Feature, hasFeature, WhenToShowBobsBuddy } from "../../utils/config";
 import { PortalProvider } from "../../utils/portal";
@@ -295,17 +296,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 											layout="mobile"
 										/>
 									) : null}
-									{boardState && boardState.battlegrounds_anomaly ? (
-										<div>
-											<Header style={{ paddingLeft: "3px" }}>
-												<h1>Battlegrounds Anomaly (tap and hold)</h1>
-											</Header>
-											<CardTile
-												cardId={boardState.battlegrounds_anomaly}
-												showRarity={false}
-											/>
-										</div>
-									) : null}
+									{this.renderBattlegroundsSections(boardState, player)}
 								</BattlegroundsContainer>
 							) : null
 						) : showDeckList && deck && deck.cards ? (
@@ -333,6 +324,52 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 					</PortalProvider>
 				</PanelDiv>
 			</TooltipProvider>
+		);
+	}
+
+	private renderBattlegroundsSections(
+		boardState: BoardStateData,
+		player: BoardStatePlayer | null,
+	): React.ReactNode {
+		const heroPowers =
+			player && (player.hero_power_top || player.hero_power_bottom)
+				? [player.hero_power_top, player.hero_power_bottom]
+				: [player && player.hero_power];
+
+		const sections = [
+			{ title: "Hero Power", entities: heroPowers },
+			{ title: "Anomaly", entities: [boardState.battlegrounds_anomaly] },
+			{
+				title: "Trinkets",
+				entities: [
+					player && player.first_trinket,
+					player && player.second_trinket,
+				],
+			},
+		]
+			.map(({ title, entities }) => ({
+				title,
+				entities: entities.filter(Boolean) as EntityReference[],
+			}))
+			.filter(({ entities }) => entities.length > 0);
+
+		if (!sections.length) {
+			return null;
+		}
+
+		return (
+			<div>
+				{sections.map(({ title, entities }, index) => (
+					<div key={title}>
+						<Header style={{ paddingLeft: "3px" }}>
+							<h1>{index === 0 ? `${title} (tap and hold)` : title}</h1>
+						</Header>
+						{entities.map((entity, entityIndex) => (
+							<CardTile key={entityIndex} cardId={entity} showRarity={false} />
+						))}
+					</div>
+				))}
+			</div>
 		);
 	}
 
