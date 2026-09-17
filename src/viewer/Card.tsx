@@ -92,7 +92,11 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 					style={{ ...centered, maxHeight: "100%", maxWidth: "100%" }}
 					resolution={512}
 					locale={locale}
-					placeholder={getPlaceholder(getType(primary))}
+					placeholder={getPlaceholder(
+						getType(primary),
+						this.props.battlegrounds ?? false,
+					)}
+					battlegrounds={this.props.battlegrounds}
 				/>
 			);
 		}
@@ -122,9 +126,17 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 					style={{ height }}
 					resolution={512}
 					locale={locale}
-					placeholder={getPlaceholder(getType(primary))}
+					placeholder={getPlaceholder(
+						getType(primary),
+						this.props.battlegrounds ?? false,
+					)}
 				/>
-				{this.renderExtras(extras, extraHeight, locale)}
+				{this.renderExtras(
+					extras,
+					extraHeight,
+					locale,
+					this.props.battlegrounds ?? false,
+				)}
 			</div>
 		);
 	}
@@ -202,7 +214,10 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 				resolution={512}
 				locale={locale}
 				notFound={getNotFound(getType(primary))}
-				placeholder={getPlaceholder(getType(primary))}
+				placeholder={getPlaceholder(
+					getType(primary),
+					this.props.battlegrounds ?? false,
+				)}
 				battlegrounds={this.props.battlegrounds}
 				triple={triple}
 			/>
@@ -229,7 +244,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 					extras,
 					extraHeight,
 					locale,
-					this.props.battlegrounds,
+					this.props.battlegrounds ?? false,
 				)}
 			</div>
 		);
@@ -239,7 +254,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 		extras: ResolvedCard[],
 		height: number,
 		locale: HearthstoneLocale,
-		battlegrounds?: boolean,
+		battlegrounds: boolean,
 	): React.ReactNode {
 		return (
 			<div
@@ -258,7 +273,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 						resolution={512}
 						locale={locale}
 						notFound={getNotFound(getType(extra))}
-						placeholder={getPlaceholder(getType(extra))}
+						placeholder={getPlaceholder(getType(extra), battlegrounds)}
 						battlegrounds={battlegrounds}
 					/>
 				))}
