@@ -229,7 +229,7 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 			: false;
 		const isBattlegrounds =
 			boardState && isBattlegroundsGameType(boardState.game_type);
-		const emptyDeck = deck && deck.cards && !deck.cards.length;
+		const emptyDeck = deck && !(deck.cards && deck.cards.length);
 
 		const isHidden = (feature: Feature) =>
 			hasFeature(

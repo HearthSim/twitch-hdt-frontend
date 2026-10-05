@@ -401,8 +401,7 @@ class Overlay extends React.Component<Props & TwitchExtProps, State> {
 
 		const isEmptyDeck =
 			player.deck &&
-			Array.isArray(player.deck.cards) &&
-			!player.deck.cards.length;
+			!(Array.isArray(player.deck.cards) && player.deck.cards.length);
 
 		const isBattlegrounds = isBattlegroundsGameType(gameType);
 		const hideDecklist =
