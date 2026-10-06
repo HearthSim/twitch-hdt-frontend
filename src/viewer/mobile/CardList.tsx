@@ -1,7 +1,11 @@
 import { CardData } from "hearthstonejson-client";
 import * as React from "react";
 import styled from "styled-components";
-import { BoardStateDeckCard, FormatType } from "../../twitch-hdt";
+import {
+	BoardStateDeckCard,
+	CardReference,
+	FormatType,
+} from "../../twitch-hdt";
 import {
 	CardsProps,
 	resolveCard,
@@ -32,8 +36,8 @@ class CardList extends React.Component<Props & CardsProps> {
 	}
 
 	public render(): React.ReactNode {
-		type Triplet = [number, number, number];
-		type NullableQuad = [CardData | null, number, number, number];
+		type Triplet = [CardReference, number, number];
+		type NullableQuad = [CardData | null, CardReference, number, number];
 
 		// prepend CardData
 		const unsortedCards: NullableQuad[] = this.props.cardList.map<NullableQuad>(

@@ -8,7 +8,7 @@ import { capitalize } from "./strings";
 export const makeHOC =
 	<PInject extends {}>(contextTypes: ValidationMap<any>) =>
 	<P extends {}>(
-		Component: React.ComponentClass<P & PInject>,
+		Component: React.ComponentType<P & PInject>,
 	): React.ComponentClass<P> =>
 		class GenericHOC extends React.Component<P> {
 			public static displayName = `${Object.keys(contextTypes)

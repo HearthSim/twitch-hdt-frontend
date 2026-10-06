@@ -5,6 +5,7 @@ import styled from "styled-components";
 import {
 	BoardStateDeck,
 	BoardStateDeckCard,
+	CardReference,
 	FormatType,
 } from "../../twitch-hdt";
 import {
@@ -125,7 +126,7 @@ export const Icon = styled.img<PaddingProps>`
 interface Props {
 	cardList: BoardStateDeckCard[];
 	format: FormatType | null;
-	hero: number | null;
+	hero: CardReference | null;
 	position: OverlayPosition;
 	name?: string;
 	showRarities?: boolean;
@@ -191,8 +192,8 @@ class DeckList extends React.Component<
 	}
 
 	public render(): React.ReactNode {
-		type Triplet = [number, number, number];
-		type NullableQuad = [CardData | null, number, number, number];
+		type Triplet = [CardReference, number, number];
+		type NullableQuad = [CardData | null, CardReference, number, number];
 
 		// prepend CardData
 		const unsortedCards: NullableQuad[] = this.props.cardList.map<NullableQuad>(
@@ -268,6 +269,7 @@ class DeckList extends React.Component<
 							{({
 								disabled,
 								copied,
+								missingCards,
 								onClick: copyDeck,
 							}: CopyDeckButtonChildProps) => (
 								<Header>
@@ -278,7 +280,9 @@ class DeckList extends React.Component<
 									/>
 									<h1 title={useDeckName ? this.props.name : "Unnamed Deck"}>
 										{copied
-											? "Copied!"
+											? missingCards
+												? `Copied! (${missingCards} missing)`
+												: "Copied!"
 											: useDeckName
 											? this.props.name
 											: "HSReplay.net"}

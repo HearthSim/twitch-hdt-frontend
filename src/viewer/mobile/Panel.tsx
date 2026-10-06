@@ -309,9 +309,14 @@ class Panel extends React.Component<Props & TwitchExtProps, State> {
 											onClick,
 											copied,
 											disabled,
+											missingCards,
 										}: CopyDeckButtonChildProps) => (
 											<button onClick={onClick} disabled={disabled}>
-												{copied ? "Copied" : "Copy Deck"}
+												{copied
+													? missingCards
+														? `Copied (${missingCards} missing)`
+														: "Copied"
+													: "Copy Deck"}
 											</button>
 										)}
 									</CopyDeckButton>

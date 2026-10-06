@@ -190,9 +190,9 @@ export interface BoardStateHand {
 
 export type BoardStateDeckCard = [
 	/**
-	 * dbf id
+	 * dbf id, or card id if unknown to HearthstoneJSON
 	 */
-	number,
+	CardReference,
 	/**
 	 * current count
 	 */
@@ -205,13 +205,13 @@ export type BoardStateDeckCard = [
 
 export type SideboardDeckCard = [
 	/**
-	 * owner dbf id
+	 * owner dbf id, or card id if unknown to HearthstoneJSON
 	 */
-	number,
+	CardReference,
 	/**
-	 * dbf id
+	 * dbf id, or card id if unknown to HearthstoneJSON
 	 */
-	number,
+	CardReference,
 	/**
 	 * current count
 	 */
@@ -226,7 +226,7 @@ export interface BoardStateDeck {
 	cards?: BoardStateDeckCard[];
 	sideboards?: SideboardDeckCard[];
 	name?: string;
-	hero?: number;
+	hero?: CardReference;
 	format?: FormatType;
 	wins?: number;
 	losses?: number;

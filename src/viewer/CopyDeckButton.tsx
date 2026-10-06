@@ -2,9 +2,10 @@ import * as React from "react";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import * as ReactDOM from "react-dom";
 import styled from "styled-components";
-import { BoardStateDeck, BoardStatePlayer } from "../twitch-hdt";
+import { BoardStateDeck } from "../twitch-hdt";
+import { CardsProps, withCards } from "../utils/cards";
 import { copyText } from "../utils/clipboard";
-import { getDeckToCopy } from "../utils/hearthstone";
+import { DeckToCopy, getDeckToCopy } from "../utils/hearthstone";
 import { PortalContext } from "../utils/portal";
 
 const FallbackModal = styled.div`
@@ -74,11 +75,13 @@ export interface CopyDeckButtonChildProps {
 	onClick: () => void;
 	copied: boolean;
 	disabled: boolean;
+	missingCards: number;
 }
 
 export type CopyDeckButtonChild = (foo: CopyDeckButtonChildProps) => void;
 
-const CopyDeckButton: React.FC<Props> = ({
+const CopyDeckButton: React.FC<Props & CardsProps> = ({
+	cards: cardDefinitions,
 	deck,
 	timeout = 3000,
 	onCopy,
@@ -88,7 +91,7 @@ const CopyDeckButton: React.FC<Props> = ({
 	const [copied, setCopied] = useState(false);
 	const { portal } = useContext(PortalContext);
 
-	const deckstring = useMemo<string | null>(() => {
+	const deckToCopy = useMemo<DeckToCopy | null>(() => {
 		if (!deck) {
 			return null;
 		}
@@ -96,8 +99,17 @@ const CopyDeckButton: React.FC<Props> = ({
 		if (!format || !cards || !hero) {
 			return null;
 		}
-		return getDeckToCopy(cards, sideboards || [], format, [hero], name);
-	}, [deck]);
+		return getDeckToCopy(
+			cardDefinitions,
+			cards,
+			sideboards || [],
+			format,
+			[hero],
+			name,
+		);
+	}, [cardDefinitions, deck]);
+
+	const deckstring = deckToCopy?.text ?? null;
 
 	const copy = useCallback(async () => {
 		if (!deckstring) {
@@ -174,9 +186,10 @@ const CopyDeckButton: React.FC<Props> = ({
 				onClick: copy,
 				disabled: deckstring === null,
 				copied,
+				missingCards: deckToCopy?.missingCards ?? 0,
 			})}
 		</>
 	);
 };
 
-export default CopyDeckButton;
+export default withCards(CopyDeckButton);

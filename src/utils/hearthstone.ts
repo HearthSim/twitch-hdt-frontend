@@ -2,29 +2,54 @@ import { DeckDefinition, encode } from "deckstrings";
 import {
 	BnetGameType,
 	BoardStateDeckCard,
+	CardReference,
 	FormatType,
 	SideboardDeckCard,
 } from "../twitch-hdt";
+import { Cards, resolveCard } from "./cards";
+
+const toDbfId = (cards: Cards, identifier: CardReference): number | null =>
+	typeof identifier === "number"
+		? identifier
+		: resolveCard(cards, identifier).card?.dbfId ?? null;
+
+export interface DeckToCopy {
+	text: string;
+	missingCards: number;
+}
 
 export const getDeckToCopy = (
+	cards: Cards,
 	cardList: BoardStateDeckCard[],
 	sideboards: SideboardDeckCard[],
 	format: FormatType,
-	heroes: number[],
+	heroes: CardReference[],
 	name?: string,
-): string | null => {
+): DeckToCopy | null => {
 	if (format === FormatType.FT_UNKNOWN) {
 		return null;
 	}
 
-	const initialCards: DeckDefinition["cards"] = cardList
+	const heroDbfIds = heroes.map((hero) => toDbfId(cards, hero));
+	if (heroDbfIds.some((dbfId) => dbfId === null)) {
+		return null;
+	}
+
+	const resolvedCards = cardList
 		.filter((card: BoardStateDeckCard) => {
 			return !!card[2];
 		})
-		.map<[number, number]>((card: BoardStateDeckCard) => {
-			const [dbfId, current, initial] = card;
-			return [dbfId, initial];
-		})
+		.map<[number | null, number]>((card: BoardStateDeckCard) => {
+			const [cardId, current, initial] = card;
+			return [toDbfId(cards, cardId), initial];
+		});
+
+	const missingCards = resolvedCards
+		.filter(([dbfId]) => dbfId === null)
+		.reduce((total, [dbfId, count]) => total + count, 0);
+
+	const initialCards: DeckDefinition["cards"] = resolvedCards
+		.filter((card): card is [number, number] => card[0] !== null)
 		.reduce<[number, number][]>(
 			(result: [number, number][], card: [number, number]) => {
 				result = result.slice(0);
@@ -44,10 +69,14 @@ export const getDeckToCopy = (
 		.filter((card: SideboardDeckCard) => {
 			return !!card[3];
 		})
-		.map<[number, number, number]>((card: SideboardDeckCard) => {
-			const [owner, dbfId, current, initial] = card;
-			return [dbfId, initial, owner];
+		.map<[number | null, number, number | null]>((card: SideboardDeckCard) => {
+			const [owner, cardId, current, initial] = card;
+			return [toDbfId(cards, cardId), initial, toDbfId(cards, owner)];
 		})
+		.filter(
+			(card): card is [number, number, number] =>
+				card[0] !== null && card[2] !== null,
+		)
 		.reduce<[number, number, number][]>(
 			(result: [number, number, number][], card: [number, number, number]) => {
 				result = result.slice(0);
@@ -67,7 +96,7 @@ export const getDeckToCopy = (
 		cards: initialCards,
 		sideboardCards,
 		format,
-		heroes,
+		heroes: heroDbfIds as number[],
 	};
 
 	let deckstring = null;
@@ -86,7 +115,7 @@ export const getDeckToCopy = (
 	const isClassic = format === FormatType.FT_CLASSIC;
 	const isTwist = format === FormatType.FT_TWIST;
 
-	return [
+	const text = [
 		...(name ? [`### ${name}`] : []),
 		...(format
 			? [
@@ -106,6 +135,8 @@ export const getDeckToCopy = (
 		"#",
 		"# To use this deck, copy it to your clipboard and create a new deck in Hearthstone",
 	].join("\n");
+
+	return { text, missingCards };
 };
 
 export const isBattlegroundsGameType = (
