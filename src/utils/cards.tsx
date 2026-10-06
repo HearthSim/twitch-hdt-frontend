@@ -49,7 +49,7 @@ export class HearthstoneJSONCards implements Cards {
 	}
 
 	public getByDbfId(dbfId: number): CardDefinition | null {
-		return this._cards[dbfId];
+		return this._cards[dbfId] ?? null;
 	}
 }
 

@@ -208,6 +208,9 @@ class PubSubListener extends React.Component<Props & TwitchExtProps, State> {
 	}
 
 	public render(): React.ReactNode {
+		if (this.state.hasError) {
+			return null;
+		}
 		return (
 			this.props.children &&
 			(this.props.children as any)({
