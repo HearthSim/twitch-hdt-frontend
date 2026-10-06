@@ -146,6 +146,7 @@ export const isBattlegroundsGameType = (
 		[
 			BnetGameType.BGT_BATTLEGROUNDS,
 			BnetGameType.BGT_BATTLEGROUNDS_FRIENDLY,
+			BnetGameType.BGT_BATTLEGROUNDS_PLAYER_VS_AI,
 			BnetGameType.BGT_BATTLEGROUNDS_DUO,
 			BnetGameType.BGT_BATTLEGROUNDS_DUO_VS_AI,
 			BnetGameType.BGT_BATTLEGROUNDS_DUO_FRIENDLY,
