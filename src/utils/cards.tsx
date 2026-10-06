@@ -12,11 +12,14 @@ export interface CardsProps {
 }
 
 export interface Cards {
+	loaded: boolean;
 	getByDbfId(dbfId: number): CardDefinition | null;
 	getByCardId(cardId: string): CardDefinition | null;
 }
 
 export class EmptyCards implements Cards {
+	public loaded = false;
+
 	public getByDbfId(dbfId: number): null {
 		return null;
 	}
@@ -31,6 +34,7 @@ export class HearthstoneJSONCards implements Cards {
 	public _cardsById: { [cardId: string]: CardDefinition };
 	public _locale: string;
 	public _build: number | null;
+	public loaded = false;
 
 	constructor(locale: string, build?: number | null) {
 		this._cards = {};
@@ -55,6 +59,7 @@ export class HearthstoneJSONCards implements Cards {
 				}
 				return null;
 			}).filter((x) => x !== null);
+			this.loaded = true;
 		});
 	}
 

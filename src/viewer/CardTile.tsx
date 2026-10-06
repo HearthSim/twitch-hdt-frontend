@@ -20,17 +20,17 @@ interface Props {
 
 class CardTile extends React.Component<Props & CardsProps> {
 	public render(): React.ReactNode {
-		const { cardId, card } = resolveCard(
-			this.props.cards,
-			splitEntity(this.props.cardId).primary,
-		);
+		const { primary } = splitEntity(this.props.cardId);
+		const { cardId, card } = resolveCard(this.props.cards, primary);
+		const unknown = !!primary && !card && this.props.cards.loaded;
 		return (
 			<Entity cardId={this.props.cardId} disabled={this.props.tooltipDisabled}>
 				<ComponentCardTile
 					id={cardId}
-					name={card ? card.name || "Unknown Card" : null}
+					name={card ? card.name || "Unknown Card" : unknown ? "???" : null}
 					rarity={(card && card.rarity) || "COMMON"}
-					cost={card ? card.cost || 0 : null}
+					// the cost is rendered as-is, so a string works despite the typing
+					cost={card ? card.cost || 0 : unknown ? ("?" as any) : null}
 					number={
 						this.props.count && this.props.count > 1
 							? this.props.count
