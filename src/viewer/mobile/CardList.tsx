@@ -2,7 +2,12 @@ import { CardData } from "hearthstonejson-client";
 import * as React from "react";
 import styled from "styled-components";
 import { BoardStateDeckCard, FormatType } from "../../twitch-hdt";
-import { CardsProps, sort as cardSorting, withCards } from "../../utils/cards";
+import {
+	CardsProps,
+	resolveCard,
+	sort as cardSorting,
+	withCards,
+} from "../../utils/cards";
 import CardTile from "../CardTile";
 
 const CardListList = styled.ul`
@@ -34,7 +39,7 @@ class CardList extends React.Component<Props & CardsProps> {
 		const unsortedCards: NullableQuad[] = this.props.cardList.map<NullableQuad>(
 			(card: Triplet): NullableQuad => {
 				return [
-					this.props.cards.getByDbfId(card[0] as number),
+					resolveCard(this.props.cards, card[0]).card,
 					card[0],
 					card[1],
 					card[2],

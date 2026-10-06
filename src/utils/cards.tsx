@@ -13,21 +13,28 @@ export interface CardsProps {
 
 export interface Cards {
 	getByDbfId(dbfId: number): CardDefinition | null;
+	getByCardId(cardId: string): CardDefinition | null;
 }
 
 export class EmptyCards implements Cards {
 	public getByDbfId(dbfId: number): null {
 		return null;
 	}
+
+	public getByCardId(cardId: string): null {
+		return null;
+	}
 }
 
 export class HearthstoneJSONCards implements Cards {
 	public _cards: { [dbfId: number]: CardDefinition };
+	public _cardsById: { [cardId: string]: CardDefinition };
 	public _locale: string;
 	public _build: number | null;
 
 	constructor(locale: string, build?: number | null) {
 		this._cards = {};
+		this._cardsById = {};
 		this._locale = locale;
 		this._build = build || null;
 	}
@@ -43,6 +50,9 @@ export class HearthstoneJSONCards implements Cards {
 				if (card.dbfId) {
 					this._cards[card.dbfId] = card;
 				}
+				if (card.id) {
+					this._cardsById[card.id] = card;
+				}
 				return null;
 			}).filter((x) => x !== null);
 		});
@@ -50,6 +60,10 @@ export class HearthstoneJSONCards implements Cards {
 
 	public getByDbfId(dbfId: number): CardDefinition | null {
 		return this._cards[dbfId] ?? null;
+	}
+
+	public getByCardId(cardId: string): CardDefinition | null {
+		return this._cardsById[cardId] ?? null;
 	}
 }
 
@@ -145,7 +159,7 @@ export function resolveCard(
 		const card = cards.getByDbfId(identifier);
 		return { cardId: card?.id ?? null, card: card ?? null };
 	}
-	return { cardId: identifier, card: null };
+	return { cardId: identifier, card: cards.getByCardId(identifier) };
 }
 
 export function isPlayableCard(card: CardDefinition) {
