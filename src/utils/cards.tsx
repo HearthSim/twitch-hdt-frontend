@@ -130,14 +130,35 @@ export const withCards = makeHOC<CardsProps>({
 	cards: PropTypes.object.isRequired,
 });
 
+export interface CardHalves {
+	first?: number;
+	second?: number;
+}
+
 export interface SplitEntity {
 	primary: CardReference | null;
 	extra: CardReference[];
+
+	halves?: CardHalves;
 }
 
 export function splitEntity(
 	identifier: EntityReference | null | undefined,
 ): SplitEntity {
+	if (
+		identifier &&
+		typeof identifier === "object" &&
+		!Array.isArray(identifier)
+	) {
+		return {
+			primary: identifier.card || null,
+			extra: (identifier.enchantments || []).filter((cardId) => !!cardId),
+			halves: {
+				first: identifier.first_half,
+				second: identifier.second_half,
+			},
+		};
+	}
 	if (!Array.isArray(identifier)) {
 		return { primary: identifier || null, extra: [] };
 	}

@@ -9,7 +9,38 @@ export type CardReference = number | string;
  * A single card, or a list of cards where the first one is the entity itself and the remaining
  * ones are shown alongside it in the tooltip (e.g. enchantments).
  */
-export type EntityReference = CardReference | CardReference[];
+export type EntityReference =
+	| CardReference
+	| CardReference[]
+	| AssembledEntityReference;
+
+/**
+ * A minion whose card text was assembled from halves of other cards (the Assemble keyword).
+ * Only sent for assembled minions; every other entity keeps the bare or list form.
+ */
+export interface AssembledEntityReference {
+	/**
+	 * The dbfId of the assembled minion, or its card id if unknown to HearthstoneJSON.
+	 */
+	card: CardReference;
+
+	/**
+	 * Cards shown alongside the minion in the tooltip, as in the list form.
+	 */
+	enchantments?: CardReference[];
+
+	/**
+	 * The dbfId of the card contributing the first half of the text (corresponds to
+	 * GameTag.CRAFTABLE_FIRST_HALF_DBID). The minion keeps its own first half if omitted.
+	 */
+	first_half?: number;
+
+	/**
+	 * The dbfId of the card contributing the second half of the text (corresponds to
+	 * GameTag.CRAFTABLE_SECOND_HALF_DBID). The minion keeps its own second half if omitted.
+	 */
+	second_half?: number;
+}
 
 interface BaseMessage {
 	type: string;

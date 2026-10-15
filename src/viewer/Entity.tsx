@@ -91,7 +91,7 @@ class Entity extends React.Component<Props & CardsProps, State> {
 		const { cardId, disabled, flipped, cards, children } = this.props;
 		const { x, y, width, isHovering, isMeaningfulHover } = this.state;
 
-		const { primary, extra } = splitEntity(cardId);
+		const { primary, extra, halves } = splitEntity(cardId);
 
 		if (!primary) {
 			return null;
@@ -111,6 +111,7 @@ class Entity extends React.Component<Props & CardsProps, State> {
 							<Card
 								cardId={primary}
 								extraCardIds={extra}
+								halves={halves}
 								x={x || 0}
 								y={y || 0}
 								width={width || 0}
