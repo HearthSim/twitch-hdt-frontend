@@ -12,35 +12,36 @@ export type CardReference = number | string;
 export type EntityReference =
 	| CardReference
 	| CardReference[]
-	| AssembledEntityReference;
+	| ExtendedEntityReference;
 
 /**
- * A minion whose card text was assembled from halves of other cards (the Assemble keyword), or a
- * hero power made from one (Rajh). Only sent for those; every other entity keeps the bare or list
- * form.
+ * An entity with extra data. Only sent for entities that have any; every other entity keeps the
+ * bare or list form. Fields the extension does not know are ignored, so more can be added without
+ * breaking older versions.
  */
-export interface AssembledEntityReference {
+export interface ExtendedEntityReference {
 	/**
-	 * The dbfId of the assembled minion or hero power, or its card id if unknown to HearthstoneJSON.
+	 * The entity itself.
 	 */
 	card: CardReference;
 
 	/**
-	 * Cards shown alongside the minion in the tooltip, as in the list form.
+	 * Cards shown alongside the entity in the tooltip, as in the list form.
 	 */
 	enchantments?: CardReference[];
 
 	/**
-	 * The dbfId of the card contributing the first half of the text (corresponds to
-	 * GameTag.CRAFTABLE_FIRST_HALF_DBID). The minion keeps its own first half if omitted.
+	 * The card contributing the first half of the text of an assembled minion, or of the hero
+	 * power Rajh makes from one (corresponds to GameTag.CRAFTABLE_FIRST_HALF_DBID). The entity
+	 * keeps its own first half if omitted.
 	 */
-	first_half?: number;
+	assembled_first_half?: CardReference;
 
 	/**
-	 * The dbfId of the card contributing the second half of the text (corresponds to
-	 * GameTag.CRAFTABLE_SECOND_HALF_DBID). The minion keeps its own second half if omitted.
+	 * The card contributing the second half of the text, see assembled_first_half (corresponds to
+	 * GameTag.CRAFTABLE_SECOND_HALF_DBID).
 	 */
-	second_half?: number;
+	assembled_second_half?: CardReference;
 }
 
 interface BaseMessage {

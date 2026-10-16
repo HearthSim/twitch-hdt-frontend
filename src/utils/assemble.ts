@@ -1,4 +1,5 @@
-import { CardDefinition, CardHalves, Cards } from "./cards";
+import { CardReference } from "../twitch-hdt";
+import { CardDefinition, CardHalves, Cards, resolveCard } from "./cards";
 
 /**
  * Assemble: a minion is added to hand, then part of its card text is replaced
@@ -7,8 +8,8 @@ import { CardDefinition, CardHalves, Cards } from "./cards";
  * Cards in that pool have their text split into two halves by an ampersand -
  * the trigger ("After your hero attacks,&") and the effect ("& Gain 3 Armor.").
  * An assembled minion keeps the half it contributes itself and names the card
- * donating the other half by dbfId (HDT sends CRAFTABLE_FIRST_HALF_DBID and
- * CRAFTABLE_SECOND_HALF_DBID as first_half and second_half).
+ * donating the other half (HDT sends CRAFTABLE_FIRST_HALF_DBID and
+ * CRAFTABLE_SECOND_HALF_DBID as assembled_first_half and assembled_second_half).
  *
  * Ported from Joust's CardTextAssembler.
  */
@@ -95,7 +96,7 @@ export function assembleCardText(
 }
 
 /**
- * Returns the assembled card text for a minion, or null if it was not assembled
+ * Returns the assembled card text for an entity, or null if it was not assembled
  * or its parts cannot be resolved - in which case the card should be shown as
  * printed.
  */
@@ -107,24 +108,28 @@ export function getAssembledCardText(
 	if (!halves) {
 		return null;
 	}
-	const dbfIds = [halves.first, halves.second].map((value) =>
-		// a marker says this card is offered as a part, it does not name one
-		value && value > PART_MARKER ? value : 0,
+	const refs = [halves.first, halves.second].map((ref) =>
+		ref && !isPartMarker(ref) ? ref : null,
 	);
-	if (!dbfIds.some((dbfId) => !!dbfId)) {
-		// not an assembled minion
+	if (!refs.some((ref) => ref !== null)) {
+		// not assembled
 		return null;
 	}
 	if (!cards.loaded) {
 		// metadata has not loaded yet
 		return null;
 	}
-	const parts = dbfIds.map((dbfId) => (dbfId ? cards.getByDbfId(dbfId) : null));
+	const parts = refs.map((ref) => (ref ? resolveCard(cards, ref).card : null));
 	if (!parts.some((part) => !!part)) {
 		// none of the parts are in the metadata for this build
 		return null;
 	}
 	return assembleCardText(own, parts[0], parts[1]);
+}
+
+// a marker says this card is offered as a part, it does not name one
+function isPartMarker(ref: CardReference): boolean {
+	return typeof ref === "number" && ref <= PART_MARKER;
 }
 
 /**

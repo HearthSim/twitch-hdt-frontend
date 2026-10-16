@@ -21,9 +21,10 @@ interface LayoutDefinition {
 	fontSizeOverHeight: number;
 }
 
-// the printed text is about 30px tall on a 776px render with 34px between lines, but the
-// fallback fonts are wider than the card font
+// the printed text is about 30px tall on a 776px render with 34px between lines
 const LINE_HEIGHT = 34 / 30;
+// Arial is wider than the card font, so it is set smaller to wrap like the printed text
+const FONT_SIZE_OVER_HEIGHT = 24 / 776;
 
 const LAYOUTS: Record<TextLayout, LayoutDefinition> = {
 	minion: {
@@ -35,7 +36,7 @@ const LAYOUTS: Record<TextLayout, LayoutDefinition> = {
 		padding: "0 4% 9%",
 		background: "rgb(166, 149, 130)",
 		color: "rgb(30, 23, 16)",
-		fontSizeOverHeight: 26 / 776,
+		fontSizeOverHeight: FONT_SIZE_OVER_HEIGHT,
 	},
 	hero_power: {
 		// nothing overlaps this parchment, only its edges are frayed
@@ -45,7 +46,7 @@ const LAYOUTS: Record<TextLayout, LayoutDefinition> = {
 		background: "rgb(159, 137, 116)",
 		color: "rgb(0, 0, 0)",
 		// the lines are 36px apart instead of 34px
-		fontSizeOverHeight: ((26 / 776) * 36) / 34,
+		fontSizeOverHeight: (FONT_SIZE_OVER_HEIGHT * 36) / 34,
 	},
 };
 const MIN_FONT_SCALE = 0.5;
@@ -59,8 +60,7 @@ const TextBox = styled.div`
 	justify-content: center;
 	overflow: hidden;
 	border-radius: 0.4em;
-	font-family: "Franklin Gothic Medium", "Franklin Gothic",
-		"ITC Franklin Gothic", "Arial Narrow", Arial, sans-serif;
+	font-family: Arial, sans-serif;
 	text-align: center;
 	pointer-events: none;
 `;

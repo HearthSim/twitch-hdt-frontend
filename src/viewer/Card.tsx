@@ -29,7 +29,7 @@ import {
 interface Props {
 	cardId: CardReference;
 	extraCardIds?: CardReference[];
-	halves?: CardHalves;
+	assembled?: CardHalves;
 	x?: number;
 	y?: number;
 	width?: number;
@@ -66,15 +66,15 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 
 							// the render shows the card as printed, so an assembled minion gets its
 							// text drawn over it
-							const assembled = getAssembledCardText(
-								this.props.halves,
+							const assembledText = getAssembledCardText(
+								this.props.assembled,
 								primary.card,
 								this.props.cards,
 							);
 							const text =
-								assembled !== null
+								assembledText !== null
 									? {
-											html: formatCardText(assembled),
+											html: formatCardText(assembledText),
 											layout: getTextLayout(primary),
 									  }
 									: null;
