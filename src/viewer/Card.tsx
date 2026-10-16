@@ -17,7 +17,7 @@ import {
 	TwitchExtProps,
 	withTwitchExt,
 } from "../utils/twitch";
-import AssembledCardText from "./AssembledCardText";
+import AssembledCardText, { TextLayout } from "./AssembledCardText";
 import { getNotFound } from "./notfound";
 import { getPlaceholder } from "./placeholders";
 import {
@@ -72,7 +72,12 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 								this.props.cards,
 							);
 							const text =
-								assembled !== null ? formatCardText(assembled) : null;
+								assembled !== null
+									? {
+											html: formatCardText(assembled),
+											layout: getTextLayout(primary),
+									  }
+									: null;
 
 							switch (behaviour) {
 								case TooltipBehaviour.FULLSCREEN:
@@ -92,7 +97,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 		primary: ResolvedCard,
 		extras: ResolvedCard[],
 		locale: HearthstoneLocale,
-		text: string | null,
+		text: AssembledText | null,
 	): React.ReactNode {
 		const centered: React.CSSProperties = {
 			position: "absolute",
@@ -178,7 +183,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 		primary: ResolvedCard,
 		extras: ResolvedCard[],
 		locale: HearthstoneLocale,
-		text: string | null,
+		text: AssembledText | null,
 	): React.ReactNode {
 		const viewPortHeight = window.innerHeight;
 		const vh = viewPortHeight / 100;
@@ -294,7 +299,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 		card: React.ReactElement,
 		style: React.CSSProperties,
 		height: number,
-		text: string | null,
+		text: AssembledText | null,
 	): React.ReactNode {
 		if (text === null) {
 			return React.cloneElement(card, { style: { ...style, height } });
@@ -312,7 +317,11 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 				{React.cloneElement(card, {
 					style: { display: "block", width: "100%", height: "100%" },
 				})}
-				<AssembledCardText text={text} height={height} />
+				<AssembledCardText
+					text={text.html}
+					layout={text.layout}
+					height={height}
+				/>
 			</div>
 		);
 	}
@@ -347,6 +356,16 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 			</div>
 		);
 	}
+}
+
+interface AssembledText {
+	html: string;
+	layout: TextLayout;
+}
+
+// Rajh turns an assembled minion into a hero power, every other assembled card is a minion
+function getTextLayout(resolved: ResolvedCard): TextLayout {
+	return getType(resolved) === "HERO_POWER" ? "hero_power" : "minion";
 }
 
 function getType({ card }: ResolvedCard): string {

@@ -15,12 +15,13 @@ export type EntityReference =
 	| AssembledEntityReference;
 
 /**
- * A minion whose card text was assembled from halves of other cards (the Assemble keyword).
- * Only sent for assembled minions; every other entity keeps the bare or list form.
+ * A minion whose card text was assembled from halves of other cards (the Assemble keyword), or a
+ * hero power made from one (Rajh). Only sent for those; every other entity keeps the bare or list
+ * form.
  */
 export interface AssembledEntityReference {
 	/**
-	 * The dbfId of the assembled minion, or its card id if unknown to HearthstoneJSON.
+	 * The dbfId of the assembled minion or hero power, or its card id if unknown to HearthstoneJSON.
 	 */
 	card: CardReference;
 
