@@ -2,7 +2,9 @@ import * as React from "react";
 import { Card as ComponentCard } from "react-hs-components";
 import { HearthstoneLocale } from "react-hs-components/dist/components/Card";
 import { CardReference } from "../twitch-hdt";
+import { formatCardText, getAssembledCardText } from "../utils/assemble";
 import {
+	CardHalves,
 	CardsProps,
 	getHearthstoneLocaleFromTwitchLocale,
 	ResolvedCard,
@@ -15,6 +17,7 @@ import {
 	TwitchExtProps,
 	withTwitchExt,
 } from "../utils/twitch";
+import AssembledCardText, { TextLayout } from "./AssembledCardText";
 import { getNotFound } from "./notfound";
 import { getPlaceholder } from "./placeholders";
 import {
@@ -26,6 +29,7 @@ import {
 interface Props {
 	cardId: CardReference;
 	extraCardIds?: CardReference[];
+	assembled?: CardHalves;
 	x?: number;
 	y?: number;
 	width?: number;
@@ -34,6 +38,9 @@ interface Props {
 }
 
 const WIDTH_OVER_HEIGHT = 512 / 764;
+// the natural size of a minion render at resolution 512
+const RENDER_WIDTH = 512;
+const RENDER_HEIGHT = 776;
 const EXTRA_GAP = 6;
 const EXTRA_SCALE = 0.8;
 
@@ -57,12 +64,27 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 								query.language || "en",
 							);
 
+							// the render shows the card as printed, so an assembled minion gets its
+							// text drawn over it
+							const assembledText = getAssembledCardText(
+								this.props.assembled,
+								primary.card,
+								this.props.cards,
+							);
+							const text =
+								assembledText !== null
+									? {
+											html: formatCardText(assembledText),
+											layout: getTextLayout(primary),
+									  }
+									: null;
+
 							switch (behaviour) {
 								case TooltipBehaviour.FULLSCREEN:
-									return this.renderFullscreen(primary, extras, locale);
+									return this.renderFullscreen(primary, extras, locale, text);
 								case TooltipBehaviour.ATTACHED:
 								default:
-									return this.renderAttached(primary, extras, locale);
+									return this.renderAttached(primary, extras, locale, text);
 							}
 						}}
 					</TooltipConsumer>
@@ -75,6 +97,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 		primary: ResolvedCard,
 		extras: ResolvedCard[],
 		locale: HearthstoneLocale,
+		text: AssembledText | null,
 	): React.ReactNode {
 		const centered: React.CSSProperties = {
 			position: "absolute",
@@ -86,10 +109,9 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 		};
 
 		if (!extras.length) {
-			return (
+			const card = (
 				<ComponentCard
 					id={primary.cardId as string}
-					style={{ ...centered, maxHeight: "100%", maxWidth: "100%" }}
 					resolution={512}
 					locale={locale}
 					placeholder={getPlaceholder(
@@ -99,6 +121,18 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 					battlegrounds={this.props.battlegrounds}
 				/>
 			);
+			if (text === null) {
+				return React.cloneElement(card, {
+					style: { ...centered, maxHeight: "100%", maxWidth: "100%" },
+				});
+			}
+			// the text layer is sized from the card, so give it the height the image would shrink to
+			const fittedHeight = Math.min(
+				RENDER_HEIGHT,
+				window.innerHeight,
+				(window.innerWidth * RENDER_HEIGHT) / RENDER_WIDTH,
+			);
+			return this.renderWithText(card, centered, fittedHeight, text);
 		}
 
 		let height = window.innerHeight * 0.9;
@@ -121,16 +155,20 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 					gap: `${EXTRA_GAP}px`,
 				}}
 			>
-				<ComponentCard
-					id={primary.cardId as string}
-					style={{ height }}
-					resolution={512}
-					locale={locale}
-					placeholder={getPlaceholder(
-						getType(primary),
-						this.props.battlegrounds ?? false,
-					)}
-				/>
+				{this.renderWithText(
+					<ComponentCard
+						id={primary.cardId as string}
+						resolution={512}
+						locale={locale}
+						placeholder={getPlaceholder(
+							getType(primary),
+							this.props.battlegrounds ?? false,
+						)}
+					/>,
+					{},
+					height,
+					text,
+				)}
 				{this.renderExtras(
 					extras,
 					extraHeight,
@@ -145,6 +183,7 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 		primary: ResolvedCard,
 		extras: ResolvedCard[],
 		locale: HearthstoneLocale,
+		text: AssembledText | null,
 	): React.ReactNode {
 		const viewPortHeight = window.innerHeight;
 		const vh = viewPortHeight / 100;
@@ -207,10 +246,9 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 			}
 		}
 
-		const card = (
+		const card = this.renderWithText(
 			<ComponentCard
 				id={primary.cardId as string}
-				style={extras.length ? { height } : { ...position, height }}
 				resolution={512}
 				locale={locale}
 				notFound={getNotFound(getType(primary))}
@@ -220,7 +258,10 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 				)}
 				battlegrounds={this.props.battlegrounds}
 				triple={triple}
-			/>
+			/>,
+			extras.length ? {} : position,
+			height,
+			text,
 		);
 
 		if (!extras.length) {
@@ -246,6 +287,41 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 					locale,
 					this.props.battlegrounds ?? false,
 				)}
+			</div>
+		);
+	}
+
+	/**
+	 * Places the card at the given position and height, with the text drawn over its text box if
+	 * there is any.
+	 */
+	private renderWithText(
+		card: React.ReactElement,
+		style: React.CSSProperties,
+		height: number,
+		text: AssembledText | null,
+	): React.ReactNode {
+		if (text === null) {
+			return React.cloneElement(card, { style: { ...style, height } });
+		}
+		return (
+			// sized up front so the text fits the card before the image has loaded
+			<div
+				style={{
+					position: "relative",
+					...style,
+					height,
+					width: (height * RENDER_WIDTH) / RENDER_HEIGHT,
+				}}
+			>
+				{React.cloneElement(card, {
+					style: { display: "block", width: "100%", height: "100%" },
+				})}
+				<AssembledCardText
+					text={text.html}
+					layout={text.layout}
+					height={height}
+				/>
 			</div>
 		);
 	}
@@ -280,6 +356,16 @@ class Card extends React.Component<Props & CardsProps & TwitchExtProps> {
 			</div>
 		);
 	}
+}
+
+interface AssembledText {
+	html: string;
+	layout: TextLayout;
+}
+
+// Rajh turns an assembled minion into a hero power, every other assembled card is a minion
+function getTextLayout(resolved: ResolvedCard): TextLayout {
+	return getType(resolved) === "HERO_POWER" ? "hero_power" : "minion";
 }
 
 function getType({ card }: ResolvedCard): string {

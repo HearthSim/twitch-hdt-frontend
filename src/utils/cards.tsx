@@ -130,14 +130,46 @@ export const withCards = makeHOC<CardsProps>({
 	cards: PropTypes.object.isRequired,
 });
 
+/**
+ * The cards contributing the halves of an assembled text.
+ */
+export interface CardHalves {
+	first?: CardReference;
+	second?: CardReference;
+}
+
 export interface SplitEntity {
 	primary: CardReference | null;
 	extra: CardReference[];
+
+	assembled?: CardHalves;
 }
 
 export function splitEntity(
 	identifier: EntityReference | null | undefined,
 ): SplitEntity {
+	if (
+		identifier &&
+		typeof identifier === "object" &&
+		!Array.isArray(identifier)
+	) {
+		// the object form gains fields over time, so check every one we read
+		const { enchantments } = identifier;
+		const first = toCardReference(identifier.assembled_first_half);
+		const second = toCardReference(identifier.assembled_second_half);
+		return {
+			primary: toCardReference(identifier.card),
+			extra: Array.isArray(enchantments)
+				? enchantments
+						.map(toCardReference)
+						.filter((cardId): cardId is CardReference => cardId !== null)
+				: [],
+			assembled:
+				first !== null || second !== null
+					? { first: first ?? undefined, second: second ?? undefined }
+					: undefined,
+		};
+	}
 	if (!Array.isArray(identifier)) {
 		return { primary: identifier || null, extra: [] };
 	}
@@ -146,6 +178,13 @@ export function splitEntity(
 		primary: primary || null,
 		extra: extra.filter((cardId) => !!cardId),
 	};
+}
+
+function toCardReference(value: unknown): CardReference | null {
+	if ((typeof value !== "number" && typeof value !== "string") || !value) {
+		return null;
+	}
+	return value;
 }
 
 export interface ResolvedCard {

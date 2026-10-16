@@ -9,7 +9,40 @@ export type CardReference = number | string;
  * A single card, or a list of cards where the first one is the entity itself and the remaining
  * ones are shown alongside it in the tooltip (e.g. enchantments).
  */
-export type EntityReference = CardReference | CardReference[];
+export type EntityReference =
+	| CardReference
+	| CardReference[]
+	| ExtendedEntityReference;
+
+/**
+ * An entity with extra data. Only sent for entities that have any; every other entity keeps the
+ * bare or list form. Fields the extension does not know are ignored, so more can be added without
+ * breaking older versions.
+ */
+export interface ExtendedEntityReference {
+	/**
+	 * The entity itself.
+	 */
+	card: CardReference;
+
+	/**
+	 * Cards shown alongside the entity in the tooltip, as in the list form.
+	 */
+	enchantments?: CardReference[];
+
+	/**
+	 * The card contributing the first half of the text of an assembled minion, or of the hero
+	 * power Rajh makes from one (corresponds to GameTag.CRAFTABLE_FIRST_HALF_DBID). The entity
+	 * keeps its own first half if omitted.
+	 */
+	assembled_first_half?: CardReference;
+
+	/**
+	 * The card contributing the second half of the text, see assembled_first_half (corresponds to
+	 * GameTag.CRAFTABLE_SECOND_HALF_DBID).
+	 */
+	assembled_second_half?: CardReference;
+}
 
 interface BaseMessage {
 	type: string;
